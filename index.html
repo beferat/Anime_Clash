@@ -492,49 +492,67 @@ const ROSTER = {
     },
   },
 
+  /* BRAM — Púgil Elástico
+     Forma base: extremidades elásticas a media-larga distancia, resorte con placaje y ametralladora de puños.
+     Dios del Sol (G): físicas de dibujo animado (más salto, menos gravedad, doble salto), puños colosales que
+     dañan la guardia, rebote aéreo dirigido con onda sísmica, barrera que absorbe proyectiles y los devuelve
+     como una roca solar, y la definitiva Impacto del Sol, que consume la forma y deja la barra agotada. */
   f3: {
     key: 'f3', parry: 'counter', name: 'BRAM', title: 'Púgil Elástico', hp: 1000, speed: 3.9, jumpV: 12, jumps: 1, cdR: 50,
-    box: { w: 36, h: 84 }, canTransform: true, formSpeed: 4.9, formDmg: 1.2, formName: 'FORMA SOLAR',
+    box: { w: 36, h: 84 }, canTransform: true, formSpeed: 5.4, formJump: 15, formJumps: 2, formGrav: 0.8, toon: true, formName: 'DIOS DEL SOL',
     hair: 'topknot', weapon: 'fist', spark: '#ffd27a', aura: 'solar',
     pal: { skin: '#c98b5e', hair: '#1c1a22', top: '#6b2f6e', arm: '#c98b5e', belt: '#e6c25a', pants: '#d8c39a', boots: '#2d2018', eye: '#1c1a22', wrap: '#f4efe4', band: '#a8714a' },
     formPal: { skin: '#e8b07a', hair: '#ffcf5a', flame: '#fff1b8', glowEye: '#fff7d6', top: '#ff8a3d', arm: '#e8b07a', belt: '#fff1b8', pants: '#ffe7b0', boots: '#7a3b14', eye: '#fff7d6', wrap: '#fff7d6', band: '#d18a4e' },
-    stats: { vida: 0.8, vel: 0.68, alc: 0.85 },
-    desc: { m2: 'Contra elástica: devuelve el golpe con un puñetazo', e: 'Puños elásticos de medio alcance', r: 'Lanzamiento: embestida cohete', f: 'Puño Muelle: golpe cargado de largo alcance', g: 'Forma Solar con estallido Amanecer. Transformado, G lanza la definitiva Lluvia de Soles' },
+    stats: { vida: 0.8, vel: 0.68, alc: 0.9 },
+    desc: { m2: 'Contra elástica: devuelve el golpe con un puñetazo', e: 'Puños elásticos en 4 golpes a media-larga distancia; el último es un doble puñetazo', r: 'Resorte: se impulsa estirando los brazos y placa con los dos pies', f: 'Ametralladora elástica: ráfaga continua de puñetazos que atrapa al rival', g: 'Dios del Sol: detonación que repele, más velocidad, salto y doble salto. E: puños colosales que dañan la guardia · R: rebote aéreo con onda sísmica · F: barrera que absorbe proyectiles y lanza una roca solar · G otra vez: Impacto del Sol (consume la forma)' },
     moves: {
       ctr: { dur: 30, reach: 110, hits: [{ f: [5, 10], box: [0, -96, 132, 70], dmg: 90, kb: 12, kby: -7, stun: 30, heavy: true }], fx: [{ f: 0, k: 'gring', col: '#ffd27a', r: 50 }, { f: 5, k: 'impact', x: 120, y: -66, col: '#ffd27a' }, { f: 5, k: 'shake', a: 7 }] },
-      atk1: { dur: 20, cancel: 11, reach: 102, hits: [{ f: [6, 10], box: [0, -74, 118, 26], dmg: 34, kb: 3, kby: -1, stun: 13 }] },
-      atk2: { dur: 22, cancel: 12, reach: 110, hits: [{ f: [7, 11], box: [0, -66, 126, 26], dmg: 36, kb: 3, kby: -1, stun: 14 }] },
-      atk3: { dur: 34, reach: 124, hits: [{ f: [11, 16], box: [0, -80, 140, 40], dmg: 70, kb: 9, kby: -5, stun: 26, heavy: true }], fx: [{ f: 11, k: 'shake', a: 4 }, { f: 11, k: 'impact', x: 135, y: -62, col: '#ffd27a' }] },
-      r: { dur: 30, pose: 'dash', vel: [{ f: 4, vx: 16, vy: -2, hold: 12 }], hits: [{ f: [5, 16], box: [0, -80, 60, 70], dmg: 62, kb: 8, kby: -4, stun: 22 }], fx: [{ f: 4, k: 'trail', col: '#f2d36b' }] },
-      f: { dur: 48, reach: 200, hits: [{ f: [22, 27], box: [0, -92, 216, 56], dmg: 150, kb: 13, kby: -6, stun: 34, heavy: true }],
-           fx: [{ f: 2, k: 'charge', col: '#ffb347' }, { f: 22, k: 'shake', a: 8 }, { f: 22, k: 'impact', x: 210, y: -64, col: '#ffd27a' }] },
+      atk1: { dur: 15, cancel: 8, reach: 120, hits: [{ f: [5, 7], box: [0, -76, 134, 26], dmg: 26, kb: 1.5, kby: -1, stun: 12 }] },
+      atk2: { dur: 15, cancel: 8, reach: 130, hits: [{ f: [5, 7], box: [0, -68, 144, 26], dmg: 28, kb: 1.5, kby: -1, stun: 12 }] },
+      atk3: { dur: 17, cancel: 9, reach: 140, hits: [{ f: [6, 8], box: [0, -80, 154, 30], dmg: 30, kb: 2, kby: -1, stun: 13 }] },
+      atk4: { dur: 34, reach: 150, double: true, fistSize: 9, hits: [{ f: [12, 15], box: [0, -92, 166, 52], dmg: 64, kb: 9, kby: -3, stun: 22 }],
+              fx: [{ f: 12, k: 'impact', x: 160, y: -66, col: '#ffd27a' }, { f: 12, k: 'shake', a: 4 }] },
+      r: { dur: 30, pose: 'dash', vel: [{ f: 4, vx: 18, vy: -2, hold: 12 }], hits: [{ f: [5, 16], box: [0, -64, 66, 62], dmg: 58, kb: 11, kby: -3, stun: 22 }],
+           fx: [{ f: 2, k: 'gring', col: '#ffd27a', r: 50 }, { f: 2, k: 'dust', x: -10 }, { f: 4, k: 'trail', col: '#f2d36b' }] },
+      f: { dur: 64, pose: 'barrage', reach: 140,
+           hits: [{ f: [14, 50], every: 3, box: [0, -112, 172, 84], dmg: 7, kb: 0.5, kby: 0, stun: 9, chip: 0.35 }, { f: [52, 55], box: [0, -112, 180, 84], dmg: 40, kb: 8, kby: -3, stun: 20 }],
+           fx: [{ f: 0, k: 'charge', col: '#ffb347' }, { f: 14, k: 'barrage', dur: 36, col: '#f4efe4' }, { f: 52, k: 'impact', x: 170, y: -70, col: '#ffd27a' }, { f: 52, k: 'shake', a: 5 }] },
       tf: { dur: 76, pose: 'raise', inv: [0, 54], becomeAt: 32,
-            hits: [{ f: [34, 42], box: [-200, -200, 400, 200], dmg: 110, kb: 12, kby: -10, stun: 40, heavy: true }],
-            fx: [{ f: 0, k: 'cine', name: 'FORMA SOLAR', sub: 'AMANECER', col: '#ffcf5a', col2: '#7a3b14', dur: 66 },
-                 { f: 2, k: 'charge', col: '#fff1b8' }, { f: 16, k: 'pillar', col: '#ffcf5a', w: 80, life: 40 },
-                 { f: 32, k: 'sun', x: 0, y: -60, r: 180 }, { f: 32, k: 'dome', col: '#fff1b8', col2: '#ffcf5a', r: 200 },
-                 { f: 32, k: 'shake', a: 13 }, { f: 32, k: 'flash' }, { f: 34, k: 'gring', col: '#fff1b8', r: 220 }] },
+            hits: [{ f: [32, 38], box: [-210, -200, 420, 200], dmg: 40, kb: 15, kby: -6, stun: 24, aoe: true }],
+            fx: [{ f: 0, k: 'cine', mode: 'focus', name: 'DIOS DEL SOL', sub: 'DETONACIÓN SOLAR', col: '#ffcf5a', col2: '#7a3b14', dur: 72, zoom: 1.8 },
+                 { f: 2, k: 'charge', col: '#fff1b8' }, { f: 14, k: 'charge', col: '#ffffff' }, { f: 16, k: 'pillar', col: '#ffcf5a', w: 80, life: 40 },
+                 { f: 32, k: 'sun', x: 0, y: -60, r: 180 }, { f: 32, k: 'dome', col: '#ffffff', col2: '#ffcf5a', r: 230 },
+                 { f: 32, k: 'shake', a: 13 }, { f: 32, k: 'flash' }, { f: 34, k: 'gring', col: '#fff1b8', r: 260 }] },
     },
     formMoves: {
-      atk1: { dur: 16, cancel: 8, reach: 130, big: true, hits: [{ f: [5, 8], box: [0, -100, 156, 56], dmg: 36, kb: 3.5, kby: -1, stun: 13 }],
-              fx: [{ f: 5, k: 'fist', x: 150, y: -76, size: 30, col: '#fff1b8' }, { f: 5, k: 'gring', x: 150, col: '#fff1b8', r: 50 }] },
-      atk2: { dur: 17, cancel: 9, reach: 136, big: true, hits: [{ f: [5, 9], box: [0, -94, 162, 56], dmg: 38, kb: 3.5, kby: -1, stun: 14 }],
-              fx: [{ f: 5, k: 'fist', x: 156, y: -70, size: 32, col: '#fff1b8' }, { f: 5, k: 'gring', x: 156, col: '#fff1b8', r: 54 }] },
-      atk3: { dur: 36, pose: 'barrage', reach: 150, big: true,
-              hits: [{ f: [8, 20], every: 3, box: [0, -124, 176, 96], dmg: 13, kb: 0.6, kby: -0.8, stun: 10 }, { f: [24, 28], box: [0, -130, 196, 112], dmg: 70, kb: 13, kby: -8, stun: 30, heavy: true }],
-              fx: [{ f: 8, k: 'barrage', dur: 12, col: '#fff1b8' }, { f: 24, k: 'fist', x: 180, y: -80, size: 54, col: '#ffffff' }, { f: 24, k: 'impact', x: 185, y: -78, col: '#ffcf5a' }, { f: 24, k: 'shake', a: 8 }] },
-      r: { dur: 28, pose: 'dash', vel: [{ f: 3, vx: 22, vy: -3, hold: 12 }], hits: [{ f: [4, 15], box: [0, -96, 84, 92], dmg: 74, kb: 10, kby: -6, stun: 24, heavy: true }],
-           fx: [{ f: 3, k: 'trail', col: '#fff1b8' }, { f: 3, k: 'ghosts', n: 5 }, { f: 3, k: 'gring', col: '#ffcf5a', r: 60 }, { f: 10, k: 'fist', x: 60, y: -60, size: 40, col: '#fff1b8' }] },
-      f: { dur: 52, reach: 280, big: true, hits: [{ f: [22, 28], box: [0, -150, 310, 140], dmg: 190, kb: 16, kby: -9, stun: 40, heavy: true }],
-           fx: [{ f: 2, k: 'charge', col: '#fff1b8' }, { f: 8, k: 'pillar', col: '#ffcf5a', w: 40, life: 20, x: -10 }, { f: 22, k: 'fist', x: 270, y: -90, size: 96, col: '#ffffff' },
-                { f: 22, k: 'shake', a: 13 }, { f: 22, k: 'flash' }, { f: 22, k: 'sun', x: 280, y: -90, r: 120 }, { f: 24, k: 'gring', x: 280, col: '#fff1b8', r: 140 }] },
-      ult: { dur: 100, pose: 'barrage', reach: 170, big: true, inv: [0, 22], vel: [{ f: 14, vx: 5, hold: 10 }],
-             hits: [{ f: [22, 66], every: 4, box: [0, -160, 220, 150], dmg: 13, kb: 0.5, kby: -0.4, stun: 10 }, { f: [76, 82], box: [0, -180, 280, 180], dmg: 130, kb: 18, kby: -11, stun: 44, heavy: true }],
-             fx: [{ f: 0, k: 'cine', name: 'LLUVIA DE SOLES', sub: 'DEFINITIVA', col: '#ffcf5a', col2: '#7a3b14', dur: 90 },
-                  { f: 0, k: 'charge', col: '#fff1b8' }, { f: 10, k: 'pillar', col: '#ffcf5a', w: 70, life: 30 },
-                  { f: 22, k: 'barrage', dur: 46, col: '#fff1b8' }, { f: 22, k: 'shake', a: 4 }, { f: 44, k: 'shake', a: 5 },
-                  { f: 76, k: 'fist', x: 220, y: -100, size: 130, col: '#ffffff' }, { f: 76, k: 'sun', x: 240, y: -100, r: 170 },
-                  { f: 76, k: 'shake', a: 16 }, { f: 76, k: 'flash' }, { f: 78, k: 'gring', x: 240, col: '#fff1b8', r: 200 }] },
+      atk1: { dur: 16, cancel: 8, reach: 150, big: true, fistSize: 24, hits: [{ f: [5, 8], box: [0, -122, 178, 82], dmg: 46, kb: 3, kby: -1, stun: 14, chip: 0.5 }],
+              fx: [{ f: 5, k: 'fist', x: 165, y: -84, size: 44, col: '#fff1b8' }, { f: 5, k: 'gring', x: 165, col: '#fff1b8', r: 60 }, { f: 5, k: 'shake', a: 3 }] },
+      atk2: { dur: 16, cancel: 8, reach: 160, big: true, fistSize: 24, hits: [{ f: [5, 8], box: [0, -116, 188, 82], dmg: 48, kb: 3, kby: -1, stun: 14, chip: 0.5 }],
+              fx: [{ f: 5, k: 'fist', x: 175, y: -78, size: 46, col: '#fff1b8' }, { f: 5, k: 'gring', x: 175, col: '#fff1b8', r: 62 }, { f: 5, k: 'shake', a: 3 }] },
+      atk3: { dur: 18, cancel: 9, reach: 170, big: true, fistSize: 26, hits: [{ f: [6, 9], box: [0, -132, 198, 102], dmg: 52, kb: 3.5, kby: -1, stun: 15, chip: 0.5 }],
+              fx: [{ f: 6, k: 'fist', x: 185, y: -86, size: 54, col: '#ffffff' }, { f: 6, k: 'impact', x: 185, y: -86, col: '#ffcf5a' }, { f: 6, k: 'shake', a: 4 }] },
+      atk4: { dur: 38, reach: 190, big: true, double: true, fistSize: 30, hits: [{ f: [14, 18], box: [0, -152, 222, 142], dmg: 96, kb: 13, kby: -7, stun: 28, heavy: true, chip: 0.6 }],
+              fx: [{ f: 2, k: 'charge', col: '#fff1b8' }, { f: 14, k: 'fist', x: 200, y: -90, size: 96, col: '#ffffff' }, { f: 14, k: 'sun', x: 210, y: -90, r: 110 },
+                   { f: 14, k: 'impact', x: 210, y: -90, col: '#ffcf5a' }, { f: 14, k: 'shake', a: 11 }, { f: 14, k: 'flash' }] },
+      r: { dur: 999, ride: true, reticle: true, riseV: 22, riseInv: true, hoverMax: 70, rideCols: ['#7a3b14', '#fff1b8'],
+           land: { hit: { box: [-180, -140, 360, 140], dmg: 110, kb: 4, kby: -10, stun: 36, heavy: true, aoe: true, daze: true },
+                   proj: [{ kind: 'sunwave', dx: 60 }, { kind: 'sunwave', dx: -60, dir: -1 }],
+                   fx: [{ k: 'shake', a: 16 }, { k: 'flash' }, { k: 'dome', col: '#fff1b8', col2: '#ff8a3d', r: 210 }, { k: 'sun', x: 0, y: -20, r: 140 },
+                        { k: 'crack', col: '#ffcf5a', len: 280 }, { k: 'gring', col: '#ffffff', r: 240 }, { k: 'gring', col: '#ffcf5a', r: 300 }, { k: 'rocks', x: 0, y: -20 }, { k: 'dust', x: 0 }] },
+           fx: [{ f: 0, k: 'gring', col: '#fff1b8', r: 70 }, { f: 0, k: 'dust', x: 0 }, { f: 4, k: 'gring', col: '#ffcf5a', r: 50 }, { f: 9, k: 'gring', col: '#fff1b8', r: 40 }] },
+      f: { dur: 64, costT: 150, reflect: [4, 32], rbox: [10, -176, 124, 176],
+           proj: [{ f: 36, kind: 'sunboulder', dx: 80 }],
+           fx: [{ f: 0, k: 'charge', col: '#fff1b8' }, { f: 4, k: 'barrier', x: 70, life: 30 }, { f: 34, k: 'rocks', x: 70, y: -10 }, { f: 34, k: 'dust', x: 70 },
+                { f: 36, k: 'crack', x: 60, col: '#ffcf5a', len: 120 }, { f: 36, k: 'shake', a: 10 }, { f: 36, k: 'flash' }] },
+      ult: { dur: 140, pose: 'raise', inv: [0, 84], endsForm: true, vel: [{ f: 6, vy: -17 }],
+             hits: [{ f: [30, 33], box: [-600, -560, 1200, 900], dmg: 30, kb: 0, kby: 0, stun: 90, aoe: true, gb: true },
+                    { f: [96, 100], box: [-600, -560, 1200, 900], dmg: 250, kb: 16, kby: -11, stun: 50, heavy: true, aoe: true, gb: true },
+                    { f: [104, 128], every: 8, box: [-600, -560, 1200, 900], dmg: 9, kb: 0, kby: 0, stun: 30, aoe: true, gb: true }],
+             fx: [{ f: 0, k: 'freeze', t: 36 }, { f: 0, k: 'cine', name: 'IMPACTO DEL SOL', sub: 'DEFINITIVA', col: '#ffcf5a', col2: '#7a3b14', dur: 134, banner: 54 },
+                  { f: 0, k: 'charge', col: '#fff1b8' }, { f: 6, k: 'pillar', col: '#ffcf5a', w: 70, life: 34 }, { f: 30, k: 'flash' }, { f: 30, k: 'shake', a: 8 },
+                  { f: 30, k: 'gring', col: '#fff1b8', r: 400 }, { f: 58, k: 'sunfist', life: 44 }, { f: 70, k: 'shake', a: 5 }, { f: 84, k: 'shake', a: 8 },
+                  { f: 96, k: 'flash' }, { f: 96, k: 'shake', a: 24 }, { f: 96, k: 'dome', col: '#fff1b8', col2: '#ff8a3d', r: 480 }, { f: 96, k: 'crack', col: '#ffcf5a', len: 480 },
+                  { f: 96, k: 'gring', col: '#ffffff', r: 460 }, { f: 98, k: 'gring', col: '#ffcf5a', r: 560 }, { f: 96, k: 'rocks', x: 0, y: -20 }, { f: 96, k: 'dust', x: 0 }] },
     },
   },
 
@@ -642,6 +660,8 @@ const PROJ = {
   meteor:    { w: 46, h: 46,  vx: 1.2, vy: 11, life: 100, dmg: 70, kb: 6, kby: -6, stun: 22, heavy: true, col: '#ffb35c' },
   galeball:  { w: 34, h: 34,  vx: 8.5, vy: 2.4, life: 90, dmg: 30, kb: 2, kby: -2, stun: 16, burst: 'vortex', col: '#9ff5d8' },          // al morir genera un vórtice
   vortex:    { w: 96, h: 150, vx: 0,   life: 80,  dmg: 13, kb: 1.8, kby: -1, stun: 14, every: 10, ground: true, pull: true, col: '#9ff5d8' }, // atrae hacia su centro
+  sunwave:   { w: 80, h: 44,  vx: 9,   life: 60,  dmg: 50, kb: 3, kby: -10, stun: 26, ground: true, col: '#ffcf5a' },                         // onda sísmica: se salta
+  sunboulder: { w: 130, h: 150, vx: 13, life: 90, dmg: 140, kb: 14, kby: -8, stun: 36, heavy: true, cancels: true, pierce: true, ground: true, absorbBonus: true, col: '#ffcf5a' }, // +25 % por proyectil absorbido
   aircleave: { w: 50, h: 96,  vx: 12,  life: 42,  dmg: 44, kb: 6, kby: -3, stun: 18, breaksMinor: true, col: '#9ff5d8' },                 // rompe proyectiles menores
 };
 
@@ -835,6 +855,28 @@ const FX = {
           for (let i = 0; i < 6; i++) { const an = i / 6 * 6.283 - rot * 1.5; c.beginPath(); c.moveTo(p.x + Math.cos(an) * rx * 0.78, gy + Math.sin(an) * ry * 0.78); c.lineTo(p.x + Math.cos(an + 2.094) * rx * 0.78, gy + Math.sin(an + 2.094) * ry * 0.78); c.stroke(); }
           break;
         }
+        case 'barrier': {
+          const w = Math.sin(p.t * 0.6) * 10, bx = p.x + p.dir * w * 0.3;
+          c.globalAlpha = Math.max(0, Math.min(1, p.t / 3, (p.life - p.t) / 6));
+          c.fillStyle = 'rgba(255,241,184,0.28)'; c.beginPath(); c.moveTo(bx, p.y); c.quadraticCurveTo(bx + p.dir * (46 + w), p.y - 88, bx, p.y - 176); c.quadraticCurveTo(bx + p.dir * 12, p.y - 88, bx, p.y); c.fill();
+          c.strokeStyle = '#ffcf5a'; c.lineWidth = 5; c.beginPath(); c.moveTo(bx, p.y); c.quadraticCurveTo(bx + p.dir * (46 + w), p.y - 88, bx, p.y - 176); c.stroke();
+          c.strokeStyle = '#ffffff'; c.lineWidth = 2; c.stroke();
+          c.fillStyle = '#ffcf5a'; c.fillRect(Math.round(bx) - 4, p.y - 180, 8, 8); c.fillRect(Math.round(bx) - 4, p.y - 6, 8, 8);
+          break;
+        }
+        case 'sunfist': {
+          const k = Math.min(1, p.t / 38), e = k * k, S = 200, cx = p.x, cy = -240 + (GROUND - 104 + 240) * e;
+          c.globalAlpha = Math.max(0, Math.min(1, (p.life - p.t) / 6));
+          c.fillStyle = '#ffcf5a33'; c.beginPath(); c.arc(cx, cy, S * 0.95, 0, 6.283); c.fill();
+          for (let i = 0; i < 12; i++) { const fh = 30 + ((i * 13 + p.t * 7) % 50); c.fillStyle = i % 3 ? '#ff8a3d' : '#ffcf5a'; c.fillRect(Math.round(cx - S / 2 + i * S / 12), Math.round(cy - S / 2 - fh - ((i * 37 + p.t * 9) % 40)), Math.ceil(S / 12) - 2, fh); }
+          c.fillStyle = '#ff8a3d'; c.fillRect(cx - S * 0.42, cy - S * 0.62, S * 0.84, S * 0.16);
+          c.fillStyle = '#fff1b8'; c.fillRect(cx - S / 2, cy - S * 0.46, S, S * 0.82);
+          c.fillStyle = '#ffffff'; c.fillRect(cx - S / 2, cy - S * 0.46, S, S * 0.08);
+          c.fillStyle = '#ffcf5a'; for (let i = 0; i < 4; i++) c.fillRect(cx - S / 2 + i * S / 4 + 5, cy + S * 0.22, S / 4 - 10, S * 0.14);
+          c.fillStyle = '#d18a4e'; for (let i = 1; i < 4; i++) c.fillRect(cx - S / 2 + i * S / 4 - 2, cy - S * 0.1, 4, S * 0.46);
+          c.fillStyle = '#ffe7b0'; c.fillRect(cx + S * 0.38, cy - S * 0.3, S * 0.2, S * 0.36);
+          break;
+        }
         case 'skysigil': {
           const e = Math.min(1, p.t / 20), rx = p.r * e, ry = rx * 0.22, cy = 96, rot = p.t * 0.04;
           c.globalAlpha = Math.max(0, Math.min(1, (p.life - p.t) / 14));
@@ -972,6 +1014,10 @@ class Proj {
     this.x = spec.x ?? owner.x + owner.face * (spec.dx || 0);
     this.cy = d.ground ? GROUND - d.h / 2 : owner.y + (spec.dy || -50);
     this.t = 0; this.dead = false; this.hitDone = false; this.mul = owner.dmgMul(); this.lastHit = -99; this.vy = d.vy || 0;
+    if (d.absorbBonus && owner.absorbed) { // la roca solar devuelve la energía de lo absorbido
+      this.mul *= 1 + 0.25 * Math.min(4, owner.absorbed);
+      FX.text(owner.x, owner.y - owner.box.h - 30, 'POTENCIA ×' + (1 + 0.25 * Math.min(4, owner.absorbed)).toFixed(2), '#ffd27a', 16); owner.absorbed = 0;
+    }
   }
   box() { return { x: this.x - this.d.w / 2, y: this.cy - this.d.h / 2, w: this.d.w, h: this.d.h }; }
   kill() { // muerte con efecto secundario (p. ej. el Vendaval se convierte en vórtice)
@@ -986,8 +1032,16 @@ class Proj {
       if (this.cy >= GROUND - d.h / 2) { this.dead = true; FX.dust(this.x, GROUND, 14); FX.burst(this.x, GROUND - 20, '#ffb35c', 18, 5, 22, 5, 0.12); FX.add({ k: 'gring', x: this.x, r: 60, col: '#ffb35c', life: 18 }); Game.shake = Math.max(Game.shake, 6); SFX.play('heavy'); }
     }
     if (d.burst && this.cy >= GROUND - d.h / 2) { this.kill(); return; }
+    const rt = Game.other(this.owner), rm = rt && rt.move; // barrera que absorbe proyectiles (también en la copia fantasma)
+    if (!d.unavoidable && rm && rm.reflect && rt.st >= rm.reflect[0] && rt.st <= rm.reflect[1] && overlap(this.box(), rt.worldBox(rm.rbox))) {
+      this.dead = true; rt.absorbed = (rt.absorbed || 0) + 1;
+      FX.ring(this.x, this.cy, '#fff1b8', 50, 16, 5); FX.burst(this.x, this.cy, '#ffcf5a', 14, 4, 18, 4, 0);
+      FX.text(rt.x, rt.y - rt.box.h - 20, 'ABSORBIDO', '#ffd27a', 14); SFX.play('block'); return;
+    }
     if (T % 2 === 0) {
-      if (this.kind === 'galeball') FX.add({ k: 'p', x: this.x - this.dir * 12, y: this.cy + rnd(-8, 8), vx: -this.dir * 1.5, vy: rnd(-0.5, 0.5), col: rnd() < 0.5 ? '#ffffff' : d.col, life: 14, size: 4, g: 0 });
+      if (this.kind === 'sunboulder') { for (let i = 0; i < 3; i++) FX.add({ k: 'p', x: this.x - this.dir * rnd(40, 80), y: this.cy + rnd(-d.h / 2, d.h / 2), vx: -this.dir * rnd(1, 3), vy: rnd(-1.5, 0.5), col: rnd() < 0.5 ? '#ff8a3d' : '#ffcf5a', life: 20, size: 6, g: 0 }); Game.shake = Math.max(Game.shake, 2); }
+      else if (this.kind === 'sunwave') { FX.dust(this.x, GROUND, 1); FX.add({ k: 'p', x: this.x + rnd(-d.w / 2, d.w / 2), y: GROUND - rnd(2, d.h), vx: rnd(-1, 1), vy: rnd(-3, -1), col: rnd() < 0.5 ? '#ff8a3d' : '#fff1b8', life: 16, size: 4, g: 0.05 }); }
+      else if (this.kind === 'galeball') FX.add({ k: 'p', x: this.x - this.dir * 12, y: this.cy + rnd(-8, 8), vx: -this.dir * 1.5, vy: rnd(-0.5, 0.5), col: rnd() < 0.5 ? '#ffffff' : d.col, life: 14, size: 4, g: 0 });
       else if (this.kind === 'vortex') FX.add({ k: 'p', x: this.x + rnd(-50, 50), y: GROUND - rnd(4, 30), vx: rnd(-2, 2), vy: rnd(-4, -1.5), col: rnd() < 0.5 ? '#c8fff0' : '#8a7a6c', life: 22, size: 4, g: 0.04 });
       else if (this.kind === 'aircleave') FX.add({ k: 'p', x: this.x - this.dir * 20, y: this.cy + rnd(-40, 40), vx: -this.dir * 2, vy: 0, col: '#e8fff7', life: 12, size: 3, g: 0 });
       else if (this.kind.startsWith('null') || this.kind === 'eclipseblade') FX.add({ k: 'p', x: this.x - this.dir * 14 + rnd(-6, 6), y: this.cy + rnd(-d.h / 2, d.h / 2), vx: -this.dir * rnd(0.5, 2), vy: rnd(-0.5, 0.5), col: rnd() < 0.5 ? '#1a1326' : d.col, life: 20, size: 5, g: 0 });
@@ -1095,6 +1149,30 @@ class Proj {
         c.fillStyle = '#ffb35c'; c.fillRect(-6, -10, 4, 14); c.fillRect(-6, 0, 14, 4); c.fillRect(8, -16, 4, 8);
         break;
       }
+      case 'sunwave': {
+        const hh = d.h, grow = Math.min(1, this.t / 5), n = 6;
+        c.fillStyle = '#ffcf5a55'; c.fillRect(-d.w / 2 - 10, hh / 2 - 6, d.w + 20, 6);
+        for (let i = 0; i < n; i++) {
+          const xx = -d.w / 2 + (i + 0.5) * d.w / n, h2 = hh * grow * (0.45 + ((i * 5 + (this.t >> 1)) % 4) * 0.18), ww = d.w / n / 2 + 3;
+          c.fillStyle = i % 3 === 0 ? '#ff8a3d' : i % 3 === 1 ? '#ffcf5a' : '#fff1b8'; c.beginPath(); c.moveTo(xx - ww, hh / 2); c.lineTo(xx, hh / 2 - h2); c.lineTo(xx + ww, hh / 2); c.fill();
+        }
+        c.strokeStyle = '#ffffff'; c.lineWidth = 3; c.beginPath(); c.arc(d.w / 2 - hh, hh / 2, hh, -1.45, 0); c.stroke();
+        break;
+      }
+      case 'sunboulder': {
+        const s2 = d.h / 2, fl = (this.t >> 1) % 2;
+        for (let i = 0; i < 5; i++) { c.fillStyle = i % 2 ? '#ff8a3d88' : '#ffcf5a88'; c.fillRect(-s2 * 1.1 - i * 22 - fl * 6, -s2 * 0.7 + i * s2 * 0.3, 40, 14); }
+        c.fillStyle = '#ffcf5a33'; c.beginPath(); c.arc(0, 0, s2 * 1.15, 0, 6.283); c.fill();
+        const poly = (pts, col) => { c.fillStyle = col; c.beginPath(); c.moveTo(pts[0][0] * s2, pts[0][1] * s2); for (const q of pts) c.lineTo(q[0] * s2, q[1] * s2); c.closePath(); c.fill(); };
+        poly([[-0.85, 1], [-1, 0.1], [-0.65, -0.85], [0, -1], [0.7, -0.8], [0.95, -0.1], [0.8, 1]], '#3e2414');
+        poly([[-0.7, 0.85], [-0.82, 0.05], [-0.5, -0.7], [0.05, -0.85], [0.6, -0.65], [0.78, 0], [0.62, 0.85]], '#6b4226');
+        poly([[-0.3, -0.6], [0.3, -0.7], [0.55, -0.3], [0.05, -0.2]], '#8a5a34');
+        c.strokeStyle = '#ffcf5a'; c.lineWidth = 5; c.beginPath();
+        c.moveTo(-0.6 * s2, -0.2 * s2); c.lineTo(-0.1 * s2, 0.1 * s2); c.lineTo(0.2 * s2, -0.4 * s2); c.moveTo(-0.1 * s2, 0.1 * s2); c.lineTo(0.1 * s2, 0.7 * s2); c.moveTo(0.2 * s2, -0.4 * s2); c.lineTo(0.6 * s2, -0.1 * s2);
+        c.stroke(); c.strokeStyle = '#ffffff'; c.lineWidth = 2; c.stroke();
+        c.fillStyle = '#7a5a3c'; c.fillRect(-0.9 * s2, 0.85 * s2, 1.75 * s2, 0.15 * s2);
+        break;
+      }
       case 'galeball': {
         const r = 15;
         c.fillStyle = '#14423d'; c.beginPath(); c.arc(0, 0, r + 3, 0, 6.283); c.fill();
@@ -1162,7 +1240,8 @@ class Fighter {
     this.move = m; this.moveName = name; this.moveSeq++;
     this.state = name.startsWith('atk') ? 'attack' : name === 'r' ? 'dash' : name === 'tf' ? 'transform' : 'special';
     this.st = -1; this.hitSet.clear(); this.holdT = 0; this.buf = 0; this.landed = false; this.diveDone = false; this.ride = m.ride ? 0 : null;
-    if (m.endsForm) { this.formT = m.dur + 2; this.pendingExhaust = true; } // la definitiva consume la forma al terminar
+    if (m.endsForm) { this.formT = m.dur + 2; this.pendingExhaust = true; }
+    if (m.reflect) this.absorbed = 0; // la definitiva consume la forma al terminar
     SFX.play(name === 'f' || name === 'ult' ? 'charge' : name === 'tf' ? 'transform' : 'whoosh');
   }
 
@@ -1205,7 +1284,7 @@ class Fighter {
     else {
       this.vx = mv * sp;
       if (inp.jump && this.jumpsLeft > 0) {
-        const jv = this.big ? d.formJump || d.jumpV : d.jumpV;
+        const jv = this.form && d.formJump ? d.formJump : d.jumpV;
         if (!this.onGround) FX.burst(this.x, this.y, d.spark, 10, 2.5, 18, 4, 0);
         else FX.dust(this.x, GROUND, 6);
         this.vy = -jv; this.jumpsLeft--; this.onGround = false; SFX.play('jump');
@@ -1293,12 +1372,16 @@ class Fighter {
   }
 
   physics() {
-    if (!this.onGround || this.vy < 0) this.vy += GRAV * (this.big ? 1.1 : 1);
+    if (!this.onGround || this.vy < 0) this.vy += GRAV * (this.big ? 1.1 : 1) * (this.form && this.def.formGrav || 1);
     this.x += this.vx; this.y += this.vy;
     if (this.y >= GROUND) {
       if (!this.onGround && this.vy > 4) FX.dust(this.x, GROUND, this.big ? 16 : 6);
       this.y = GROUND; this.vy = 0;
-      if (!this.onGround) { this.onGround = true; this.jumpsLeft = this.def.jumps; if (this.state === 'jump') { this.state = 'idle'; this.st = 0; } }
+      if (!this.onGround) {
+        this.onGround = true; this.jumpsLeft = this.form && this.def.formJumps || this.def.jumps;
+        if (this.form && this.def.toon) this.squashT = 8; // aplastamiento al aterrizar
+        if (this.state === 'jump') { this.state = 'idle'; this.st = 0; }
+      }
     } else this.onGround = false;
     if ((this.state === 'hurt' || this.state === 'defeat') && this.onGround) this.vx *= 0.82;
     const hw = this.box.w / 2; this.x = clamp(this.x, 16 + hw, W - 16 - hw);
@@ -1331,7 +1414,8 @@ class Fighter {
     if (blocking && this.parryT > 0) { this.doParry(h); return; }
     if (blocking) {
       if (h.proj && this.def.absorb) { dmg = 0; FX.ring(cx, cy, '#8d5bff', 50, 16, 5); FX.text(this.x, this.y - this.box.h - 14, 'ANULADO', '#b48cff', 14); this.energy = Math.min(100, this.energy + 6); }
-      else dmg = Math.round(dmg * 0.2);
+      else dmg = Math.round(dmg * (h.chip || 0.2)); // chip: golpes que dañan parcialmente la guardia
+      if (h.chip && !h.proj) FX.text(this.x, this.y - this.box.h - 34, 'GUARDIA DAÑADA', '#ffd27a', 12);
       this.hp = Math.max(0, this.hp - dmg); this.vx = h.dir * 3; this.flash = 3;
       FX.burst(cx, cy, '#ffffff', 8, 3, 14, 3, 0); SFX.play('block');
       if (dmg > 0) FX.text(this.x, this.y - this.box.h - 14, String(dmg), '#a99ec4', 14);
@@ -1416,6 +1500,7 @@ class Fighter {
     if (this.ghostT > 0) { this.ghostT--; if (this.ghostT % 3 === 0) FX.add({ k: 'ghost', snap: this.snap(), life: 16, col: this.def.spark }); }
     if (this.cycT > 0) { this.cycT--; if (this.cycT % 3 === 0) FX.slash(this.x, this.y - 50, this.cycT % 6 ? 1 : -1, this.cycCol, rnd(44, 66), rnd() < 0.5, 4); }
     if (this.auraT > 0) this.auraT--;
+    if (this.squashT > 0) this.squashT--;
     if (demonAura(this) && !this.form && T % 2 === 0) FX.rise(this.x + rnd(-16, 16), this.y - rnd(10, 80), rnd() < 0.5 ? '#e0233c' : '#140a0d', 5);
     if (demonAura(this) && T % (this.form ? 5 : 3) === 0) FX.zap(this.x + rnd(-14, 14), this.y - rnd(15, this.box.h), this.form ? 1 : 2, rnd(18, 36));
     if (this.dazeT > 0 && T % 3 === 0) { const a = T * 0.25; FX.add({ k: 'p', x: this.x + Math.cos(a) * 16, y: this.y - this.box.h - 8 + Math.sin(a) * 4, vx: 0, vy: 0, col: (T >> 2) % 2 ? '#ffd27a' : '#ffffff', life: 8, size: 4, g: 0 }); }
@@ -1467,6 +1552,8 @@ function doFx(f, e) {
     case 'beam': FX.add({ k: 'beam', x: f.x + dir * 34, y: f.y + (e.y ?? -70), h: e.h || 60, dir, col: e.col, col2: e.col2, life: e.life || 40 }); SFX.play('boom'); break;
     case 'tempest': FX.add({ k: 'tempest', x: f.x, col: e.col, life: e.life || 60, back: true }); SFX.play('boom'); break;
     case 'freeze': Game.freeze = e.t || 30; Game.freezeBy = f; break;
+    case 'barrier': FX.add({ k: 'barrier', x: f.x + dir * (e.x || 60), y: f.y, dir, life: e.life || 30 }); SFX.play('charge'); break;
+    case 'sunfist': { const tg = Game.other(f); FX.add({ k: 'sunfist', x: clamp(tg ? tg.x : f.x, 140, W - 140), life: e.life || 44 }); SFX.play('cine'); break; }
     case 'chains': { const tg = Game.other(f); if (tg) FX.add({ k: 'chains', tgt: tg, col: e.col, life: 64 }); SFX.play('heavy'); break; }
     case 'demon': FX.add({ k: 'demon', x: f.x - dir * 30, dir, col: e.col, life: 72, back: true }); SFX.play('boom'); break;
     case 'pillar': FX.add({ k: 'pillar', x: f.x + (e.x || 0) * dir, w: e.w || 60, col: e.col, life: e.life || 30, back: true }); SFX.play('charge'); break;
@@ -1510,7 +1597,7 @@ function applyHit(att, tgt, h, dir, isProj) {
   if (h.zap) { FX.zap(cx, cy, 6, h.heavy ? 90 : 55); SFX.play('zap'); }
   att.energy = Math.min(100, att.energy + dmg * 0.15);
   countCombo(att);
-  const msg = { dmg, kb: h.kb, kby: h.kby || 0, stun: h.stun, dir, heavy: !!h.heavy, proj: isProj, zap: !!h.zap, gb: !!h.gb, daze: !!h.daze };
+  const msg = { dmg, kb: h.kb, kby: h.kby || 0, stun: h.stun, dir, heavy: !!h.heavy, proj: isProj, zap: !!h.zap, gb: !!h.gb, daze: !!h.daze, chip: h.chip || 0 };
   if (tgt.ctl === 'remote') {
     Net.send({ t: 'hit', r: Game.round, ...msg }); tgt.flash = 6;
     FX.text(tgt.x + rnd(-10, 10), tgt.y - tgt.box.h - 14, String(dmg), h.heavy ? '#ffd27a' : '#ffffff', h.heavy ? 24 : 18);
@@ -1804,7 +1891,7 @@ function drawFrontArm(c, f, p, P, sx, sy) {
     default: box(c, sx, sy, 4, 14, armC); Px(c, sx, sy + 11, 4, 2, sh(armC, -0.28)); hX = sx; hY = sy + 14; mode = 'down';
   }
   if (fist) {
-    const big = f.form ? (mode === 'fwd' && f.move && f.move.big ? 18 : 8) : (mode === 'fwd' ? 7 : 6);
+    const fsz = f.move && f.move.fistSize, big = f.form ? (mode === 'fwd' && f.move && f.move.big ? fsz || 18 : 8) : (mode === 'fwd' ? fsz || 7 : 6);
     const fy = hY + 2 - Math.floor(big / 2);
     box(c, hX - 1, fy, big, big, P.wrap);
     for (let i = 1; i < 4; i++) Px(c, hX - 1 + Math.floor(big * 0.68), fy + Math.floor(i * big / 4), Math.ceil(big * 0.32), 1, sh(P.wrap, -0.3));
@@ -1820,7 +1907,10 @@ function drawHuman(c, f, p, P) {
   const armC = d.weapon === 'fist' ? P.skin : (P.arm || P.top);
   drawBack(c, f, P, lx, b);
   const bax = -11 + lx, bay = -43 + b;
-  box(c, bax, bay, 4, 13, sh(armC, -0.2)); box(c, bax, bay + 13, 4, 4, sh(P.skin, -0.16));
+  if (p.arm === 'ext' && f.move && f.move.double) { // golpe doble: el brazo trasero también se estira
+    const len = 8 + Math.round(p.reach / U) + 15, fs = f.move.fistSize || 8;
+    box(c, bax, bay + 4, len, 4, sh(armC, -0.2)); box(c, bax + len - 1, bay + 6 - Math.floor(fs / 2), fs, fs, sh(P.wrap || P.skin, -0.12));
+  } else { box(c, bax, bay, 4, 13, sh(armC, -0.2)); box(c, bax, bay + 13, 4, 4, sh(P.skin, -0.16)); }
   if (d.weapon === 'dagger2' || d.weapon === 'katana') drawWeapon(c, f, P, 'down', bax, bay + 13);
   drawLeg(c, f, P, -7 + p.lb, tk, true);
   drawLeg(c, f, P, 1 + p.lf, tk, false);
@@ -1877,6 +1967,10 @@ function drawFighter(c, f, tint) {
   c.save();
   c.translate(Math.round(f.x), Math.round(f.y));
   if (f.state === 'defeat') { c.translate(0, -4); c.rotate(-f.face * Math.PI / 2 * Math.min(1, f.st / 12)); }
+  if (f.form && f.def.toon && f.state !== 'defeat') { // físicas de dibujo animado: se estira al saltar y se aplasta al caer
+    const sy = f.squashT > 0 ? 1 - 0.2 * f.squashT / 8 : f.onGround === false ? 1 + clamp(-(f.vy || 0) * 0.014, -0.1, 0.18) : 1;
+    c.scale(1 / sy, sy);
+  }
   const p = getPose(f);
   let face = f.face; if (p.spin && Math.floor(f.st / 4) % 2) face = -face;
   if (f.inv > 0 && !tint && f.state !== 'transform' && (T >> 1) % 2) c.globalAlpha *= 0.55;
@@ -2104,7 +2198,7 @@ function onMsg(m) {
     case 's': if (Game.running && Game.opp && sameRound(m)) { Game.opp.applyState(m); if (Net.role === 'guest' && typeof m.tm === 'number') Game.timer = m.tm; } break;
     case 'hit':
       if (Game.running && Game.me && Game.phase === 'fight' && sameRound(m)) {
-        Game.me.takeHit({ dmg: +m.dmg || 0, kb: +m.kb || 0, kby: +m.kby || 0, stun: +m.stun || 0, dir: m.dir === -1 ? -1 : 1, heavy: !!m.heavy, proj: !!m.proj, gb: !!m.gb, daze: !!m.daze });
+        Game.me.takeHit({ dmg: +m.dmg || 0, kb: +m.kb || 0, kby: +m.kby || 0, stun: +m.stun || 0, dir: m.dir === -1 ? -1 : 1, heavy: !!m.heavy, proj: !!m.proj, gb: !!m.gb, daze: !!m.daze, chip: +m.chip || 0 });
         Game.hitstop = Math.max(Game.hitstop, m.heavy ? 7 : 4); Game.shake = Math.max(Game.shake, m.heavy ? 8 : 3);
         FX.burst(Game.me.x, Game.me.y - Game.me.box.h * 0.6, Game.opp.def.spark, m.heavy ? 22 : 12, m.heavy ? 6 : 4, 22, 5, 0.1);
         if (m.zap) FX.zap(Game.me.x, Game.me.y - Game.me.box.h * 0.6, 6, m.heavy ? 90 : 55);
