@@ -370,6 +370,8 @@ const SPRITES = {
                  vel:[{f, vx, vy, hold}], proj:[{f, kind, dx, dy, dir}], fx:[{f, k, ...}], inv:[a,b], tp:{f} }
    box: x hacia delante desde el centro, y negativa hacia arriba desde los pies. */
 const sl = (f, col, r, y, extra) => Object.assign({ f, k: 'slash', col, r, y }, extra || {});
+const FULLBOX = [-600, -560, 1200, 900]; // golpes de pantalla completa (definitivas), válidos aunque el atacante esté en el aire
+const DOM_COLS = ['#0b0612', '#e0233c']; // rayos negros de la Presión Dominante
 
 const ROSTER = {
   f1: {
@@ -492,153 +494,215 @@ const ROSTER = {
     },
   },
 
-  /* BRAM — Púgil Elástico
-     Forma base: extremidades elásticas a media-larga distancia, resorte con placaje y ametralladora de puños.
-     Dios del Sol (G): físicas de dibujo animado (más salto, menos gravedad, doble salto), puños colosales que
-     dañan la guardia, rebote aéreo dirigido con onda sísmica, barrera que absorbe proyectiles y los devuelve
-     como una roca solar, y la definitiva Impacto del Sol, que consume la forma y deja la barra agotada. */
+  /* BRAM — Púgil Elástico (goma, libertad e imaginación)
+     Base: golpes elásticos con rebote, tirachinas rasante con retroceso seguro y ametralladora.
+     Dios Blanco (G): física de dibujo animado, puños inflados que deforman al rival, cuerda de saltar
+     (rebotes contra el suelo), lona de goma que absorbe y catapulta, y el Puño Titánico Estelar.
+     Parry: Presión Dominante — ralentiza al atacante un 75 % durante la ventana de castigo. */
   f3: {
-    key: 'f3', parry: 'counter', name: 'BRAM', title: 'Púgil Elástico', hp: 1000, speed: 3.9, jumpV: 12, jumps: 1, cdR: 50,
-    box: { w: 36, h: 84 }, canTransform: true, formSpeed: 5.4, formJump: 15, formJumps: 2, formGrav: 0.8, toon: true, formName: 'DIOS DEL SOL',
-    hair: 'topknot', weapon: 'fist', spark: '#ffd27a', aura: 'solar',
+    key: 'f3', parry: 'dominion', name: 'BRAM', title: 'Púgil Elástico', hp: 1000, speed: 3.9, jumpV: 12, jumps: 1, cdR: 55,
+    box: { w: 36, h: 84 }, canTransform: true, formSpeed: 5.4, formJump: 15, formJumps: 2, formGrav: 0.8, toon: true, formName: 'DIOS BLANCO',
+    hair: 'topknot', weapon: 'fist', spark: '#ffd27a', aura: 'liberty', zapCol: ['#0b0612', '#e9dcff'], formBurst: '#ffffff',
     pal: { skin: '#c98b5e', hair: '#1c1a22', top: '#6b2f6e', arm: '#c98b5e', belt: '#e6c25a', pants: '#d8c39a', boots: '#2d2018', eye: '#1c1a22', wrap: '#f4efe4', band: '#a8714a' },
-    formPal: { skin: '#e8b07a', hair: '#ffcf5a', flame: '#fff1b8', glowEye: '#fff7d6', top: '#ff8a3d', arm: '#e8b07a', belt: '#fff1b8', pants: '#ffe7b0', boots: '#7a3b14', eye: '#fff7d6', wrap: '#fff7d6', band: '#d18a4e' },
+    formPal: { skin: '#d9a07a', hair: '#ffffff', flame: '#eef0ff', glowEye: '#ffffff', top: '#f4efe4', arm: '#d9a07a', belt: '#ffffff', pants: '#ffffff', boots: '#e8e0f0', eye: '#ffffff', wrap: '#ffffff', band: '#c9b8d8' },
     stats: { vida: 0.8, vel: 0.68, alc: 0.9 },
-    desc: { m2: 'Contra elástica: devuelve el golpe con un puñetazo', e: 'Puños elásticos en 4 golpes a media-larga distancia; el último es un doble puñetazo', r: 'Resorte: se impulsa estirando los brazos y placa con los dos pies', f: 'Ametralladora elástica: ráfaga continua de puñetazos que atrapa al rival', g: 'Dios del Sol: detonación que repele, más velocidad, salto y doble salto. E: puños colosales que dañan la guardia · R: rebote aéreo con onda sísmica · F: barrera que absorbe proyectiles y lanza una roca solar · G otra vez: Impacto del Sol (consume la forma)' },
+    desc: { m2: 'Presión Dominante: el parry exacto ralentiza al atacante un 75 % para castigarlo', e: 'Puños elásticos con rebote en 4 golpes; el último, a dos manos, empuja contra la pared', r: 'Tirachinas: se tensa anclado al suelo, sale rasante, placa con los pies y rebota hacia atrás', f: 'Ametralladora elástica: ráfaga continua que inmoviliza en guardia', g: 'Dios Blanco: puños inflados que deforman · R: cuerda de saltar (3 rebotes) · F: lona de goma que absorbe y catapulta · G otra vez: Puño Titánico Estelar' },
     moves: {
-      ctr: { dur: 30, reach: 110, hits: [{ f: [5, 10], box: [0, -96, 132, 70], dmg: 90, kb: 12, kby: -7, stun: 30, heavy: true }], fx: [{ f: 0, k: 'gring', col: '#ffd27a', r: 50 }, { f: 5, k: 'impact', x: 120, y: -66, col: '#ffd27a' }, { f: 5, k: 'shake', a: 7 }] },
-      atk1: { dur: 15, cancel: 8, reach: 120, hits: [{ f: [5, 7], box: [0, -76, 134, 26], dmg: 26, kb: 1.5, kby: -1, stun: 12 }] },
-      atk2: { dur: 15, cancel: 8, reach: 130, hits: [{ f: [5, 7], box: [0, -68, 144, 26], dmg: 28, kb: 1.5, kby: -1, stun: 12 }] },
-      atk3: { dur: 17, cancel: 9, reach: 140, hits: [{ f: [6, 8], box: [0, -80, 154, 30], dmg: 30, kb: 2, kby: -1, stun: 13 }] },
-      atk4: { dur: 34, reach: 150, double: true, fistSize: 9, hits: [{ f: [12, 15], box: [0, -92, 166, 52], dmg: 64, kb: 9, kby: -3, stun: 22 }],
-              fx: [{ f: 12, k: 'impact', x: 160, y: -66, col: '#ffd27a' }, { f: 12, k: 'shake', a: 4 }] },
-      r: { dur: 30, pose: 'dash', vel: [{ f: 4, vx: 18, vy: -2, hold: 12 }], hits: [{ f: [5, 16], box: [0, -64, 66, 62], dmg: 58, kb: 11, kby: -3, stun: 22 }],
-           fx: [{ f: 2, k: 'gring', col: '#ffd27a', r: 50 }, { f: 2, k: 'dust', x: -10 }, { f: 4, k: 'trail', col: '#f2d36b' }] },
+      atk1: { dur: 15, cancel: 8, reach: 120, hits: [{ f: [5, 7], box: [0, -76, 134, 26], dmg: 26, kb: 1.5, kby: -1, stun: 12 }], fx: [{ f: 8, k: 'puff', col: '#f4efe4', x: 112, y: -64 }] },
+      atk2: { dur: 15, cancel: 8, reach: 130, hits: [{ f: [5, 7], box: [0, -68, 144, 26], dmg: 28, kb: 1.5, kby: -1, stun: 12 }], fx: [{ f: 8, k: 'puff', col: '#f4efe4', x: 120, y: -56 }] },
+      atk3: { dur: 17, cancel: 9, reach: 140, hits: [{ f: [6, 8], box: [0, -80, 154, 30], dmg: 30, kb: 2, kby: -1, stun: 13 }], fx: [{ f: 9, k: 'puff', col: '#f4efe4', x: 130, y: -66 }] },
+      atk4: { dur: 36, reach: 150, double: true, fistSize: 10, hits: [{ f: [12, 15], box: [0, -94, 166, 58], dmg: 64, kb: 15, kby: -2, stun: 26 }],
+              fx: [{ f: 2, k: 'charge', col: '#f4efe4' }, { f: 12, k: 'impact', x: 160, y: -66, col: '#ffd27a' }, { f: 12, k: 'shake', a: 5 }] },
+      r: { dur: 42, pose: 'sling', vel: [{ f: 13, vx: 20, vy: -1, hold: 14 }], recoil: { vx: 6, vy: -7 },
+           hits: [{ f: [13, 27], box: [0, -54, 74, 52], dmg: 62, kb: 12, kby: -3, stun: 24 }],
+           fx: [{ f: 0, k: 'dust', x: -30 }, { f: 13, k: 'gring', col: '#ffd27a', r: 60 }, { f: 13, k: 'trail', col: '#f2d36b', t: 14 }, { f: 13, k: 'dust', x: -20 }] },
       f: { dur: 64, pose: 'barrage', reach: 140,
            hits: [{ f: [14, 50], every: 3, box: [0, -112, 172, 84], dmg: 7, kb: 0.5, kby: 0, stun: 9, chip: 0.35 }, { f: [52, 55], box: [0, -112, 180, 84], dmg: 40, kb: 8, kby: -3, stun: 20 }],
            fx: [{ f: 0, k: 'charge', col: '#ffb347' }, { f: 14, k: 'barrage', dur: 36, col: '#f4efe4' }, { f: 52, k: 'impact', x: 170, y: -70, col: '#ffd27a' }, { f: 52, k: 'shake', a: 5 }] },
-      tf: { dur: 76, pose: 'raise', inv: [0, 54], becomeAt: 32,
-            hits: [{ f: [32, 38], box: [-210, -200, 420, 200], dmg: 40, kb: 15, kby: -6, stun: 24, aoe: true }],
-            fx: [{ f: 0, k: 'cine', mode: 'focus', name: 'DIOS DEL SOL', sub: 'DETONACIÓN SOLAR', col: '#ffcf5a', col2: '#7a3b14', dur: 72, zoom: 1.8 },
-                 { f: 2, k: 'charge', col: '#fff1b8' }, { f: 14, k: 'charge', col: '#ffffff' }, { f: 16, k: 'pillar', col: '#ffcf5a', w: 80, life: 40 },
-                 { f: 32, k: 'sun', x: 0, y: -60, r: 180 }, { f: 32, k: 'dome', col: '#ffffff', col2: '#ffcf5a', r: 230 },
-                 { f: 32, k: 'shake', a: 13 }, { f: 32, k: 'flash' }, { f: 34, k: 'gring', col: '#fff1b8', r: 260 }] },
+      tf: { dur: 80, pose: 'raise', inv: [0, 58], becomeAt: 34,
+            hits: [{ f: [34, 40], box: [-210, -200, 420, 200], dmg: 40, kb: 15, kby: -6, stun: 24, aoe: true }],
+            fx: [{ f: 0, k: 'cine', mode: 'focus', name: 'DESPERTAR DE LA LIBERTAD', sub: 'RESUENAN LOS TAMBORES', col: '#ffffff', col2: '#6b2f6e', dur: 76, zoom: 1.8 },
+                 { f: 4, k: 'drums' }, { f: 12, k: 'drums' }, { f: 20, k: 'drums' }, { f: 28, k: 'drums' }, { f: 30, k: 'laugh' },
+                 { f: 34, k: 'clouds', n: 16, r: 190 }, { f: 34, k: 'dome', col: '#ffffff', col2: '#c9b8d8', r: 230 }, { f: 34, k: 'shake', a: 12 }, { f: 34, k: 'flash' }, { f: 36, k: 'gring', col: '#ffffff', r: 260 }] },
     },
     formMoves: {
-      atk1: { dur: 16, cancel: 8, reach: 150, big: true, fistSize: 24, hits: [{ f: [5, 8], box: [0, -122, 178, 82], dmg: 46, kb: 3, kby: -1, stun: 14, chip: 0.5 }],
-              fx: [{ f: 5, k: 'fist', x: 165, y: -84, size: 44, col: '#fff1b8' }, { f: 5, k: 'gring', x: 165, col: '#fff1b8', r: 60 }, { f: 5, k: 'shake', a: 3 }] },
-      atk2: { dur: 16, cancel: 8, reach: 160, big: true, fistSize: 24, hits: [{ f: [5, 8], box: [0, -116, 188, 82], dmg: 48, kb: 3, kby: -1, stun: 14, chip: 0.5 }],
-              fx: [{ f: 5, k: 'fist', x: 175, y: -78, size: 46, col: '#fff1b8' }, { f: 5, k: 'gring', x: 175, col: '#fff1b8', r: 62 }, { f: 5, k: 'shake', a: 3 }] },
-      atk3: { dur: 18, cancel: 9, reach: 170, big: true, fistSize: 26, hits: [{ f: [6, 9], box: [0, -132, 198, 102], dmg: 52, kb: 3.5, kby: -1, stun: 15, chip: 0.5 }],
-              fx: [{ f: 6, k: 'fist', x: 185, y: -86, size: 54, col: '#ffffff' }, { f: 6, k: 'impact', x: 185, y: -86, col: '#ffcf5a' }, { f: 6, k: 'shake', a: 4 }] },
-      atk4: { dur: 38, reach: 190, big: true, double: true, fistSize: 30, hits: [{ f: [14, 18], box: [0, -152, 222, 142], dmg: 96, kb: 13, kby: -7, stun: 28, heavy: true, chip: 0.6 }],
-              fx: [{ f: 2, k: 'charge', col: '#fff1b8' }, { f: 14, k: 'fist', x: 200, y: -90, size: 96, col: '#ffffff' }, { f: 14, k: 'sun', x: 210, y: -90, r: 110 },
-                   { f: 14, k: 'impact', x: 210, y: -90, col: '#ffcf5a' }, { f: 14, k: 'shake', a: 11 }, { f: 14, k: 'flash' }] },
-      r: { dur: 999, ride: true, reticle: true, riseV: 22, riseInv: true, hoverMax: 70, rideCols: ['#7a3b14', '#fff1b8'],
-           land: { hit: { box: [-180, -140, 360, 140], dmg: 110, kb: 4, kby: -10, stun: 36, heavy: true, aoe: true, daze: true },
-                   proj: [{ kind: 'sunwave', dx: 60 }, { kind: 'sunwave', dx: -60, dir: -1 }],
-                   fx: [{ k: 'shake', a: 16 }, { k: 'flash' }, { k: 'dome', col: '#fff1b8', col2: '#ff8a3d', r: 210 }, { k: 'sun', x: 0, y: -20, r: 140 },
-                        { k: 'crack', col: '#ffcf5a', len: 280 }, { k: 'gring', col: '#ffffff', r: 240 }, { k: 'gring', col: '#ffcf5a', r: 300 }, { k: 'rocks', x: 0, y: -20 }, { k: 'dust', x: 0 }] },
-           fx: [{ f: 0, k: 'gring', col: '#fff1b8', r: 70 }, { f: 0, k: 'dust', x: 0 }, { f: 4, k: 'gring', col: '#ffcf5a', r: 50 }, { f: 9, k: 'gring', col: '#fff1b8', r: 40 }] },
-      f: { dur: 64, costT: 150, reflect: [4, 32], rbox: [10, -176, 124, 176],
-           proj: [{ f: 36, kind: 'sunboulder', dx: 80 }],
-           fx: [{ f: 0, k: 'charge', col: '#fff1b8' }, { f: 4, k: 'barrier', x: 70, life: 30 }, { f: 34, k: 'rocks', x: 70, y: -10 }, { f: 34, k: 'dust', x: 70 },
-                { f: 36, k: 'crack', x: 60, col: '#ffcf5a', len: 120 }, { f: 36, k: 'shake', a: 10 }, { f: 36, k: 'flash' }] },
+      atk1: { dur: 16, cancel: 8, reach: 150, big: true, fistSize: 24, hits: [{ f: [5, 8], box: [0, -122, 178, 82], dmg: 46, kb: 3, kby: -1, stun: 14, chip: 0.5, squish: true }],
+              fx: [{ f: 5, k: 'fist', x: 165, y: -84, size: 44, col: '#ffffff' }, { f: 5, k: 'gring', x: 165, col: '#ffffff', r: 60 }, { f: 5, k: 'shake', a: 3 }] },
+      atk2: { dur: 16, cancel: 8, reach: 160, big: true, fistSize: 24, hits: [{ f: [5, 8], box: [0, -116, 188, 82], dmg: 48, kb: 3, kby: -1, stun: 14, chip: 0.5, squish: true }],
+              fx: [{ f: 5, k: 'fist', x: 175, y: -78, size: 46, col: '#ffffff' }, { f: 5, k: 'gring', x: 175, col: '#ffffff', r: 62 }, { f: 5, k: 'shake', a: 3 }] },
+      atk3: { dur: 18, cancel: 9, reach: 170, big: true, fistSize: 26, hits: [{ f: [6, 9], box: [0, -132, 198, 102], dmg: 52, kb: 3.5, kby: -1, stun: 15, chip: 0.5, squish: true }],
+              fx: [{ f: 6, k: 'fist', x: 185, y: -86, size: 54, col: '#ffffff' }, { f: 6, k: 'impact', x: 185, y: -86, col: '#e9dcff' }, { f: 6, k: 'shake', a: 4 }] },
+      atk4: { dur: 38, reach: 190, big: true, double: true, fistSize: 30, hits: [{ f: [14, 18], box: [0, -152, 222, 142], dmg: 96, kb: 13, kby: -7, stun: 28, heavy: true, chip: 0.6, squish: true }],
+              fx: [{ f: 2, k: 'charge', col: '#ffffff' }, { f: 14, k: 'fist', x: 200, y: -90, size: 96, col: '#ffffff' }, { f: 14, k: 'clouds', n: 6, x: 210, r: 70 },
+                   { f: 14, k: 'impact', x: 210, y: -90, col: '#e9dcff' }, { f: 14, k: 'shake', a: 11 }, { f: 14, k: 'flash' }] },
+      r: { dur: 54, reach: 210, big: true, fistSize: 20, hits: [{ f: [8, 12], box: [0, -140, 236, 140], dmg: 40, kb: 0.5, kby: 15, stun: 96, bounce: 3, bounceDmg: 25 }],
+           fx: [{ f: 8, k: 'dust', x: 200 }, { f: 9, k: 'gring', x: 200, col: '#ffffff', r: 50 }] },
+      f: { dur: 62, costT: 150, reflect: [4, 30], absorbAll: [4, 30], rbox: [10, -176, 124, 176],
+           hits: [{ f: [32, 36], box: [10, -70, 230, 70], dmg: 70, kb: 1, kby: -17, stun: 44, heavy: true }],
+           fx: [{ f: 0, k: 'charge', col: '#ffffff' }, { f: 4, k: 'trampoline', x: 120, life: 34 }, { f: 32, k: 'gring', x: 120, col: '#ffffff', r: 120 }, { f: 32, k: 'clouds', n: 6, x: 120, r: 60 }, { f: 32, k: 'shake', a: 9 }] },
       ult: { dur: 140, pose: 'raise', inv: [0, 84], endsForm: true, vel: [{ f: 6, vy: -17 }],
-             hits: [{ f: [30, 33], box: [-600, -560, 1200, 900], dmg: 30, kb: 0, kby: 0, stun: 90, aoe: true, gb: true },
-                    { f: [96, 100], box: [-600, -560, 1200, 900], dmg: 250, kb: 16, kby: -11, stun: 50, heavy: true, aoe: true, gb: true },
-                    { f: [104, 128], every: 8, box: [-600, -560, 1200, 900], dmg: 9, kb: 0, kby: 0, stun: 30, aoe: true, gb: true }],
-             fx: [{ f: 0, k: 'freeze', t: 36 }, { f: 0, k: 'cine', name: 'IMPACTO DEL SOL', sub: 'DEFINITIVA', col: '#ffcf5a', col2: '#7a3b14', dur: 134, banner: 54 },
-                  { f: 0, k: 'charge', col: '#fff1b8' }, { f: 6, k: 'pillar', col: '#ffcf5a', w: 70, life: 34 }, { f: 30, k: 'flash' }, { f: 30, k: 'shake', a: 8 },
-                  { f: 30, k: 'gring', col: '#fff1b8', r: 400 }, { f: 58, k: 'sunfist', life: 44 }, { f: 70, k: 'shake', a: 5 }, { f: 84, k: 'shake', a: 8 },
-                  { f: 96, k: 'flash' }, { f: 96, k: 'shake', a: 24 }, { f: 96, k: 'dome', col: '#fff1b8', col2: '#ff8a3d', r: 480 }, { f: 96, k: 'crack', col: '#ffcf5a', len: 480 },
-                  { f: 96, k: 'gring', col: '#ffffff', r: 460 }, { f: 98, k: 'gring', col: '#ffcf5a', r: 560 }, { f: 96, k: 'rocks', x: 0, y: -20 }, { f: 96, k: 'dust', x: 0 }] },
+             hits: [{ f: [30, 33], box: FULLBOX, dmg: 30, kb: 0, kby: 0, stun: 90, aoe: true, gb: true },
+                    { f: [96, 100], box: FULLBOX, dmg: 250, kb: 16, kby: -11, stun: 50, heavy: true, aoe: true, gb: true, zap: true },
+                    { f: [104, 128], every: 8, box: FULLBOX, dmg: 9, kb: 0, kby: 0, stun: 30, aoe: true, gb: true }],
+             fx: [{ f: 0, k: 'freeze', t: 36 }, { f: 0, k: 'cine', name: 'PUÑO TITÁNICO ESTELAR', sub: 'DEFINITIVA', col: '#ffffff', col2: '#1a1420', dur: 134, banner: 54 },
+                  { f: 2, k: 'laugh' }, { f: 6, k: 'clouds', n: 10, r: 120 }, { f: 30, k: 'flash' }, { f: 30, k: 'shake', a: 8 }, { f: 30, k: 'domring' },
+                  { f: 58, k: 'sunfist', life: 44, star: true }, { f: 70, k: 'shake', a: 5 }, { f: 84, k: 'shake', a: 8 },
+                  { f: 96, k: 'flash' }, { f: 96, k: 'shake', a: 26 }, { f: 96, k: 'dome', col: '#ffffff', col2: '#1a1420', r: 500 }, { f: 96, k: 'crack', col: '#e9dcff', len: 480 },
+                  { f: 96, k: 'shatter' }, { f: 96, k: 'zaps', n: 14, len: 160 }, { f: 98, k: 'gring', col: '#ffffff', r: 560 }, { f: 96, k: 'rocks', x: 0, y: -20 }] },
     },
   },
 
+  /* RHOAN — Espadachín de Tres Filos (dos en las manos, una en la boca)
+     Base: cadencia de tres hojas, estocada con corte retardado 0,4 s, corte volador en espiral.
+     Asura (G): silueta espectral de seis brazos, vendaval de nueve espadas, paso fantasmal a la espalda,
+     torbellino que succiona y ralentiza, y Juicio de los Mil Mundos.
+     Parry: Presión Dominante + contragolpe instantáneo que deja sangrando. */
   f4: {
-    key: 'f4', parry: 'counter', name: 'RHOAN', title: 'Espadachín de Tres Filos', hp: 950, speed: 4.2, jumpV: 11.5, jumps: 1, cdR: 50,
-    box: { w: 34, h: 86 }, hair: 'tail', weapon: 'katana', spark: '#dfe8ff',
+    key: 'f4', parry: 'dominion', domCounter: true, name: 'RHOAN', title: 'Espadachín de Tres Filos', hp: 950, speed: 4.2, jumpV: 11.5, jumps: 1, cdR: 50,
+    box: { w: 34, h: 86 }, canTransform: true, formSpeed: 4.8, formName: 'MANIFESTACIÓN ASURA', mouthBlade: true,
+    hair: 'tail', weapon: 'katana', spark: '#dfe8ff', aura: 'asura', zapCol: ['#0b0612', '#b48cff'], formBurst: '#b48cff',
     pal: { skin: '#e2b08a', hair: '#1f2a4f', top: '#6e1f2e', arm: '#6e1f2e', belt: '#d7a63c', pants: '#2b2433', boots: '#17121c', eye: '#141020', blade: '#cfd8e8', edge: '#ffffff', guard: '#d7a63c', scab: '#3b1820' },
+    formPal: { skin: '#d6a07e', hair: '#141a33', top: '#2a0f1c', arm: '#2a0f1c', belt: '#b48cff', pants: '#16121c', boots: '#0b0910', eye: '#141020', glowEye: '#d6b8ff', blade: '#3a3248', edge: '#d6b8ff', guard: '#b48cff', scab: '#1a0d14' },
     stats: { vida: 0.7, vel: 0.8, alc: 0.7 },
-    desc: { m2: 'Contra iai: corte instantáneo que atraviesa al rival', e: 'Tajos rápidos en cadena', r: 'Triple tajo en dash (3 golpes)', f: 'Ciclón de Acero: giro que avanza', g: null },
+    desc: { m2: 'Presión Dominante: el parry exacto ralentiza al rival un 75 % y responde con un corte que hace sangrar', e: 'Cadencia de tres hojas; el 4.º golpe es una tijera que derriba', r: 'Estocada Relámpago: cruza al rival y el corte llega 0,4 s después', f: 'Corte Volador: espiral cortante que arrastra proyectiles menores', g: 'Nueve Hojas: silueta asura de seis brazos. E: vendaval de cortes · R: paso fantasmal que rompe guardias · F: torbellino que succiona y ralentiza · G otra vez: Juicio de los Mil Mundos' },
     moves: {
-      ctr: { dur: 28, inv: [0, 10], vel: [{ f: 2, vx: 16, hold: 6 }], hits: [{ f: [3, 9], box: [-20, -100, 116, 100], dmg: 100, kb: 11, kby: -7, stun: 30, heavy: true }], fx: [{ f: 2, k: 'ghosts', n: 3 }, sl(4, '#ffffff', 80, -52, { w: 12, col2: '#6e1f2e' }), { f: 5, k: 'shake', a: 7 }] },
-      atk1: { dur: 17, cancel: 9, hits: [{ f: [5, 8], box: [0, -86, 74, 64], dmg: 40, kb: 2.5, kby: -1, stun: 13 }], fx: [sl(5, '#dfe8ff', 52, -48)] },
-      atk2: { dur: 18, cancel: 10, hits: [{ f: [5, 9], box: [0, -90, 76, 70], dmg: 44, kb: 3, kby: -1, stun: 14 }], fx: [sl(5, '#dfe8ff', 54, -50, { flip: true })] },
-      atk3: { dur: 30, hits: [{ f: [9, 13], box: [0, -100, 86, 96], dmg: 66, kb: 8, kby: -5, stun: 24, heavy: true }], fx: [sl(9, '#ffffff', 64, -52, { w: 8 }), sl(10, '#dfe8ff', 64, -52, { flip: true, w: 8 }), { f: 10, k: 'shake', a: 4 }] },
-      r: { dur: 34, vel: [{ f: 3, vx: 18, hold: 14 }],
-           hits: [{ f: [4, 7], box: [-10, -86, 70, 80], dmg: 34, kb: 2, kby: -1, stun: 16 }, { f: [9, 12], box: [-10, -86, 70, 80], dmg: 34, kb: 2, kby: -1, stun: 16 }, { f: [14, 18], box: [-10, -92, 76, 88], dmg: 44, kb: 7, kby: -4, stun: 22 }],
-           fx: [sl(4, '#dfe8ff', 48, -50), sl(9, '#dfe8ff', 48, -50, { flip: true }), sl(14, '#ffffff', 58, -52, { w: 9 }), { f: 3, k: 'trail', col: '#dfe8ff' }] },
-      f: { dur: 62, pose: 'spin', vel: [{ f: 6, vx: 4.5, hold: 48 }], hits: [{ f: [8, 54], every: 8, box: [-50, -104, 100, 104], dmg: 26, kb: 1.5, kby: -2.5, stun: 14 }],
-           fx: [{ f: 6, k: 'cyclone', col: '#dfe8ff', dur: 48 }] },
-    },
-  },
-
-  f5: {
-    key: 'f5', parry: 'parry', name: 'DORAN', title: 'Cambiaformas', hp: 1000, speed: 4.4, jumpV: 12, jumps: 1, cdR: 55,
-    box: { w: 34, h: 84 }, canTransform: true, formBig: true, formBox: { w: 84, h: 186 }, formSpeed: 2.7, formJump: 10, formArmor: 0.7,
-    formName: 'COLOSO DE PIEDRA', hair: 'short', weapon: 'dagger2', spark: '#d9e2ea', aura: 'colossus',
-    pal: { skin: '#e9be97', hair: '#d9b45a', top: '#33353f', arm: '#33353f', belt: '#e07a2e', pants: '#7c6d58', boots: '#2a2018', eye: '#1d2a20', blade: '#c9d2dc', edge: '#ffffff', guard: '#4a4f5a', metal: '#8e98a6' },
-    formPal: { stone: '#5f7a7c', stone2: '#465e61', glow: '#ffb35c', moss: '#7fa35a', eye: '#ffd27a' },
-    stats: { vida: 0.8, vel: 0.85, alc: 0.6 },
-    desc: { m2: 'Parry: anula el golpe y aturde al rival (también como Coloso)', e: 'Cuchillas duales rápidas', r: 'Gancho: se impulsa en arco cortando', f: 'Espiral aérea de 6 cortes', g: 'Coloso de Piedra con Erupción al transformarse. Transformado, G lanza la definitiva Cataclismo' },
-    moves: {
-      atk1: { dur: 16, cancel: 9, hits: [{ f: [5, 8], box: [0, -84, 62, 60], dmg: 30, kb: 2, kby: -1, stun: 12 }], fx: [sl(5, '#d9e2ea', 46, -48)] },
-      atk2: { dur: 17, cancel: 9, hits: [{ f: [5, 8], box: [0, -84, 64, 62], dmg: 32, kb: 2.5, kby: -1, stun: 13 }], fx: [sl(5, '#d9e2ea', 46, -48, { flip: true })] },
-      atk3: { dur: 28, hits: [{ f: [8, 12], box: [0, -96, 78, 90], dmg: 56, kb: 7, kby: -4, stun: 22 }], fx: [sl(8, '#ffffff', 56, -50, { w: 8 }), sl(9, '#d9e2ea', 56, -50, { flip: true, w: 8 })] },
-      r: { dur: 30, vel: [{ f: 5, vx: 14, vy: -7, hold: 12 }], hits: [{ f: [6, 18], box: [-10, -90, 70, 80], dmg: 52, kb: 6, kby: -4, stun: 20 }],
-           fx: [{ f: 2, k: 'wire', col: '#c8c8c8' }, { f: 5, k: 'trail', col: '#d9e2ea' }] },
-      f: { dur: 46, pose: 'spin', vel: [{ f: 4, vx: 8, vy: -9, hold: 30 }], hits: [{ f: [6, 40], every: 6, box: [-36, -100, 96, 100], dmg: 22, kb: 1.5, kby: -3, stun: 12 }],
-           fx: [{ f: 4, k: 'cyclone', col: '#d9e2ea', dur: 36 }] },
-      tf: { dur: 84, pose: 'raise', inv: [0, 64], becomeAt: 40,
-            hits: [{ f: [42, 50], box: [-180, -200, 360, 200], dmg: 120, kb: 12, kby: -10, stun: 40, heavy: true }],
-            proj: [{ f: 44, kind: 'spikes', dx: 70 }, { f: 44, kind: 'spikes', dx: -70, dir: -1 }],
-            fx: [{ f: 0, k: 'cine', name: 'COLOSO DE PIEDRA', sub: 'ERUPCIÓN', col: '#ffb35c', col2: '#2a3a3c', dur: 74 },
-                 { f: 2, k: 'charge', col: '#ffb35c' }, { f: 24, k: 'bolt', col: '#ffd27a', x: -30 }, { f: 30, k: 'bolt', col: '#ffffff', x: 25 }, { f: 36, k: 'bolt', col: '#ffd27a', x: 0 },
-                 { f: 40, k: 'dome', col: '#ffb35c', col2: '#3a2a1c', r: 200 }, { f: 40, k: 'crack', col: '#ffb35c', len: 300 }, { f: 40, k: 'dust', x: 0 },
-                 { f: 40, k: 'shake', a: 16 }, { f: 40, k: 'flash' }, { f: 42, k: 'gring', col: '#ffb35c', r: 230 }] },
+      ctr: { dur: 28, inv: [0, 10], vel: [{ f: 2, vx: 16, hold: 6 }], hits: [{ f: [3, 9], box: [-20, -100, 116, 100], dmg: 70, kb: 8, kby: -5, stun: 26, heavy: true, bleed: 150 }],
+             fx: [{ f: 2, k: 'ghosts', n: 3 }, sl(4, '#ffffff', 80, -52, { w: 12, col2: '#0b0612' }), { f: 4, k: 'zaps', n: 4, len: 50 }, { f: 5, k: 'shake', a: 7 }] },
+      atk1: { dur: 16, cancel: 8, hits: [{ f: [5, 7], box: [0, -86, 84, 64], dmg: 30, kb: 1, kby: -1, stun: 13 }], fx: [sl(5, '#dfe8ff', 52, -48)] },
+      atk2: { dur: 16, cancel: 8, hits: [{ f: [5, 7], box: [0, -90, 88, 70], dmg: 32, kb: 1, kby: -1, stun: 13 }], fx: [sl(5, '#dfe8ff', 54, -50, { flip: true })] },
+      atk3: { dur: 18, cancel: 9, hits: [{ f: [6, 8], box: [0, -84, 96, 48], dmg: 34, kb: 1.5, kby: -1, stun: 14 }], fx: [sl(6, '#ffffff', 58, -62, { w: 7 })] },
+      atk4: { dur: 34, hits: [{ f: [11, 15], box: [0, -100, 104, 100], dmg: 60, kb: 5, kby: -4, stun: 40, heavy: true, knock: true }],
+              fx: [sl(11, '#ffffff', 66, -52, { w: 9 }), sl(11, '#dfe8ff', 66, -52, { flip: true, w: 9 }), { f: 11, k: 'shake', a: 5 }, { f: 12, k: 'dust', x: 60 }] },
+      r: { dur: 32, pose: 'lunge', inv: [2, 14], vel: [{ f: 3, vx: 30, hold: 8 }], hits: [{ f: [3, 11], box: [-60, -96, 120, 96], dmg: 72, kb: 3, kby: -2, stun: 26, delay: 24 }],
+           fx: [{ f: 0, k: 'gring', col: '#dfe8ff', r: 40 }, { f: 3, k: 'blink', len: 240, col: '#dfe8ff' }, { f: 3, k: 'ghosts', n: 2 }] },
+      f: { dur: 36, proj: [{ f: 12, kind: 'spiralcut', dx: 40, dy: -58 }], fx: [{ f: 0, k: 'charge', col: '#ffb35c' }, sl(12, '#ffffff', 60, -58, { w: 10, col2: '#ff8a3d' })] },
+      tf: { dur: 86, pose: 'raise', inv: [0, 64], becomeAt: 40,
+            hits: [{ f: [40, 46], box: [-200, -200, 400, 200], dmg: 40, kb: 14, kby: -5, stun: 24, aoe: true, zap: true }],
+            fx: [{ f: 0, k: 'cine', mode: 'focus', name: 'DESPERTAR DE NUEVE HOJAS', sub: 'MANIFESTACIÓN ASURA', col: '#b48cff', col2: '#0b0612', dur: 82, zoom: 1.85 },
+                 { f: 2, k: 'plant' }, { f: 6, k: 'mist', n: 18 }, { f: 16, k: 'mist', n: 18 }, { f: 24, k: 'zaps', n: 6, len: 70 }, { f: 30, k: 'charge', col: '#b48cff' },
+                 { f: 40, k: 'dome', col: '#b48cff', col2: '#0b0612', r: 220 }, { f: 40, k: 'zaps', n: 12, len: 120 }, { f: 40, k: 'shake', a: 12 }, { f: 40, k: 'flash' }, { f: 42, k: 'gring', col: '#d6b8ff', r: 260 }] },
     },
     formMoves: {
-      atk1: { dur: 30, cancel: 20, hits: [{ f: [11, 16], box: [10, -176, 136, 92], dmg: 88, kb: 8, kby: -3, stun: 22 }],
-              fx: [{ f: 11, k: 'shake', a: 5 }, { f: 11, k: 'impact', x: 130, y: -130, col: '#ffb35c' }, { f: 11, k: 'rocks', x: 130, y: -130 }] },
-      atk2: { dur: 30, cancel: 20, hits: [{ f: [11, 16], box: [10, -150, 136, 92], dmg: 92, kb: 8, kby: -3, stun: 22 }],
-              fx: [{ f: 11, k: 'shake', a: 5 }, { f: 11, k: 'impact', x: 130, y: -110, col: '#ffb35c' }, { f: 11, k: 'rocks', x: 130, y: -110 }] },
-      atk3: { dur: 46, hits: [{ f: [18, 24], box: [0, -200, 180, 200], dmg: 130, kb: 13, kby: -9, stun: 34, heavy: true }], proj: [{ f: 19, kind: 'spikes', dx: 150 }],
-              fx: [{ f: 18, k: 'shake', a: 11 }, { f: 18, k: 'dust', x: 130 }, { f: 18, k: 'crack', x: 130, col: '#ffb35c', len: 160 }, { f: 18, k: 'impact', x: 140, y: -20, col: '#ffb35c' }, { f: 18, k: 'rocks', x: 140, y: -20 }] },
-      r: { dur: 40, proj: [{ f: 16, kind: 'spikes', dx: 70 }],
-           fx: [{ f: 16, k: 'shake', a: 8 }, { f: 16, k: 'dust', x: 30 }, { f: 16, k: 'gring', x: 40, col: '#ffb35c', r: 90 }, { f: 16, k: 'crack', x: 40, col: '#ffb35c', len: 90 }] },
-      f: { dur: 64, pose: 'leap', vel: [{ f: 6, vx: 3, vy: -12, hold: 20 }, { f: 24, vy: 20 }], hits: [{ f: [30, 36], box: [-180, -120, 360, 120], dmg: 170, kb: 14, kby: -9, stun: 38, heavy: true }],
-           proj: [{ f: 30, kind: 'spikes', dx: 60 }, { f: 30, kind: 'spikes', dx: -60, dir: -1 }],
-           fx: [{ f: 30, k: 'shake', a: 14 }, { f: 30, k: 'dust', x: 0 }, { f: 30, k: 'flash' }, { f: 30, k: 'crack', col: '#ffb35c', len: 260 }, { f: 30, k: 'gring', col: '#ffb35c', r: 200 }, { f: 30, k: 'rocks', x: 0, y: -20 }] },
-      ult: { dur: 104, pose: 'leap', inv: [0, 34], vel: [{ f: 8, vx: 2, vy: -15, hold: 18 }, { f: 28, vy: 24 }],
-             hits: [{ f: [34, 40], box: [-190, -130, 380, 130], dmg: 140, kb: 14, kby: -10, stun: 40, heavy: true }],
-             proj: [{ f: 34, kind: 'spikes', dx: 60 }, { f: 34, kind: 'spikes', dx: -60, dir: -1 }, { f: 46, kind: 'spikes', dx: 60 }, { f: 46, kind: 'spikes', dx: -60, dir: -1 },
-                    { f: 52, kind: 'meteor', dx: 130, dy: -520 }, { f: 58, kind: 'meteor', dx: 260, dy: -520 }, { f: 64, kind: 'meteor', dx: 380, dy: -520 }, { f: 70, kind: 'meteor', dx: 200, dy: -520 }],
-             fx: [{ f: 0, k: 'cine', name: 'CATACLISMO', sub: 'DEFINITIVA', col: '#ffb35c', col2: '#2a3a3c', dur: 90 },
-                  { f: 0, k: 'charge', col: '#ffb35c' }, { f: 34, k: 'shake', a: 18 }, { f: 34, k: 'flash' }, { f: 34, k: 'crack', col: '#ffb35c', len: 420 },
-                  { f: 34, k: 'dust', x: 0 }, { f: 34, k: 'gring', col: '#ffb35c', r: 260 }, { f: 34, k: 'rocks', x: 0, y: -20 }, { f: 46, k: 'shake', a: 8 }] },
+      atk1: { dur: 18, cancel: 10, hits: [{ f: [4, 12], every: 2, box: [0, -112, 124, 112], dmg: 9, kb: 0.8, kby: -0.5, stun: 12, chip: 0.6 }], fx: [{ f: 4, k: 'flurry', col: '#d6b8ff', dur: 9 }, { f: 4, k: 'zaps', n: 2, len: 40, x: 50 }] },
+      atk2: { dur: 18, cancel: 10, hits: [{ f: [4, 12], every: 2, box: [0, -112, 128, 112], dmg: 9, kb: 0.8, kby: -0.5, stun: 12, chip: 0.6 }], fx: [{ f: 4, k: 'flurry', col: '#d6b8ff', dur: 9 }, { f: 4, k: 'zaps', n: 2, len: 40, x: 50 }] },
+      atk3: { dur: 36, hits: [{ f: [4, 16], every: 2, box: [0, -116, 132, 116], dmg: 9, kb: 0.6, kby: -0.5, stun: 12, chip: 0.6 }, { f: [20, 23], box: [0, -120, 140, 120], dmg: 50, kb: 10, kby: -5, stun: 26, heavy: true, chip: 0.6, zap: true }],
+              fx: [{ f: 4, k: 'flurry', col: '#d6b8ff', dur: 14 }, sl(20, '#ffffff', 80, -60, { w: 14, col2: '#0b0612' }), sl(20, '#b48cff', 76, -60, { flip: true, w: 12 }), { f: 20, k: 'shake', a: 8 }] },
+      r: { dur: 36, inv: [0, 16], tp: { f: 10 }, hits: [{ f: [13, 17], box: [-40, -110, 124, 110], dmg: 80, kb: 8, kby: -4, stun: 28, heavy: true, gb: true, zap: true }],
+           fx: [{ f: 0, k: 'zigzag', n: 3 }, sl(13, '#ffffff', 70, -54, { w: 12, col2: '#0b0612' }), sl(13, '#b48cff', 70, -54, { flip: true, w: 12 }), { f: 13, k: 'shake', a: 7 }] },
+      f: { dur: 72, costT: 150, hits: [{ f: [10, 60], every: 6, box: [-160, -170, 320, 170], dmg: 12, kb: 2.5, kby: -0.5, stun: 12, aoe: true, pull: true, slow: 12 },
+                                      { f: [62, 65], box: [-160, -170, 320, 170], dmg: 40, kb: 10, kby: -5, stun: 24, aoe: true, heavy: true, zap: true }],
+           fx: [{ f: 0, k: 'charge', col: '#b48cff' }, { f: 10, k: 'cyclone', col: '#d6b8ff', dur: 52 }, { f: 10, k: 'vortexring', life: 54 }, { f: 20, k: 'zaps', n: 4, len: 70 }, { f: 40, k: 'zaps', n: 4, len: 70 }, { f: 62, k: 'shake', a: 9 }] },
+      ult: { dur: 124, inv: [0, 70], endsForm: true, vel: [{ f: 26, vx: 70, hold: 12 }],
+             hits: [{ f: [20, 23], box: FULLBOX, dmg: 20, kb: 0, kby: 0, stun: 100, aoe: true, gb: true },
+                    { f: [64, 92], every: 4, box: FULLBOX, dmg: 10, kb: 0, kby: 0, stun: 30, aoe: true, gb: true },
+                    { f: [100, 104], box: FULLBOX, dmg: 210, kb: 14, kby: -9, stun: 46, heavy: true, aoe: true, gb: true, zap: true }],
+             fx: [{ f: 0, k: 'freeze', t: 30 }, { f: 0, k: 'cine', name: 'JUICIO DE LOS MIL MUNDOS', sub: 'DEFINITIVA', col: '#b48cff', col2: '#0b0612', dur: 118, banner: 54 },
+                  { f: 4, k: 'click' }, { f: 20, k: 'domring' }, { f: 26, k: 'blink', len: 960, col: '#ffffff' }, { f: 26, k: 'ghosts', n: 4 }, { f: 60, k: 'click' },
+                  { f: 62, k: 'dimcuts', life: 42 }, { f: 64, k: 'shake', a: 6 }, { f: 100, k: 'flash' }, { f: 100, k: 'shake', a: 22 }, { f: 100, k: 'zaps', n: 16, len: 180 },
+                  { f: 100, k: 'dome', col: '#d6b8ff', col2: '#0b0612', r: 480 }, { f: 102, k: 'gring', col: '#b48cff', r: 520 }] },
     },
   },
 
+  /* DORAN — Cambiaformas (soldado de maniobras con cable y gas / titán colosal)
+     Base: cuchillas gemelas desechables, arpón con tirón y patada giratoria, giro aéreo propulsado por gas.
+     Titán (G): gigante de carne a escala ×2,3, lento, con súper armadura en sus golpes; embestida acorazada,
+     lanzamiento balístico de un bloque del suelo y Rugido y Aplastamiento. */
+  f5: {
+    key: 'f5', parry: 'parry', name: 'DORAN', title: 'Cambiaformas', hp: 1000, speed: 4.4, jumpV: 12, jumps: 1, cdR: 50,
+    box: { w: 34, h: 84 }, canTransform: true, formBig: true, formScale: 2.3, formBox: { w: 92, h: 220 }, formSpeed: 2.4, formJump: 9, formArmor: 0.7, formKb: 0.45,
+    formName: 'TITÁN COLOSAL', hair: 'short', weapon: 'dagger2', spark: '#d9e2ea', aura: 'titan', formBurst: '#ffe08a',
+    pal: { skin: '#e9be97', hair: '#d9b45a', top: '#33353f', arm: '#33353f', belt: '#e07a2e', pants: '#7c6d58', boots: '#2a2018', eye: '#1d2a20', blade: '#c9d2dc', edge: '#ffffff', guard: '#4a4f5a', metal: '#8e98a6' },
+    formPal: { skin: '#c47a5e', muscle: '#9c4f3f', sinew: '#e8a58a', hair: '#2a1d18', eye: '#ffe08a', teeth: '#f4ead8', dark: '#5a2a22' },
+    stats: { vida: 0.8, vel: 0.85, alc: 0.6 },
+    desc: { m2: 'Parry: anula el golpe y aturde al rival (también como Titán)', e: 'Tajos dobles a quemarropa con cuchillas desechables', r: 'Arpón: se ancla junto al rival, tira del cable con gas y remata con una patada giratoria', f: 'Giro con gas: se mantiene en el aire cortando en círculo', g: 'Titán Colosal: lento, súper armadura en sus golpes. R: embestida que arrolla hasta la esquina · F: arranca y lanza un bloque del suelo · G otra vez: Rugido y Aplastamiento' },
+    moves: {
+      atk1: { dur: 14, cancel: 7, hits: [{ f: [4, 6], box: [0, -84, 68, 60], dmg: 22, kb: 0.8, kby: -1, stun: 11 }], fx: [sl(4, '#d9e2ea', 44, -48), sl(5, '#ffffff', 40, -56, { flip: true, w: 4 })] },
+      atk2: { dur: 14, cancel: 7, hits: [{ f: [4, 6], box: [0, -84, 72, 62], dmg: 24, kb: 0.8, kby: -1, stun: 11 }], fx: [sl(4, '#d9e2ea', 46, -50, { flip: true }), sl(5, '#ffffff', 42, -44, { w: 4 })] },
+      atk3: { dur: 15, cancel: 8, hits: [{ f: [5, 7], box: [0, -90, 78, 70], dmg: 26, kb: 1, kby: -1, stun: 12 }], fx: [sl(5, '#ffffff', 50, -50, { w: 6 }), sl(5, '#d9e2ea', 50, -50, { flip: true, w: 6 })] },
+      atk4: { dur: 28, hits: [{ f: [8, 11], box: [0, -96, 90, 90], dmg: 44, kb: 6, kby: -3, stun: 18 }],
+              fx: [sl(8, '#ffffff', 56, -50, { w: 8 }), sl(8, '#d9e2ea', 56, -50, { flip: true, w: 8 }), { f: 10, k: 'shards', x: 50, y: -50, col: '#c9d2dc' }] },
+      r: { dur: 36, pose: 'spin', vel: [{ f: 6, toward: 12, vy: -4 }], hits: [{ f: [8, 20], box: [-30, -96, 92, 92], dmg: 56, kb: 7, kby: -4, stun: 22 }],
+           fx: [{ f: 0, k: 'wire', col: '#c8c8c8', toOpp: true }, { f: 6, k: 'gas', n: 10 }, { f: 6, k: 'trail', col: '#e8e8f0' }] },
+      f: { dur: 52, pose: 'spin', vel: [{ f: 4, vx: 3, vy: -8, hold: 34 }], hover: [10, 42], hits: [{ f: [8, 44], every: 5, box: [-58, -114, 116, 114], dmg: 14, kb: 1.5, kby: -2, stun: 12, aoe: true }],
+           fx: [{ f: 4, k: 'cyclone', col: '#d9e2ea', dur: 38 }, { f: 4, k: 'gasjet', dur: 38 }] },
+      tf: { dur: 86, pose: 'raise', inv: [0, 66], becomeAt: 42,
+            hits: [{ f: [42, 50], box: [-220, -240, 440, 240], dmg: 60, kb: 14, kby: -8, stun: 30, heavy: true, aoe: true }],
+            fx: [{ f: 0, k: 'cine', mode: 'focus', name: 'TITÁN COLOSAL', sub: 'EL MORDISCO', col: '#ffe08a', col2: '#3a1d14', dur: 82, zoom: 1.75 },
+                 { f: 6, k: 'bite' }, { f: 20, k: 'charge', col: '#ffe08a' }, { f: 34, k: 'bolt', col: '#ffe08a', x: 0 }, { f: 38, k: 'bolt', col: '#ffffff', x: 10 }, { f: 42, k: 'bolt', col: '#ffe08a', x: -6 },
+                 { f: 42, k: 'dome', col: '#ffe08a', col2: '#5a2a22', r: 240 }, { f: 42, k: 'steam', n: 30 }, { f: 42, k: 'crack', col: '#ffe08a', len: 300 }, { f: 42, k: 'dust', x: 0 },
+                 { f: 42, k: 'shake', a: 18 }, { f: 42, k: 'flash' }, { f: 44, k: 'gring', col: '#ffe08a', r: 280 }] },
+    },
+    formMoves: {
+      atk1: { dur: 30, cancel: 20, armor: true, hits: [{ f: [11, 16], box: [10, -210, 180, 130], dmg: 80, kb: 3, kby: -3, stun: 22 }],
+              fx: [{ f: 11, k: 'shake', a: 6 }, { f: 11, k: 'impact', x: 140, y: -140, col: '#ffe08a' }, { f: 11, k: 'rocks', x: 140, y: -20 }] },
+      atk2: { dur: 30, cancel: 20, armor: true, hits: [{ f: [11, 16], box: [10, -130, 190, 130], dmg: 84, kb: 3, kby: -3, stun: 22 }],
+              fx: [{ f: 11, k: 'shake', a: 6 }, { f: 11, k: 'impact', x: 150, y: -70, col: '#ffe08a' }, { f: 11, k: 'rocks', x: 150, y: -20 }, { f: 11, k: 'dust', x: 150 }] },
+      atk3: { dur: 46, armor: true, vel: [{ f: 8, vx: 4, hold: 8 }], hits: [{ f: [18, 24], box: [0, -90, 214, 90], dmg: 120, kb: 12, kby: -9, stun: 32, heavy: true }],
+              fx: [{ f: 18, k: 'shake', a: 12 }, { f: 18, k: 'crack', x: 140, col: '#ffe08a', len: 180 }, { f: 18, k: 'rocks', x: 140, y: -10 }, { f: 18, k: 'dust', x: 140 }, { f: 18, k: 'impact', x: 150, y: -10, col: '#ffe08a' }] },
+      r: { dur: 56, pose: 'charge', armor: true, vel: [{ f: 8, vx: 12, hold: 36 }],
+           hits: [{ f: [9, 43], every: 6, box: [0, -220, 112, 220], dmg: 16, kb: 12.5, kby: -1, stun: 18 }, { f: [45, 48], box: [0, -220, 130, 220], dmg: 70, kb: 16, kby: -6, stun: 30, heavy: true }],
+           fx: [{ f: 0, k: 'steam', n: 10 }, { f: 8, k: 'dust', x: 0 }, { f: 20, k: 'dust', x: 0 }, { f: 32, k: 'dust', x: 0 }, { f: 45, k: 'shake', a: 12 }, { f: 45, k: 'impact', x: 120, y: -100, col: '#ffe08a' }, { f: 45, k: 'rocks', x: 120, y: -40 }] },
+      f: { dur: 58, armor: true, proj: [{ f: 30, kind: 'rockblock', dx: 40, dy: -210 }],
+           fx: [{ f: 4, k: 'crack', x: 60, col: '#ffe08a', len: 80 }, { f: 6, k: 'rocks', x: 60, y: -10 }, { f: 8, k: 'shake', a: 6 }, { f: 10, k: 'heldrock', life: 20 }] },
+      ult: { dur: 150, armor: true, inv: [0, 40], endsForm: true,
+             hits: [{ f: [12, 15], box: FULLBOX, dmg: 20, kb: 0, kby: 0, stun: 110, aoe: true, gb: true },
+                    { f: [40, 43], box: FULLBOX, dmg: 35, kb: 0, kby: -10, stun: 60, aoe: true, gb: true },
+                    { f: [56, 59], box: FULLBOX, dmg: 35, kb: 0, kby: 16, stun: 60, aoe: true, gb: true, heavy: true },
+                    { f: [72, 75], box: FULLBOX, dmg: 35, kb: 0, kby: -10, stun: 60, aoe: true, gb: true },
+                    { f: [88, 91], box: FULLBOX, dmg: 35, kb: 0, kby: 16, stun: 60, aoe: true, gb: true, heavy: true },
+                    { f: [112, 116], box: FULLBOX, dmg: 150, kb: 14, kby: -9, stun: 46, heavy: true, aoe: true, gb: true }],
+             fx: [{ f: 0, k: 'cine', name: 'RUGIDO Y APLASTAMIENTO', sub: 'DEFINITIVA', col: '#ffe08a', col2: '#3a1d14', dur: 120, banner: 54 },
+                  { f: 10, k: 'roar' }, { f: 10, k: 'shake', a: 14 }, { f: 30, k: 'gianthand', life: 76 },
+                  { f: 56, k: 'shake', a: 14 }, { f: 56, k: 'crackOpp' }, { f: 88, k: 'shake', a: 16 }, { f: 88, k: 'crackOpp' },
+                  { f: 112, k: 'flash' }, { f: 112, k: 'shake', a: 26 }, { f: 112, k: 'crack', col: '#ffe08a', len: 480 }, { f: 112, k: 'dome', col: '#ffe08a', col2: '#5a2a22', r: 480 },
+                  { f: 112, k: 'rocks', x: 120, y: -20 }, { f: 112, k: 'dust', x: 120 }, { f: 114, k: 'gring', col: '#ffe08a', r: 520 }, { f: 128, k: 'steam', n: 40 }, { f: 140, k: 'steam', n: 40 }] },
+    },
+  },
+
+  /* NYRA — Danzante de Hojas Gemelas (asesina de precisión, sin magia)
+     Base: estocadas quirúrgicas con pivote a la espalda, péndulo con gancho, ráfaga de hojas dobles.
+     Instinto de Linaje (G): foco absoluto (ojos encendidos, velocidad multiplicada, lanzas explosivas):
+     cortes con detonaciones de gas, tirabuzón que atraviesa, lanza de detonación retardada y Ráfaga de Asalto Terminal. */
   f6: {
-    key: 'f6', parry: 'counter', name: 'NYRA', title: 'Danzante de Hojas Gemelas', hp: 880, speed: 4.8, jumpV: 11.5, jumps: 2, cdR: 40,
-    box: { w: 32, h: 82 }, hair: 'hood', weapon: 'dagger2', spark: '#7ff0ff',
+    key: 'f6', parry: 'counter', name: 'NYRA', title: 'Danzante de Hojas Gemelas', hp: 880, speed: 4.8, jumpV: 11.5, jumps: 2, cdR: 45,
+    box: { w: 32, h: 82 }, canTransform: true, formSpeed: 6.6, formJump: 12.5, formName: 'INSTINTO DE LINAJE',
+    hair: 'hood', weapon: 'dagger2', formWeapon: 'spear2', spark: '#7ff0ff', aura: 'focus', formBurst: '#ff8fb8',
     pal: { skin: '#f2c9ad', hair: '#ff8fb8', top: '#2b3a55', arm: '#2b3a55', belt: '#7ff0ff', pants: '#1d2638', boots: '#10141e', eye: '#14202e', blade: '#bfefff', edge: '#ffffff', guard: '#7ff0ff', cloak: '#3d5878', trim: '#7ff0ff' },
+    formPal: { skin: '#f2c9ad', hair: '#ff8fb8', top: '#232e45', arm: '#232e45', belt: '#ff8fb8', pants: '#161d2c', boots: '#0b0f18', eye: '#ff4d6d', glowEye: '#ff8fb8', blade: '#e8f6ff', edge: '#ffffff', guard: '#ff4d6d', cloak: '#2e4260', trim: '#ff8fb8' },
     stats: { vida: 0.55, vel: 1, alc: 0.55 },
-    desc: { m2: 'Contra sombra: aparece a su espalda y corta', e: 'Combo veloz de dagas', r: 'Esquiva con invulnerabilidad que corta al pasar', f: 'Danza de Hojas: se teletransporta y encadena 7 cortes', g: null },
+    desc: { m2: 'Contra sombra: aparece a su espalda y corta', e: 'Estocadas quirúrgicas; el 4.º golpe pivota a la espalda y corta la nuca', r: 'Péndulo: se cuelga de un gancho, esquiva por arriba y cae detrás del rival', f: 'Ráfaga de hojas dobles: avance con cortes cruzados que empujan', g: 'Instinto de Linaje: velocidad multiplicada y lanzas explosivas. E: cortes con detonación de gas · R: tirabuzón que atraviesa · F: lanza que detona 0,5 s después · G otra vez: Ráfaga de Asalto Terminal' },
     moves: {
       ctr: { dur: 30, inv: [0, 14], tp: { f: 2 }, hits: [{ f: [6, 12], box: [-30, -96, 100, 96], dmg: 85, kb: 10, kby: -7, stun: 28, heavy: true }], fx: [{ f: 0, k: 'ghosts', n: 4 }, sl(6, '#ffffff', 64, -50, { w: 10, col2: '#2b3a55' }), sl(8, '#7ff0ff', 60, -50, { flip: true, w: 8 })] },
-      atk1: { dur: 13, cancel: 7, hits: [{ f: [4, 6], box: [0, -80, 56, 50], dmg: 22, kb: 1.5, kby: -1, stun: 11 }], fx: [sl(4, '#7ff0ff', 40, -46)] },
-      atk2: { dur: 13, cancel: 7, hits: [{ f: [4, 6], box: [0, -80, 56, 50], dmg: 22, kb: 1.5, kby: -1, stun: 11 }], fx: [sl(4, '#7ff0ff', 40, -46, { flip: true })] },
-      atk3: { dur: 26, hits: [{ f: [6, 8], box: [0, -82, 60, 56], dmg: 24, kb: 1, kby: -1, stun: 12 }, { f: [11, 14], box: [0, -90, 66, 70], dmg: 40, kb: 6, kby: -4, stun: 20 }],
-              fx: [sl(6, '#7ff0ff', 42, -48), sl(11, '#ffffff', 52, -50, { flip: true, w: 8 })] },
-      r: { dur: 24, pose: 'dash', inv: [0, 14], vel: [{ f: 2, vx: 17, hold: 10 }], hits: [{ f: [3, 10], box: [-20, -80, 60, 76], dmg: 38, kb: 4, kby: -1, stun: 16 }], fx: [{ f: 2, k: 'ghosts', n: 5 }] },
-      f: { dur: 58, inv: [0, 12], tp: { f: 8 }, hits: [{ f: [12, 47], every: 6, box: [-30, -96, 100, 96], dmg: 18, kb: 0.8, kby: -1, stun: 12 }, { f: [52, 55], box: [-30, -110, 110, 110], dmg: 44, kb: 9, kby: -6, stun: 26, heavy: true }],
-           fx: [{ f: 6, k: 'ghosts', n: 8 }, { f: 12, k: 'flurry', col: '#7ff0ff', dur: 40 }, sl(52, '#ffffff', 70, -54, { w: 10 })] },
+      atk1: { dur: 12, cancel: 6, hits: [{ f: [3, 5], box: [0, -84, 70, 34], dmg: 20, kb: 0.5, kby: -1, stun: 11 }], fx: [{ f: 3, k: 'thrust', x: 20, y: -66, len: 46 }] },
+      atk2: { dur: 12, cancel: 6, hits: [{ f: [3, 5], box: [0, -70, 72, 34], dmg: 20, kb: 0.5, kby: -1, stun: 11 }], fx: [{ f: 3, k: 'thrust', x: 20, y: -52, len: 46 }] },
+      atk3: { dur: 13, cancel: 7, hits: [{ f: [4, 6], box: [0, -88, 76, 56], dmg: 22, kb: 0.8, kby: -1, stun: 12 }], fx: [sl(4, '#7ff0ff', 42, -50, { flip: true })] },
+      atk4: { dur: 30, tp: { f: 6, max: 140 }, hits: [{ f: [9, 12], box: [-30, -98, 96, 98], dmg: 48, kb: 7, kby: -4, stun: 22 }], fx: [{ f: 5, k: 'ghosts', n: 2 }, sl(9, '#ffffff', 52, -70, { w: 8, col2: '#2b3a55' })] },
+      r: { dur: 30, swing: { f: 2, len: 24, h: 150 }, inv: [2, 24], fx: [{ f: 0, k: 'hook' }] },
+      f: { dur: 46, vel: [{ f: 4, vx: 7, hold: 26 }], hits: [{ f: [6, 32], every: 4, box: [0, -96, 82, 90], dmg: 13, kb: 3.5, kby: -0.5, stun: 12 }, { f: [34, 37], box: [0, -100, 88, 96], dmg: 30, kb: 9, kby: -3, stun: 20 }],
+           fx: [{ f: 4, k: 'flurry', col: '#7ff0ff', dur: 30 }, { f: 4, k: 'gas', n: 8 }, sl(34, '#ffffff', 60, -54, { w: 10 })] },
+      tf: { dur: 62, pose: 'raise', inv: [0, 46], becomeAt: 26,
+            hits: [{ f: [26, 30], box: [-170, -170, 340, 170], dmg: 30, kb: 12, kby: -4, stun: 20, aoe: true }],
+            fx: [{ f: 0, k: 'cine', mode: 'focus', name: 'INSTINTO DE LINAJE', sub: 'FOCO ABSOLUTO', col: '#ff8fb8', col2: '#10141e', dur: 58, zoom: 2 },
+                 { f: 6, k: 'eyeglint' }, { f: 14, k: 'gas', n: 16 }, { f: 26, k: 'gring', col: '#ff8fb8', r: 200 }, { f: 26, k: 'gas', n: 24 }, { f: 26, k: 'shake', a: 8 }, { f: 26, k: 'flash' }] },
+    },
+    formMoves: {
+      atk1: { dur: 12, cancel: 6, hits: [{ f: [3, 5], box: [0, -88, 70, 50], dmg: 28, kb: 1, kby: -1, stun: 18 }], fx: [sl(3, '#ffffff', 44, -52), { f: 4, k: 'gasburst', x: 50, y: -56 }] },
+      atk2: { dur: 12, cancel: 6, hits: [{ f: [3, 5], box: [0, -84, 72, 50], dmg: 30, kb: 1, kby: -1, stun: 18 }], fx: [sl(3, '#ffffff', 44, -50, { flip: true }), { f: 4, k: 'gasburst', x: 52, y: -50 }] },
+      atk3: { dur: 13, cancel: 7, hits: [{ f: [4, 6], box: [0, -92, 74, 60], dmg: 32, kb: 1.5, kby: -1, stun: 19 }], fx: [sl(4, '#ff8fb8', 48, -54, { w: 7 }), { f: 5, k: 'gasburst', x: 54, y: -58 }] },
+      atk4: { dur: 28, hits: [{ f: [7, 10], box: [0, -100, 96, 100], dmg: 70, kb: 9, kby: -5, stun: 26, heavy: true }],
+              fx: [sl(7, '#ffffff', 60, -54, { w: 10, col2: '#ff4d6d' }), { f: 8, k: 'explode', x: 60, y: -56, r: 50 }, { f: 8, k: 'shake', a: 6 }] },
+      r: { dur: 30, pose: 'drill', inv: [2, 20], vel: [{ f: 2, vx: 16, hold: 18 }], hits: [{ f: [3, 20], every: 3, box: [-50, -92, 130, 84], dmg: 12, kb: 0.5, kby: -0.5, stun: 30 }],
+           fx: [{ f: 2, k: 'drill', dur: 16 }, { f: 2, k: 'gas', n: 10 }] },
+      f: { dur: 32, costT: 120, proj: [{ f: 10, kind: 'tlance', dx: 30, dy: -60 }], fx: [{ f: 10, k: 'gasburst', x: 30, y: -60 }, { f: 10, k: 'shake', a: 4 }] },
+      ult: { dur: 134, inv: [0, 96], endsForm: true, tp: { f: 10 },
+             hits: [{ f: [16, 19], box: FULLBOX, dmg: 20, kb: 0, kby: 0, stun: 110, aoe: true, gb: true },
+                    { f: [24, 72], every: 5, box: FULLBOX, dmg: 9, kb: 0, kby: 0, stun: 40, aoe: true, gb: true },
+                    { f: [92, 96], box: FULLBOX, dmg: 200, kb: 12, kby: -13, stun: 46, heavy: true, aoe: true, gb: true }],
+             fx: [{ f: 0, k: 'freeze', t: 30 }, { f: 0, k: 'cine', name: 'RÁFAGA DE ASALTO TERMINAL', sub: 'DEFINITIVA', col: '#ff8fb8', col2: '#10141e', dur: 128, banner: 54 },
+                  { f: 8, k: 'gas', n: 20 }, { f: 10, k: 'ghosts', n: 4 }, { f: 16, k: 'lances', n: 6, life: 80 }, { f: 22, k: 'webs', life: 56 }, { f: 22, k: 'flurry', col: '#ff8fb8', dur: 50 },
+                  { f: 80, k: 'gas', n: 20 }, { f: 92, k: 'detonate', n: 8 }, { f: 92, k: 'flash' }, { f: 92, k: 'shake', a: 24 }, { f: 92, k: 'dome', col: '#ff8fb8', col2: '#10141e', r: 420 }, { f: 110, k: 'steam', n: 30 }] },
     },
   },
-
 };
 const ROSTER_IDS = Object.keys(ROSTER);
 const COMBO_NEXT = { atk1: 'atk2', atk2: 'atk3', atk3: 'atk4' }; // la cadena sigue mientras exista el siguiente golpe
@@ -660,8 +724,10 @@ const PROJ = {
   meteor:    { w: 46, h: 46,  vx: 1.2, vy: 11, life: 100, dmg: 70, kb: 6, kby: -6, stun: 22, heavy: true, col: '#ffb35c' },
   galeball:  { w: 34, h: 34,  vx: 8.5, vy: 2.4, life: 90, dmg: 30, kb: 2, kby: -2, stun: 16, burst: 'vortex', col: '#9ff5d8' },          // al morir genera un vórtice
   vortex:    { w: 96, h: 150, vx: 0,   life: 80,  dmg: 13, kb: 1.8, kby: -1, stun: 14, every: 10, ground: true, pull: true, col: '#9ff5d8' }, // atrae hacia su centro
-  sunwave:   { w: 80, h: 44,  vx: 9,   life: 60,  dmg: 50, kb: 3, kby: -10, stun: 26, ground: true, col: '#ffcf5a' },                         // onda sísmica: se salta
-  sunboulder: { w: 130, h: 150, vx: 13, life: 90, dmg: 140, kb: 14, kby: -8, stun: 36, heavy: true, cancels: true, pierce: true, ground: true, absorbBonus: true, col: '#ffcf5a' }, // +25 % por proyectil absorbido
+  spiralcut: { w: 64, h: 64,  vx: 7,   life: 90,  dmg: 70, kb: 6, kby: -3, stun: 22, breaksMinor: true, col: '#ffb35c' },                    // RHOAN: arrastra proyectiles menores
+  rockblock: { w: 110, h: 90, vx: 9,   vy: -7, grav: 0.45, life: 140, dmg: 130, kb: 10, kby: -8, stun: 34, heavy: true, shatter: true, col: '#ffe08a' }, // DORAN titán: balístico
+  tlance:    { w: 46, h: 12,  vx: 15,  vy: 1.2, life: 60, dmg: 15, kb: 0, kby: 0, stun: 16, stick: true, fuse: 30,                                     // NYRA: se clava y detona 0,5 s después
+               blast: { dmg: 90, kb: 4, kby: -13, stun: 34, heavy: true, w: 150, h: 150 }, col: '#ff4d6d' },
   aircleave: { w: 50, h: 96,  vx: 12,  life: 42,  dmg: 44, kb: 6, kby: -3, stun: 18, breaksMinor: true, col: '#9ff5d8' },                 // rompe proyectiles menores
 };
 
@@ -720,6 +786,9 @@ const SFX = {
         case 'parry': this.tone(1600, 2600, 0.12, 'square', 0.15, t); this.noise(0.15, 5000, 'highpass', 0.45, t); this.tone(800, 1300, 0.25, 'triangle', 0.12, t + 0.04); break;
         case 'zap': this.noise(0.12, 2600, 'bandpass', 0.35, t); this.tone(90, 60, 0.1, 'square', 0.12, t); break;
         case 'jump': this.tone(300, 520, 0.08, 'triangle', 0.08, t); break;
+        case 'drum': this.tone(110, 45, 0.22, 'square', 0.3, t); this.noise(0.12, 400, 'lowpass', 0.6, t); break;
+        case 'laugh': [620, 520, 640, 500, 660].forEach((f, i) => this.tone(f, f * 0.8, 0.09, 'square', 0.07, t + i * 0.1)); break;
+        case 'roar': this.noise(1.1, 260, 'lowpass', 0.9, t); this.tone(70, 40, 1.1, 'sawtooth', 0.3, t); break;
       }
     } catch (e) {}
   },
@@ -790,11 +859,17 @@ const FX = {
     for (const dir of [-1, 1]) { let cx = x, cy = GROUND + 4; while (Math.abs(cx - x) < len) { const nx = cx + dir * rnd(14, 30), ny = GROUND + 2 + rnd(0, 26); segs.push([cx, cy, nx, ny]); if (rnd() < 0.3) segs.push([nx, ny, nx + dir * rnd(8, 18), GROUND + rnd(4, 30)]); cx = nx; cy = ny; } }
     this.add({ k: 'crack', segs, col, life });
   },
-  zap(x, y, n = 4, len = 50) {
+  cloud(x, y, col, r, vx = 0, vy = -0.6, life = 26) { this.add({ k: 'cloud', x, y, col, r, vx, vy, life }); },
+  explode(x, y, r = 60, col = '#ffb35c') {
+    this.burst(x, y, col, 24, 6, 24, 6, 0.1); this.burst(x, y, '#ffffff', 10, 4, 14, 4, 0); this.ring(x, y, col, r, 18, 6);
+    for (let i = 0; i < 5; i++) this.cloud(x + rnd(-r / 3, r / 3), y + rnd(-r / 3, r / 3), i % 2 ? '#5a5560' : '#8a8490', r * 0.35, rnd(-1, 1), -0.8, 34);
+    Game.shake = Math.max(Game.shake, 6); SFX.play('boom');
+  },
+  zap(x, y, n = 4, len = 50, cols = ['#140a0d', '#ff2e4d']) {
     for (let i = 0; i < n; i++) {
-      const a = rnd(6.283), pts = [[x, y]], seg = 4, col = i % 2 ? '#140a0d' : '#ff2e4d';
+      const a = rnd(6.283), pts = [[x, y]], seg = 4, col = i % 2 ? cols[0] : cols[1];
       for (let k = 1; k <= seg; k++) { const r = len * k / seg, j = (k < seg ? rnd(-0.18, 0.18) : 0) * len; pts.push([x + Math.cos(a) * r - Math.sin(a) * j, y + Math.sin(a) * r + Math.cos(a) * j]); }
-      this.add({ k: 'zap', pts, col, core: col !== '#140a0d', w: len > 90 ? 4 : 3, life: 8 + rnd(5) });
+      this.add({ k: 'zap', pts, col, core: col !== cols[0], w: len > 90 ? 4 : 3, life: 8 + rnd(5) });
     }
   },
   bolt(x, col) {
@@ -810,7 +885,7 @@ const FX = {
   update() {
     for (const p of this.l) {
       p.t++;
-      if (p.k === 'p' || p.k === 'txt') { p.x += p.vx; p.y += p.vy; if (p.g) p.vy += p.g; if (p.k === 'p') p.vx *= 0.96; }
+      if (p.k === 'p' || p.k === 'txt' || p.k === 'cloud') { p.x += p.vx; p.y += p.vy; if (p.g) p.vy += p.g; if (p.k === 'p') p.vx *= 0.96; }
     }
     this.l = this.l.filter(p => p.t < p.life);
   },
@@ -855,6 +930,58 @@ const FX = {
           for (let i = 0; i < 6; i++) { const an = i / 6 * 6.283 - rot * 1.5; c.beginPath(); c.moveTo(p.x + Math.cos(an) * rx * 0.78, gy + Math.sin(an) * ry * 0.78); c.lineTo(p.x + Math.cos(an + 2.094) * rx * 0.78, gy + Math.sin(an + 2.094) * ry * 0.78); c.stroke(); }
           break;
         }
+        case 'cloud': { const r = p.r * (0.6 + 0.8 * p.t / p.life); c.globalAlpha = Math.max(0, a) * 0.75; c.fillStyle = p.col; c.beginPath(); c.arc(p.x, p.y, r, 0, 6.283); c.fill(); break; }
+        case 'domring': { // onda de Presión Dominante
+          const k = p.t / p.life, r = 20 + k * 150;
+          c.globalAlpha = Math.max(0, a); c.strokeStyle = '#0b0612'; c.lineWidth = 16 * a + 2; c.beginPath(); c.arc(p.x, p.y, r, 0, 6.283); c.stroke();
+          c.strokeStyle = '#e0233c'; c.lineWidth = 3; c.beginPath(); c.arc(p.x, p.y, r - 6, 0, 6.283); c.stroke();
+          for (let i = 0; i < 12; i++) { const an = i / 12 * 6.283 + p.t * 0.1; c.strokeStyle = i % 2 ? '#0b0612' : '#e0233c'; c.lineWidth = 2; c.beginPath(); c.moveTo(p.x + Math.cos(an) * r * 0.4, p.y + Math.sin(an) * r * 0.4); c.lineTo(p.x + Math.cos(an) * r * 1.15, p.y + Math.sin(an) * r * 1.15); c.stroke(); }
+          break;
+        }
+        case 'trampoline': { // el suelo convertido en lona de goma
+          const k = p.t / p.life, w = 230, dip = p.t < 26 ? Math.sin(p.t * 0.5) * 12 : -Math.min(1, (p.t - 26) / 4) * 46 * (1 - k);
+          c.globalAlpha = Math.max(0, Math.min(1, p.t / 3, (p.life - p.t) / 5));
+          c.fillStyle = '#e9dcff55'; c.beginPath(); c.moveTo(p.x - w / 2, GROUND); c.quadraticCurveTo(p.x, GROUND + dip * 2, p.x + w / 2, GROUND); c.lineTo(p.x + w / 2, GROUND + 10); c.lineTo(p.x - w / 2, GROUND + 10); c.fill();
+          c.strokeStyle = '#ffffff'; c.lineWidth = 5; c.beginPath(); c.moveTo(p.x - w / 2, GROUND); c.quadraticCurveTo(p.x, GROUND + dip * 2, p.x + w / 2, GROUND); c.stroke();
+          c.strokeStyle = '#c9b8d8'; c.lineWidth = 2; for (let i = -2; i <= 2; i++) { c.beginPath(); c.moveTo(p.x + i * 40, GROUND + 2); c.lineTo(p.x + i * 40, GROUND + dip + 4); c.stroke(); }
+          break;
+        }
+        case 'shatter': { // la pantalla «se rompe» con el impacto
+          if (!p.segs) { p.segs = []; for (let i = 0; i < 14; i++) { let x = p.x, y = p.y, an = i / 14 * 6.283 + rnd(-0.2, 0.2); for (let k = 0; k < 6; k++) { const nx = x + Math.cos(an) * rnd(50, 110), ny = y + Math.sin(an) * rnd(50, 110); p.segs.push([x, y, nx, ny]); x = nx; y = ny; an += rnd(-0.5, 0.5); } } }
+          c.globalAlpha = Math.max(0, Math.min(1, (p.life - p.t) / 12));
+          c.strokeStyle = '#0b0612'; c.lineWidth = 5; c.beginPath(); for (const q of p.segs) { c.moveTo(q[0], q[1]); c.lineTo(q[2], q[3]); } c.stroke();
+          c.strokeStyle = '#ffffff'; c.lineWidth = 2; c.stroke();
+          break;
+        }
+        case 'roar': { // ondas del rugido del titán
+          for (let i = 0; i < 4; i++) { const r = ((p.t * 9 + i * 40) % 220) + 10; c.globalAlpha = Math.max(0, a) * (1 - r / 230); c.strokeStyle = i % 2 ? '#ffe08a' : '#ffffff'; c.lineWidth = 6; c.beginPath(); c.arc(p.x, p.y, r, p.dir > 0 ? -1 : Math.PI - 1, p.dir > 0 ? 1 : Math.PI + 1); c.stroke(); }
+          break;
+        }
+        case 'gianthand': { // la mano del titán atrapa al rival
+          const tg = p.tgt; if (!tg) break; const x = tg.x, y = tg.y - tg.box.h * 0.5, g = Math.min(1, p.t / 6);
+          c.globalAlpha = Math.max(0, Math.min(1, (p.life - p.t) / 8));
+          c.fillStyle = '#9c4f3f'; c.fillRect(x - 60 * g, y - 56, 120 * g, 112);
+          c.fillStyle = '#c47a5e'; c.fillRect(x - 56 * g, y - 52, 112 * g, 30); c.fillRect(x - 56 * g, y + 26, 112 * g, 26);
+          c.fillStyle = '#5a2a22'; for (let i = 1; i < 4; i++) { c.fillRect(x - 56 * g + i * 28 * g, y - 52, 2, 30); c.fillRect(x - 56 * g + i * 28 * g, y + 26, 2, 26); }
+          c.fillStyle = '#e8a58a'; c.fillRect(x - 56 * g, y - 52, 112 * g, 4);
+          break;
+        }
+        case 'heldrock': { const f = p.f, x = f.x, y = f.y - f.box.h - 40; c.fillStyle = '#2a1f33'; c.fillRect(x - 55, y - 24, 110, 28); c.fillStyle = '#5c4566'; c.fillRect(x - 55, y - 24, 110, 5); c.fillStyle = '#5a4030'; c.fillRect(x - 49, y + 4, 98, 50); break; }
+        case 'planted': { // lanzas clavadas alrededor del rival
+          const tg = p.tgt; if (!tg) break;
+          for (const [ox, oy, an] of p.spots) { const x = tg.x + ox, y = tg.y - tg.box.h * 0.5 + oy; c.save(); c.translate(x, y); c.rotate(an); c.fillStyle = '#5a6270'; c.fillRect(-18, -2, 26, 5); c.fillStyle = (T >> 2) % 2 ? '#ff4d6d' : '#ffffff'; c.fillRect(-22, -3, 5, 7); c.restore(); }
+          break;
+        }
+        case 'webs': { // cables tridimensionales tendidos alrededor del rival
+          const tg = p.tgt; if (!tg) break; c.strokeStyle = '#c8c8c8'; c.lineWidth = 1.5;
+          for (const [ex, ey] of p.ends) { c.beginPath(); c.moveTo(tg.x, tg.y - tg.box.h * 0.5); c.lineTo(ex, ey); c.stroke(); }
+          break;
+        }
+        case 'dimcuts': { // cortes dimensionales en todo el escenario
+          c.globalAlpha = Math.max(0, Math.min(1, (p.life - p.t) / 8));
+          for (let i = 0; i < 26; i++) { const x = rnd(W), y = rnd(40, GROUND), l = rnd(60, 220), an = rnd(-0.9, 0.9); c.strokeStyle = i % 3 === 0 ? '#0b0612' : i % 3 === 1 ? '#ffffff' : '#b48cff'; c.lineWidth = rnd(1, 4); c.beginPath(); c.moveTo(x - Math.cos(an) * l / 2, y - Math.sin(an) * l / 2); c.lineTo(x + Math.cos(an) * l / 2, y + Math.sin(an) * l / 2); c.stroke(); }
+          break;
+        }
         case 'barrier': {
           const w = Math.sin(p.t * 0.6) * 10, bx = p.x + p.dir * w * 0.3;
           c.globalAlpha = Math.max(0, Math.min(1, p.t / 3, (p.life - p.t) / 6));
@@ -866,15 +993,17 @@ const FX = {
         }
         case 'sunfist': {
           const k = Math.min(1, p.t / 38), e = k * k, S = 200, cx = p.x, cy = -240 + (GROUND - 104 + 240) * e;
+          const C = p.star ? ['rgba(233,220,255,0.18)', '#1a1420', '#e9dcff', '#1a1420', '#ffffff', '#e9dcff', '#9a8ab0', '#f4efff'] : ['#ffcf5a33', '#ff8a3d', '#ffcf5a', '#ff8a3d', '#fff1b8', '#ffcf5a', '#d18a4e', '#ffe7b0'];
           c.globalAlpha = Math.max(0, Math.min(1, (p.life - p.t) / 6));
-          c.fillStyle = '#ffcf5a33'; c.beginPath(); c.arc(cx, cy, S * 0.95, 0, 6.283); c.fill();
-          for (let i = 0; i < 12; i++) { const fh = 30 + ((i * 13 + p.t * 7) % 50); c.fillStyle = i % 3 ? '#ff8a3d' : '#ffcf5a'; c.fillRect(Math.round(cx - S / 2 + i * S / 12), Math.round(cy - S / 2 - fh - ((i * 37 + p.t * 9) % 40)), Math.ceil(S / 12) - 2, fh); }
-          c.fillStyle = '#ff8a3d'; c.fillRect(cx - S * 0.42, cy - S * 0.62, S * 0.84, S * 0.16);
-          c.fillStyle = '#fff1b8'; c.fillRect(cx - S / 2, cy - S * 0.46, S, S * 0.82);
+          c.fillStyle = C[0]; c.beginPath(); c.arc(cx, cy, S * 0.95, 0, 6.283); c.fill();
+          for (let i = 0; i < 12; i++) { const fh = 30 + ((i * 13 + p.t * 7) % 50); c.fillStyle = i % 3 ? C[1] : C[2]; c.fillRect(Math.round(cx - S / 2 + i * S / 12), Math.round(cy - S / 2 - fh - ((i * 37 + p.t * 9) % 40)), Math.ceil(S / 12) - 2, fh); }
+          c.fillStyle = C[3]; c.fillRect(cx - S * 0.42, cy - S * 0.62, S * 0.84, S * 0.16);
+          c.fillStyle = C[4]; c.fillRect(cx - S / 2, cy - S * 0.46, S, S * 0.82);
           c.fillStyle = '#ffffff'; c.fillRect(cx - S / 2, cy - S * 0.46, S, S * 0.08);
-          c.fillStyle = '#ffcf5a'; for (let i = 0; i < 4; i++) c.fillRect(cx - S / 2 + i * S / 4 + 5, cy + S * 0.22, S / 4 - 10, S * 0.14);
-          c.fillStyle = '#d18a4e'; for (let i = 1; i < 4; i++) c.fillRect(cx - S / 2 + i * S / 4 - 2, cy - S * 0.1, 4, S * 0.46);
-          c.fillStyle = '#ffe7b0'; c.fillRect(cx + S * 0.38, cy - S * 0.3, S * 0.2, S * 0.36);
+          c.fillStyle = C[5]; for (let i = 0; i < 4; i++) c.fillRect(cx - S / 2 + i * S / 4 + 5, cy + S * 0.22, S / 4 - 10, S * 0.14);
+          c.fillStyle = C[6]; for (let i = 1; i < 4; i++) c.fillRect(cx - S / 2 + i * S / 4 - 2, cy - S * 0.1, 4, S * 0.46);
+          c.fillStyle = C[7]; c.fillRect(cx + S * 0.38, cy - S * 0.3, S * 0.2, S * 0.36);
+          if (p.star) { c.strokeStyle = '#0b0612'; c.lineWidth = 4; for (let i = 0; i < 5; i++) { let x = cx + rnd(-S / 2, S / 2), y = cy + rnd(-S / 2, S / 2); c.beginPath(); c.moveTo(x, y); for (let j = 0; j < 4; j++) { x += rnd(-40, 40); y += rnd(-40, 40); c.lineTo(x, y); } c.stroke(); } }
           break;
         }
         case 'skysigil': {
@@ -1014,24 +1143,38 @@ class Proj {
     this.x = spec.x ?? owner.x + owner.face * (spec.dx || 0);
     this.cy = d.ground ? GROUND - d.h / 2 : owner.y + (spec.dy || -50);
     this.t = 0; this.dead = false; this.hitDone = false; this.mul = owner.dmgMul(); this.lastHit = -99; this.vy = d.vy || 0;
-    if (d.absorbBonus && owner.absorbed) { // la roca solar devuelve la energía de lo absorbido
-      this.mul *= 1 + 0.25 * Math.min(4, owner.absorbed);
-      FX.text(owner.x, owner.y - owner.box.h - 30, 'POTENCIA ×' + (1 + 0.25 * Math.min(4, owner.absorbed)).toFixed(2), '#ffd27a', 16); owner.absorbed = 0;
-    }
   }
   box() { return { x: this.x - this.d.w / 2, y: this.cy - this.d.h / 2, w: this.d.w, h: this.d.h }; }
   kill() { // muerte con efecto secundario (p. ej. el Vendaval se convierte en vórtice)
     if (this.dead) return; this.dead = true;
     if (this.d.burst) Game.projs.push(new Proj(this.owner, { kind: this.d.burst, x: this.x }, this.ghost));
   }
+  fuseStep() { // lanza clavada: cuenta atrás y detonación
+    const d = this.d;
+    if (this.stuck !== 'ground') { this.x = this.stuck.x + this.off; this.cy = this.stuck.y + this.offY; }
+    if (T % 6 < 3) FX.add({ k: 'p', x: this.x, y: this.cy, vx: 0, vy: 0, col: '#ff4d6d', life: 3, size: 5, g: 0 });
+    if (--this.fuseT > 0) return;
+    this.dead = true; FX.explode(this.x, this.cy, d.blast.w * 0.5, d.col);
+    if (this.ghost || Game.phase !== 'fight') return;
+    const tgt = Game.other(this.owner), B = d.blast, bx = { x: this.x - B.w / 2, y: this.cy - B.h / 2, w: B.w, h: B.h };
+    if (tgt && tgt.state !== 'defeat' && tgt.inv <= 0 && overlap(bx, tgt.hurt())) applyHit(this.owner, tgt, { ...B, dmg: B.dmg * this.mul, boom: true }, tgt.x >= this.x ? 1 : -1, true);
+  }
   update() {
+    if (this.stuck) { this.fuseStep(); return; }
     this.t++; this.x += this.d.vx * this.dir; this.cy += this.vy;
+    if (this.d.grav) this.vy += this.d.grav;
     const d = this.d;
     if (this.kind === 'meteor') {
       if (T % 2 === 0) FX.add({ k: 'p', x: this.x + rnd(-10, 10), y: this.cy - 20, vx: rnd(-0.5, 0.5), vy: -1, col: rnd() < 0.5 ? '#ffb35c' : '#5c4a3c', life: 18, size: 6, g: 0 });
       if (this.cy >= GROUND - d.h / 2) { this.dead = true; FX.dust(this.x, GROUND, 14); FX.burst(this.x, GROUND - 20, '#ffb35c', 18, 5, 22, 5, 0.12); FX.add({ k: 'gring', x: this.x, r: 60, col: '#ffb35c', life: 18 }); Game.shake = Math.max(Game.shake, 6); SFX.play('heavy'); }
     }
     if (d.burst && this.cy >= GROUND - d.h / 2) { this.kill(); return; }
+    if (d.shatter && this.cy >= GROUND - d.h / 2) { // el bloque revienta contra el suelo
+      this.dead = true; FX.explode(this.x, GROUND - 20, 70, d.col); FX.dust(this.x, GROUND, 18); FX.crack(this.x, d.col, 100);
+      for (let i = 0; i < 14; i++) FX.add({ k: 'p', x: this.x + rnd(-30, 30), y: GROUND - 20, vx: rnd(-6, 6), vy: rnd(-9, -3), col: i % 3 ? '#3a2c45' : '#5c4566', life: 34, size: rnd(6, 11), g: 0.4 });
+      return;
+    }
+    if (d.stick && this.cy >= GROUND - 8) { this.cy = GROUND - 8; this.stuck = 'ground'; this.fuseT = d.fuse; SFX.play('block'); return; }
     const rt = Game.other(this.owner), rm = rt && rt.move; // barrera que absorbe proyectiles (también en la copia fantasma)
     if (!d.unavoidable && rm && rm.reflect && rt.st >= rm.reflect[0] && rt.st <= rm.reflect[1] && overlap(this.box(), rt.worldBox(rm.rbox))) {
       this.dead = true; rt.absorbed = (rt.absorbed || 0) + 1;
@@ -1039,8 +1182,9 @@ class Proj {
       FX.text(rt.x, rt.y - rt.box.h - 20, 'ABSORBIDO', '#ffd27a', 14); SFX.play('block'); return;
     }
     if (T % 2 === 0) {
-      if (this.kind === 'sunboulder') { for (let i = 0; i < 3; i++) FX.add({ k: 'p', x: this.x - this.dir * rnd(40, 80), y: this.cy + rnd(-d.h / 2, d.h / 2), vx: -this.dir * rnd(1, 3), vy: rnd(-1.5, 0.5), col: rnd() < 0.5 ? '#ff8a3d' : '#ffcf5a', life: 20, size: 6, g: 0 }); Game.shake = Math.max(Game.shake, 2); }
-      else if (this.kind === 'sunwave') { FX.dust(this.x, GROUND, 1); FX.add({ k: 'p', x: this.x + rnd(-d.w / 2, d.w / 2), y: GROUND - rnd(2, d.h), vx: rnd(-1, 1), vy: rnd(-3, -1), col: rnd() < 0.5 ? '#ff8a3d' : '#fff1b8', life: 16, size: 4, g: 0.05 }); }
+      if (this.kind === 'spiralcut') FX.add({ k: 'p', x: this.x - this.dir * 24, y: this.cy + rnd(-20, 20), vx: -this.dir * rnd(1, 2.5), vy: rnd(-1, 1), col: rnd() < 0.5 ? '#ffb35c' : '#ffffff', life: 16, size: 4, g: 0 });
+      else if (this.kind === 'rockblock') FX.add({ k: 'p', x: this.x + rnd(-40, 40), y: this.cy + d.h / 2, vx: rnd(-1, 1), vy: rnd(0, 2), col: '#5a4030', life: 18, size: 5, g: 0.2 });
+      else if (this.kind === 'tlance') FX.add({ k: 'cloud', x: this.x - this.dir * 26, y: this.cy, col: '#c8ccd4', r: 6, vx: -this.dir * 0.5, vy: -0.2, life: 16 });
       else if (this.kind === 'galeball') FX.add({ k: 'p', x: this.x - this.dir * 12, y: this.cy + rnd(-8, 8), vx: -this.dir * 1.5, vy: rnd(-0.5, 0.5), col: rnd() < 0.5 ? '#ffffff' : d.col, life: 14, size: 4, g: 0 });
       else if (this.kind === 'vortex') FX.add({ k: 'p', x: this.x + rnd(-50, 50), y: GROUND - rnd(4, 30), vx: rnd(-2, 2), vy: rnd(-4, -1.5), col: rnd() < 0.5 ? '#c8fff0' : '#8a7a6c', life: 22, size: 4, g: 0.04 });
       else if (this.kind === 'aircleave') FX.add({ k: 'p', x: this.x - this.dir * 20, y: this.cy + rnd(-40, 40), vx: -this.dir * 2, vy: 0, col: '#e8fff7', life: 12, size: 3, g: 0 });
@@ -1063,6 +1207,7 @@ class Proj {
       const h = { ...d, dmg: d.dmg * this.mul };
       if (d.every) { if (this.t - this.lastHit >= d.every) { this.lastHit = this.t; applyHit(this.owner, tgt, h, d.pull ? (Math.sign(this.x - tgt.x) || this.dir) : this.dir, true); } }
       else if (d.pierce) { applyHit(this.owner, tgt, h, this.dir, true); this.hitDone = true; FX.zap(tgt.x, tgt.y - 50, 8, 80); }
+      else if (d.stick) { applyHit(this.owner, tgt, h, this.dir, true); this.stuck = tgt; this.off = this.x - tgt.x; this.offY = this.cy - tgt.y; this.fuseT = d.fuse; }
       else { applyHit(this.owner, tgt, h, this.dir, true); this.kill(); FX.burst(this.x, this.cy, d.col, 14, 4, 22, 5, 0); }
     }
   }
@@ -1149,28 +1294,24 @@ class Proj {
         c.fillStyle = '#ffb35c'; c.fillRect(-6, -10, 4, 14); c.fillRect(-6, 0, 14, 4); c.fillRect(8, -16, 4, 8);
         break;
       }
-      case 'sunwave': {
-        const hh = d.h, grow = Math.min(1, this.t / 5), n = 6;
-        c.fillStyle = '#ffcf5a55'; c.fillRect(-d.w / 2 - 10, hh / 2 - 6, d.w + 20, 6);
-        for (let i = 0; i < n; i++) {
-          const xx = -d.w / 2 + (i + 0.5) * d.w / n, h2 = hh * grow * (0.45 + ((i * 5 + (this.t >> 1)) % 4) * 0.18), ww = d.w / n / 2 + 3;
-          c.fillStyle = i % 3 === 0 ? '#ff8a3d' : i % 3 === 1 ? '#ffcf5a' : '#fff1b8'; c.beginPath(); c.moveTo(xx - ww, hh / 2); c.lineTo(xx, hh / 2 - h2); c.lineTo(xx + ww, hh / 2); c.fill();
-        }
-        c.strokeStyle = '#ffffff'; c.lineWidth = 3; c.beginPath(); c.arc(d.w / 2 - hh, hh / 2, hh, -1.45, 0); c.stroke();
+      case 'spiralcut': {
+        c.rotate(this.t * 0.45); const r = d.h / 2;
+        for (let i = 0; i < 2; i++) { c.rotate(Math.PI); c.lineWidth = 7; c.strokeStyle = '#ff8a3d'; c.beginPath(); c.arc(0, 0, r - 6, -0.2, 1.6); c.stroke(); c.lineWidth = 3; c.strokeStyle = '#ffffff'; c.beginPath(); c.arc(0, 0, r - 4, 0, 1.4); c.stroke(); }
+        c.fillStyle = '#ffd27a'; c.fillRect(-4, -4, 8, 8);
         break;
       }
-      case 'sunboulder': {
-        const s2 = d.h / 2, fl = (this.t >> 1) % 2;
-        for (let i = 0; i < 5; i++) { c.fillStyle = i % 2 ? '#ff8a3d88' : '#ffcf5a88'; c.fillRect(-s2 * 1.1 - i * 22 - fl * 6, -s2 * 0.7 + i * s2 * 0.3, 40, 14); }
-        c.fillStyle = '#ffcf5a33'; c.beginPath(); c.arc(0, 0, s2 * 1.15, 0, 6.283); c.fill();
-        const poly = (pts, col) => { c.fillStyle = col; c.beginPath(); c.moveTo(pts[0][0] * s2, pts[0][1] * s2); for (const q of pts) c.lineTo(q[0] * s2, q[1] * s2); c.closePath(); c.fill(); };
-        poly([[-0.85, 1], [-1, 0.1], [-0.65, -0.85], [0, -1], [0.7, -0.8], [0.95, -0.1], [0.8, 1]], '#3e2414');
-        poly([[-0.7, 0.85], [-0.82, 0.05], [-0.5, -0.7], [0.05, -0.85], [0.6, -0.65], [0.78, 0], [0.62, 0.85]], '#6b4226');
-        poly([[-0.3, -0.6], [0.3, -0.7], [0.55, -0.3], [0.05, -0.2]], '#8a5a34');
-        c.strokeStyle = '#ffcf5a'; c.lineWidth = 5; c.beginPath();
-        c.moveTo(-0.6 * s2, -0.2 * s2); c.lineTo(-0.1 * s2, 0.1 * s2); c.lineTo(0.2 * s2, -0.4 * s2); c.moveTo(-0.1 * s2, 0.1 * s2); c.lineTo(0.1 * s2, 0.7 * s2); c.moveTo(0.2 * s2, -0.4 * s2); c.lineTo(0.6 * s2, -0.1 * s2);
-        c.stroke(); c.strokeStyle = '#ffffff'; c.lineWidth = 2; c.stroke();
-        c.fillStyle = '#7a5a3c'; c.fillRect(-0.9 * s2, 0.85 * s2, 1.75 * s2, 0.15 * s2);
+      case 'rockblock': { // bloque de pavimento arrancado de la arena
+        c.rotate(Math.sin(this.t * 0.12) * 0.25); const w = d.w, h = d.h;
+        c.fillStyle = '#5a4030'; c.fillRect(-w / 2 + 6, -h / 2 + 22, w - 12, h - 22); c.fillStyle = '#3e2c20'; c.fillRect(-w / 2 + 14, h / 2 - 10, w - 30, 10);
+        c.fillStyle = '#2a1f33'; c.fillRect(-w / 2, -h / 2, w, 28); c.fillStyle = '#5c4566'; c.fillRect(-w / 2, -h / 2, w, 5); c.fillStyle = '#3a2c45'; c.fillRect(-w / 2, -h / 2 + 5, w, 4);
+        c.fillStyle = '#211a2b'; for (let x = -w / 2 + 24; x < w / 2; x += 34) c.fillRect(x, -h / 2 + 9, 2, 19);
+        c.fillStyle = '#7a5a40'; for (let i = 0; i < 5; i++) c.fillRect(-w / 2 + 12 + i * 19, -h / 2 + 34 + (i % 2) * 14, 9, 6);
+        break;
+      }
+      case 'tlance': {
+        c.fillStyle = '#5a6270'; c.fillRect(-23, -3, 34, 6); c.fillStyle = '#c8ccd4'; c.fillRect(-23, -3, 34, 2);
+        c.fillStyle = '#ff4d6d'; c.beginPath(); c.moveTo(11, -6); c.lineTo(23, 0); c.lineTo(11, 6); c.fill();
+        if (this.stuck && (T >> 2) % 2) { c.fillStyle = '#ffffff'; c.fillRect(-6, -2, 4, 4); }
         break;
       }
       case 'galeball': {
@@ -1221,6 +1362,7 @@ class Fighter {
     this.trailT = 0; this.trailCol = '#fff'; this.ghostT = 0; this.cycT = 0; this.cycCol = '#fff'; this.flurryT = 0; this.flurryCol = '#fff';
     this.combo = 0; this.lastHitT = -999; this.comboShow = 0; this.barrageT = 0; this.barrageCol = '#fff'; this.ultUsed = false; this.parryT = 0; this.parryCd = 0; this.dazeT = 0; this.auraT = 0; this.ride = null;
     this.lastHurtT = -999; this.exhaustT = 0; this.pendingExhaust = false;
+    this.slowT = 0; this.slowAcc = 0; this.bleedT = 0; this.downT = 0; this.squishT = 0; this.bounceN = 0; this.bounceDmg = 0; this.pending = []; this.recoiled = false;
     // remoto
     this.tx = this.x; this.ty = this.y; this.vMove = null; this.vSt = 0; this.lastMs = -1;
   }
@@ -1240,8 +1382,8 @@ class Fighter {
     this.move = m; this.moveName = name; this.moveSeq++;
     this.state = name.startsWith('atk') ? 'attack' : name === 'r' ? 'dash' : name === 'tf' ? 'transform' : 'special';
     this.st = -1; this.hitSet.clear(); this.holdT = 0; this.buf = 0; this.landed = false; this.diveDone = false; this.ride = m.ride ? 0 : null;
-    if (m.endsForm) { this.formT = m.dur + 2; this.pendingExhaust = true; }
-    if (m.reflect) this.absorbed = 0; // la definitiva consume la forma al terminar
+    if (m.endsForm) { this.formT = m.dur + 2; this.pendingExhaust = true; } // la definitiva consume la forma al terminar
+    this.recoiled = false; this.sw = null;
     SFX.play(name === 'f' || name === 'ult' ? 'charge' : name === 'tf' ? 'transform' : 'whoosh');
   }
 
@@ -1256,6 +1398,10 @@ class Fighter {
     if (this.dazeT > 0) this.dazeT--;
     if (this.state !== 'defeat' && Game.phase === 'fight') this.energy = Math.min(100, this.energy + 0.03);
     if (this.exhaustT > 0) { this.exhaustT--; this.energy = 0; } // agotamiento tras la definitiva
+    if (this.bleedT > 0 && --this.bleedT % 25 === 0 && Game.phase === 'fight' && this.state !== 'defeat') { // sangrado: 6 de daño cada 25 frames
+      this.hp = Math.max(0, this.hp - 6); FX.text(this.x + rnd(-8, 8), this.y - this.box.h - 10, '6', '#ff4d6d', 14); this.lethal(this.face);
+    }
+    if (this.big && this.state === 'run' && this.st % 18 === 0) { Game.shake = Math.max(Game.shake, 3); FX.dust(this.x + this.face * 30, GROUND, 6); } // pasos del gigante
     if (this.form) { this.formT--; if (this.formT <= 0) this.revert(); }
 
     if (this.state === 'defeat') { this.physics(); this.st++; return; }
@@ -1301,13 +1447,28 @@ class Fighter {
     if (m.ride) { this.rideStep(m, inp, opp); return; }
     if (inp.atk) this.buf = 12;
     if (m.vel) for (const v of m.vel) if (st === v.f) {
+      if (v.toward) { // arpón: tira hacia el punto de anclaje junto al rival
+        if (opp) this.face = opp.x >= this.x ? 1 : -1;
+        const tx = opp ? opp.x + this.face * 30 : this.x + this.face * 200;
+        this.vx = clamp((tx - this.x) / v.toward, -26, 26); this.holdT = v.toward; this.holdVx = this.vx;
+      }
       if (v.vx !== undefined) { this.vx = v.vx * this.face; this.holdT = v.hold || 0; this.holdVx = this.vx; }
       if (v.vy !== undefined) { this.vy = v.vy; this.onGround = false; }
     }
     if (this.holdT > 0) { this.vx = this.holdVx; this.holdT--; } else if (this.onGround) this.vx *= 0.8;
+    if (m.hover && st >= m.hover[0] && st <= m.hover[1]) this.vy = Math.min(this.vy, 0.5); // el gas lo sostiene en el aire
+    if (m.swing) { // péndulo con gancho: arco por encima del rival hasta caer a su espalda
+      const S = m.swing;
+      if (st === S.f && opp) this.sw = { x0: this.x, x1: clamp(opp.x + (opp.x >= this.x ? 1 : -1) * 70, 30, W - 30) };
+      if (this.sw && st >= S.f && st < S.f + S.len) {
+        const k = (st - S.f + 1) / S.len;
+        this.x = this.sw.x0 + (this.sw.x1 - this.sw.x0) * k; this.y = GROUND - Math.sin(Math.PI * k) * S.h; this.vx = 0; this.vy = 0;
+        this.onGround = k >= 1; if (k >= 1) { this.y = GROUND; if (opp) this.face = opp.x >= this.x ? 1 : -1; }
+      }
+    }
     if (m.inv && st === m.inv[0]) this.inv = m.inv[1] - m.inv[0];
     if (m.becomeAt === st && !this.form) this.becomeForm();
-    if (m.tp && st === m.tp.f && opp) {
+    if (m.tp && st === m.tp.f && opp && !(m.tp.max && Math.abs(opp.x - this.x) > m.tp.max)) {
       const dir = opp.x >= this.x ? 1 : -1;
       FX.burst(this.x, this.y - 40, d6(this), 14, 3, 18, 4, 0);
       this.x = clamp(opp.x + dir * 56, 40, W - 40); this.face = opp.x >= this.x ? 1 : -1;
@@ -1374,7 +1535,12 @@ class Fighter {
   physics() {
     if (!this.onGround || this.vy < 0) this.vy += GRAV * (this.big ? 1.1 : 1) * (this.form && this.def.formGrav || 1);
     this.x += this.vx; this.y += this.vy;
-    if (this.y >= GROUND) {
+    if (this.y >= GROUND && this.bounceN > 0 && this.state === 'hurt' && this.vy > 3) { // rebote contra el suelo (cuerda de saltar)
+      this.y = GROUND; this.vy = -(5 + this.bounceN); this.bounceN--; this.onGround = false;
+      this.hp = Math.max(0, this.hp - this.bounceDmg); FX.text(this.x, this.y - this.box.h - 14, String(this.bounceDmg), '#ffffff', 18);
+      FX.dust(this.x, GROUND, 12); FX.add({ k: 'gring', x: this.x, r: 70, col: '#ffffff', life: 16 }); Game.shake = Math.max(Game.shake, 5); SFX.play('hit');
+      this.lethal(this.face);
+    } else if (this.y >= GROUND) {
       if (!this.onGround && this.vy > 4) FX.dust(this.x, GROUND, this.big ? 16 : 6);
       this.y = GROUND; this.vy = 0;
       if (!this.onGround) {
@@ -1391,7 +1557,7 @@ class Fighter {
     this.form = true; this.formT = FORM_TIME; this.ultUsed = false;
     Game.flash = Math.max(Game.flash, 8);
     FX.ring(this.x, this.y - 60, this.def.spark, 140, 26, 8);
-    const col = this.def.aura === 'colossus' ? '#ffb35c' : this.pal().hair;
+    const col = this.def.formBurst || this.pal().hair;
     FX.burst(this.x, this.y - 60, col, 40, 7, 34, 6, 0.05);
     if (this.big) FX.dust(this.x, GROUND, 26);
     if (this.ctl !== 'remote') Game.shake = Math.max(Game.shake, 10);
@@ -1405,7 +1571,12 @@ class Fighter {
 
   takeHit(h) {
     if (this.state === 'defeat' || Game.phase !== 'fight') return;
+    const am = this.move; // lona de goma: absorbe cualquier ataque frontal (no las definitivas)
+    if (am && am.absorbAll && this.st >= am.absorbAll[0] && this.st <= am.absorbAll[1] && h.dir === -this.face && !h.gb) {
+      FX.ring(this.x + this.face * 60, this.y - 60, '#ffffff', 60, 16, 6); FX.text(this.x, this.y - this.box.h - 20, 'ABSORBIDO', '#ffffff', 16); SFX.play('block'); return;
+    }
     this.lastHurtT = T;
+    if (h.slow) this.slowT = Math.max(this.slowT, h.slow);
     let dmg = h.dmg;
     if (this.form && this.def.formArmor) dmg *= this.def.formArmor;
     const guard = this.state === 'block' && h.dir === -this.face, blocking = guard && !h.gb; // gb: rompe guardia e ignora el parry
@@ -1424,17 +1595,21 @@ class Fighter {
     }
     dmg = Math.round(dmg);
     this.hp = Math.max(0, this.hp - dmg); this.flash = 6;
+    if (h.bleed) this.bleedT = Math.max(this.bleedT, h.bleed);
+    if (h.squish) this.squishT = 14;
     this.energy = Math.min(100, this.energy + dmg * 0.1);
     FX.text(this.x + rnd(-10, 10), this.y - this.box.h - 14, String(dmg), h.heavy ? '#ffd27a' : '#ffffff', h.heavy ? 24 : 18);
     SFX.play(h.heavy ? 'heavy' : 'hit');
-    const armored = this.big && !h.heavy;
+    const armored = this.big && !h.gb && (!h.heavy || (this.move && this.move.armor)); // súper armadura del titán
     if (!armored) {
       // si te interrumpen la transformación, la energía no se pierde: la forma se activa igualmente
       const wasTf = this.moveName === 'tf' && !this.form;
       if (this.move) { this.move = null; this.moveName = ''; this.ride = null; }
       if (wasTf) this.becomeForm();
-      this.state = 'hurt'; this.st = 0; this.stun = h.stun; this.vx = h.kb * h.dir; this.vy = h.kby || 0;
+      this.state = 'hurt'; this.st = 0; this.stun = h.stun; this.vx = h.kb * h.dir * (this.big ? this.def.formKb || 1 : 1); this.vy = h.kby || 0;
       if (h.daze) this.dazeT = h.stun;
+      if (h.knock) this.downT = h.stun;
+      if (h.bounce) { this.bounceN = h.bounce; this.bounceDmg = h.bounceDmg || 20; this.onGround = false; this.y = Math.min(this.y, GROUND - 1); }
       if (this.vy < 0) this.onGround = false;
     }
     this.lethal(h.dir);
@@ -1446,25 +1621,28 @@ class Fighter {
   }
 
   doParry(h) {
-    const d = this.def, att = Game.other(this), counter = d.parry === 'counter';
+    const d = this.def, att = Game.other(this), dom = d.parry === 'dominion', counter = d.parry === 'counter' || !!d.domCounter;
     this.parryT = 0; this.parryCd = 0; this.flash = 4;
     this.energy = Math.min(100, this.energy + 12);
     Game.stats[this.side].parry++;
     const cx = this.x + this.face * 14, cy = this.y - this.box.h * 0.6;
     FX.ring(cx, cy, '#ffffff', 70, 16, 6); FX.ring(cx, cy, d.spark, 110, 22, 4);
     FX.burst(cx, cy, '#ffffff', 18, 6, 18, 4, 0); FX.burst(cx, cy, d.spark, 14, 4, 22, 4, 0);
-    FX.text(this.x, this.y - this.box.h - 16, counter ? '¡CONTRA!' : '¡PARRY!', '#ffd27a', 24);
-    Game.hitstop = Math.max(Game.hitstop, 10); Game.flash = Math.max(Game.flash, 4); Game.shake = Math.max(Game.shake, 4);
+    FX.text(this.x, this.y - this.box.h - 16, dom ? '¡DOMINIO!' : counter ? '¡CONTRA!' : '¡PARRY!', dom ? '#e0233c' : '#ffd27a', 24);
+    Game.hitstop = Math.max(Game.hitstop, 10); Game.flash = Math.max(Game.flash, 4); Game.shake = Math.max(Game.shake, dom ? 9 : 4);
+    if (dom) dominionFx(cx, cy);
     SFX.play('parry');
     if (!h.proj) {
-      const stun = counter ? 24 : 44;
-      if (att.ctl === 'remote') Net.send({ t: 'parried', s: stun, c: counter ? 1 : 0, r: Game.round });
-      else att.getParried(stun);
+      // Presión Dominante: aturdimiento corto + 75 % de ralentización durante la ventana de castigo (45 frames reales)
+      const stun = dom ? 20 : counter ? 24 : 44, slow = dom ? 45 : 0;
+      if (att.ctl === 'remote') Net.send({ t: 'parried', s: stun, sl: slow, c: counter ? 1 : 0, dm: dom ? 1 : 0, r: Game.round });
+      else att.getParried(stun, slow);
       if (counter) this.startMove('ctr');
     }
   }
-  getParried(stun) {
+  getParried(stun, slow = 0) {
     if (this.state === 'defeat') return;
+    this.slowT = Math.max(this.slowT, slow); this.slowAcc = 0;
     this.move = null; this.moveName = ''; this.ride = null; this.state = 'hurt'; this.st = 0; this.stun = stun; this.dazeT = stun;
     this.vx = -this.face * 3; this.holdT = 0; this.trailT = 0; this.cycT = 0; this.flurryT = 0; this.barrageT = 0;
   }
@@ -1479,7 +1657,7 @@ class Fighter {
     this.tx = s.x; this.ty = s.y; this.face = s.f;
     const prevState = this.state, prevForm = this.form;
     this.form = s.fm; this.formT = s.ft; this.hp = s.hp; this.energy = s.e; this.inv = s.iv; this.cdR = s.cr;
-    this.state = s.s; this.st = s.st; this.moveName = s.m; this.move = s.m ? this.moveDef(s.m) : null; this.ultUsed = !!s.u; this.dazeT = s.dz || 0; this.exhaustT = s.ex || 0;
+    this.state = s.s; this.st = s.st; this.moveName = s.m; this.move = s.m ? this.moveDef(s.m) : null; this.ultUsed = !!s.u; this.dazeT = s.dz || 0; this.exhaustT = s.ex || 0; this.slowT = s.sl || 0; this.bleedT = s.bl || 0; this.downT = s.dn || 0;
     if (s.ms !== this.lastMs) { this.lastMs = s.ms; if (s.m && this.move) { this.vMove = this.move; this.vSt = Math.max(0, s.st); SFX.play(s.m === 'f' || s.m === 'ult' ? 'charge' : s.m === 'tf' ? 'transform' : 'whoosh'); } }
     if (this.state === 'transform' && prevState !== 'transform') FX.ring(this.x, this.y - 50, this.def.spark, 90, 30, 6);
     if (this.form && !prevForm) this.becomeForm();
@@ -1501,6 +1679,13 @@ class Fighter {
     if (this.cycT > 0) { this.cycT--; if (this.cycT % 3 === 0) FX.slash(this.x, this.y - 50, this.cycT % 6 ? 1 : -1, this.cycCol, rnd(44, 66), rnd() < 0.5, 4); }
     if (this.auraT > 0) this.auraT--;
     if (this.squashT > 0) this.squashT--;
+    if (this.squishT > 0) this.squishT--;
+    if (this.downT > 0 && (this.state !== 'hurt' || --this.downT <= 0)) this.downT = 0;
+    if (this.slowT > 0 && T % 5 === 0) FX.zap(this.x + rnd(-14, 14), this.y - rnd(20, this.box.h), 1, rnd(20, 36), DOM_COLS);
+    if (this.bleedT > 0 && T % 6 === 0) FX.add({ k: 'p', x: this.x + rnd(-10, 10), y: this.y - rnd(30, 70), vx: rnd(-0.5, 0.5), vy: 0.5, col: '#c4304a', life: 22, size: 4, g: 0.15 });
+    if (this.gasT > 0) { this.gasT--; if (T % 2 === 0) FX.cloud(this.x + rnd(-10, 10), this.y + 6, '#c8ccd4', 10, rnd(-1, 1), 1.5, 18); }
+    if (this.drillT > 0) { this.drillT--; if (T % 2 === 0) { FX.ring(this.x + this.face * 24, this.y - 50, this.def.formBurst || '#fff', 34, 8, 3); FX.cloud(this.x - this.face * 20, this.y - 50, '#c8ccd4', 8, -this.face, 0, 14); } }
+    if (this.vortexT > 0) { this.vortexT--; if (T % 5 === 0) { FX.add({ k: 'gring', x: this.x, r: 170, col: '#b48cff', life: 14 }); FX.zap(this.x + rnd(-120, 120), this.y - rnd(20, 140), 1, 40, this.def.zapCol); } }
     if (demonAura(this) && !this.form && T % 2 === 0) FX.rise(this.x + rnd(-16, 16), this.y - rnd(10, 80), rnd() < 0.5 ? '#e0233c' : '#140a0d', 5);
     if (demonAura(this) && T % (this.form ? 5 : 3) === 0) FX.zap(this.x + rnd(-14, 14), this.y - rnd(15, this.box.h), this.form ? 1 : 2, rnd(18, 36));
     if (this.dazeT > 0 && T % 3 === 0) { const a = T * 0.25; FX.add({ k: 'p', x: this.x + Math.cos(a) * 16, y: this.y - this.box.h - 8 + Math.sin(a) * 4, vx: 0, vy: 0, col: (T >> 2) % 2 ? '#ffd27a' : '#ffffff', life: 8, size: 4, g: 0 }); }
@@ -1509,9 +1694,11 @@ class Fighter {
     if (this.form && T % 3 === 0) {
       const a = this.def.aura, top = this.y - this.box.h;
       if (a === 'demon') { FX.rise(this.x + rnd(-18, 18), this.y - rnd(10, 80), rnd() < 0.5 ? '#e0233c' : '#140a0d', 5); }
-      else if (a === 'solar') { FX.rise(this.x + rnd(-20, 20), this.y - rnd(0, 90), rnd() < 0.6 ? '#fff1b8' : '#ffffff', 4); }
+      else if (a === 'liberty') { if (T % 6 === 0) FX.cloud(this.x + rnd(-24, 24), this.y - rnd(10, 90), '#ffffff', 8, rnd(-0.4, 0.4), -0.8, 26); else FX.rise(this.x + rnd(-20, 20), this.y - rnd(0, 90), '#ffffff', 3); }
+      else if (a === 'asura') { FX.cloud(this.x + rnd(-40, 40), this.y - rnd(0, 40), '#3a2a4a', 12, rnd(-0.5, 0.5), -0.3, 30); }
+      else if (a === 'focus') { if (this.state === 'run' || !this.onGround) FX.cloud(this.x - this.face * 10, this.y - 4, '#c8ccd4', 8, -this.face * 0.6, -0.4, 18); FX.add({ k: 'p', x: this.x + this.face * 4, y: this.y - 76, vx: -this.face * 1.2, vy: 0, col: '#ff4d6d', life: 10, size: 3, g: 0 }); }
+      else if (a === 'titan') { if (T % 6 === 0) FX.cloud(this.x + rnd(-40, 40), top + rnd(10, 120), '#e8e0d8', 14, rnd(-0.3, 0.3), -1, 34); }
       else if (a === 'tempest') { FX.rise(this.x + rnd(-22, 22), this.y - rnd(0, 90), rnd() < 0.5 ? '#c8fff0' : '#ffffff', 3); }
-      else if (a === 'colossus') { FX.rise(this.x + rnd(-40, 40), top + rnd(20, 160), rnd() < 0.5 ? '#ffb35c' : '#5f7a7c', 4); }
     }
     if (this.state === 'transform' && this.st % 2 === 0) {
       const ang = this.st * 0.5, r = 50;
@@ -1541,19 +1728,50 @@ function doFx(f, e) {
     case 'cyclone': f.cycT = e.dur; f.cycCol = e.col; break;
     case 'ghosts': f.ghostT = e.n * 3; break;
     case 'flurry': f.flurryT = e.dur; f.flurryCol = e.col; break;
-    case 'wire': FX.line(f.x + dir * 10, f.y - 60, f.x + dir * 190, f.y - 160, e.col, 16, 2); break;
+    case 'wire': { const tg = e.toOpp && Game.other(f); if (tg) FX.line(f.x + dir * 10, f.y - 60, tg.x + dir * 30, tg.y - 70, e.col, 16, 2); else FX.line(f.x + dir * 10, f.y - 60, f.x + dir * 190, f.y - 160, e.col, 16, 2); SFX.play('whoosh'); break; }
     case 'flash': Game.flash = Math.max(Game.flash, 8); break;
     case 'sun': FX.add({ k: 'sun', x: ox, y: oy, r: e.r || 90, life: 26 }); FX.burst(ox, oy, '#fff1b8', 30, 7, 28, 6, 0); break;
     case 'cine': Game.cine = { t: 0, dur: e.dur || 70, name: e.name, sub: e.sub, col: e.col, col2: e.col2, f, dir, mode: e.mode || 'banner', banner: e.banner || e.dur || 70, zoom: e.zoom || (e.mode === 'focus' ? 1.85 : 1.08) }; SFX.play('cine'); break;
     case 'aura': f.auraT = e.t || 40; break;
-    case 'zaps': FX.zap(f.x + (e.x || 0) * dir, f.y + (e.y ?? -50), e.n || 4, e.len || 50); SFX.play('zap'); break;
+    case 'zaps': FX.zap(f.x + (e.x || 0) * dir, f.y + (e.y ?? -50), e.n || 4, e.len || 50, f.def.zapCol); SFX.play('zap'); break;
     case 'sigil': FX.add({ k: 'sigil', x: f.x, r: e.r || 500, col: e.col, col2: e.col2, fill: e.fill, life: 100, back: true }); SFX.play('charge'); break;
     case 'skysigil': FX.add({ k: 'skysigil', x: clamp(f.x, e.r || 300, W - (e.r || 300)), r: e.r || 300, col: e.col, life: 110, back: true }); SFX.play('charge'); break;
     case 'beam': FX.add({ k: 'beam', x: f.x + dir * 34, y: f.y + (e.y ?? -70), h: e.h || 60, dir, col: e.col, col2: e.col2, life: e.life || 40 }); SFX.play('boom'); break;
     case 'tempest': FX.add({ k: 'tempest', x: f.x, col: e.col, life: e.life || 60, back: true }); SFX.play('boom'); break;
     case 'freeze': Game.freeze = e.t || 30; Game.freezeBy = f; break;
     case 'barrier': FX.add({ k: 'barrier', x: f.x + dir * (e.x || 60), y: f.y, dir, life: e.life || 30 }); SFX.play('charge'); break;
-    case 'sunfist': { const tg = Game.other(f); FX.add({ k: 'sunfist', x: clamp(tg ? tg.x : f.x, 140, W - 140), life: e.life || 44 }); SFX.play('cine'); break; }
+    case 'sunfist': { const tg = Game.other(f); FX.add({ k: 'sunfist', x: clamp(tg ? tg.x : f.x, 140, W - 140), life: e.life || 44, star: !!e.star }); SFX.play('cine'); break; }
+    case 'drums': FX.ring(f.x, f.y - 50, '#ffffff', 90, 14, 6); FX.ring(f.x, f.y - 50, '#c9b8d8', 130, 18, 3); SFX.play('drum'); break;
+    case 'laugh': FX.text(f.x, f.y - f.box.h - 34, '¡JA JA JA!', '#ffffff', 20); SFX.play('laugh'); break;
+    case 'clouds': for (let i = 0; i < (e.n || 10); i++) { const an = rnd(6.283), r = rnd(0.3, 1) * (e.r || 100); FX.cloud(ox + Math.cos(an) * r, f.y - 50 + Math.sin(an) * r * 0.5, i % 3 ? '#ffffff' : '#e9dcff', rnd(14, 26), Math.cos(an) * 2, -0.6, 40); } break;
+    case 'domring': dominionFx(f.x, f.y - 60); break;
+    case 'shatter': FX.add({ k: 'shatter', x: W / 2, y: H / 2, life: 50 }); break;
+    case 'trampoline': FX.add({ k: 'trampoline', x: f.x + dir * (e.x || 110), life: e.life || 30, back: true }); SFX.play('charge'); break;
+    case 'mist': for (let i = 0; i < (e.n || 12); i++) FX.cloud(f.x + rnd(-120, 120), f.y - rnd(0, 60), i % 2 ? '#3a2a4a' : '#6a5a7a', rnd(18, 30), rnd(-0.6, 0.6), -0.2, 60); break;
+    case 'plant': for (const dx of [-30, 0, 30]) { FX.line(f.x + dx, GROUND - 40, f.x + dx * 1.2, GROUND + 4, '#cfd8e8', 30, 3); } FX.dust(f.x, GROUND, 10); SFX.play('block'); break;
+    case 'click': FX.ring(f.x + dir * 10, f.y - 50, '#ffffff', 26, 10, 2); SFX.play('tick'); break;
+    case 'blink': FX.line(f.x, f.y - 46, clamp(f.x + dir * (e.len || 240), 0, W), f.y - 46, e.col || '#ffffff', 12, 3); FX.dust(f.x, GROUND, 8); break;
+    case 'zigzag': { const tg = Game.other(f); if (!tg) break; const tx = tg.x + (tg.x >= f.x ? 1 : -1) * 56;
+      for (let i = 1; i <= (e.n || 3); i++) { const sn = f.snap(); sn.x = f.x + (tx - f.x) * i / ((e.n || 3) + 1); sn.y = GROUND - (i % 2 ? 26 : 0); sn.state = 'dash'; FX.add({ k: 'ghost', snap: sn, life: 18 + i * 3, col: '#b48cff' }); } SFX.play('whoosh'); break; }
+    case 'vortexring': f.vortexT = e.life || 50; break;
+    case 'bite': FX.burst(f.x + dir * 12, f.y - 70, '#c4304a', 12, 3, 18, 4, 0.2); FX.text(f.x, f.y - f.box.h - 20, '¡ÑAM!', '#c4304a', 16); SFX.play('hit'); break;
+    case 'steam': for (let i = 0; i < (e.n || 20); i++) FX.cloud(f.x + rnd(-f.box.w, f.box.w), f.y - rnd(0, f.box.h), i % 2 ? '#e8e0d8' : '#b8b0a8', rnd(14, 30), rnd(-0.8, 0.8), rnd(-1.6, -0.6), 60); break;
+    case 'roar': FX.add({ k: 'roar', x: f.x + dir * f.box.w * 0.4, y: f.y - f.box.h * 0.82, dir, life: 44 }); SFX.play('roar'); break;
+    case 'gianthand': { const tg = Game.other(f); if (tg) FX.add({ k: 'gianthand', tgt: tg, life: e.life || 70 }); break; }
+    case 'crackOpp': { const tg = Game.other(f); if (tg) { FX.crack(tg.x, '#ffe08a', 140); FX.dust(tg.x, GROUND, 16); for (let i = 0; i < 10; i++) FX.add({ k: 'p', x: tg.x + rnd(-20, 20), y: GROUND - 10, vx: rnd(-5, 5), vy: rnd(-8, -3), col: i % 2 ? '#3a2c45' : '#5c4566', life: 30, size: rnd(5, 9), g: 0.4 }); } SFX.play('heavy'); break; }
+    case 'heldrock': FX.add({ k: 'heldrock', f, life: e.life || 20 }); break;
+    case 'hook': { const tg = Game.other(f), ax = tg ? (f.x + tg.x) / 2 : f.x + dir * 120; FX.line(f.x, f.y - 60, ax, 60, '#c8c8c8', 26, 2); SFX.play('whoosh'); break; }
+    case 'gas': for (let i = 0; i < (e.n || 8); i++) FX.cloud(f.x + rnd(-16, 16), f.y - rnd(0, 20), '#c8ccd4', rnd(6, 12), rnd(-2, 2), rnd(-0.6, 0.6), 22); break;
+    case 'gasjet': f.gasT = e.dur || 30; break;
+    case 'gasburst': FX.burst(ox, oy, '#ff8fb8', 10, 3, 14, 4, 0); for (let i = 0; i < 4; i++) FX.cloud(ox + rnd(-8, 8), oy + rnd(-8, 8), '#c8ccd4', 8, dir * rnd(0.5, 2), -0.3, 18); SFX.play('zap'); break;
+    case 'explode': FX.explode(ox, oy, e.r || 60, '#ff8fb8'); break;
+    case 'thrust': FX.line(ox, oy, ox + dir * (e.len || 40), oy, '#ffffff', 8, 3); break;
+    case 'eyeglint': FX.burst(f.x + dir * 6, f.y - 76, '#ff4d6d', 10, 2, 16, 3, 0); FX.line(f.x - dir * 20, f.y - 76, f.x + dir * 30, f.y - 76, '#ff8fb8', 14, 2); break;
+    case 'drill': f.drillT = e.dur || 16; break;
+    case 'lances': { const tg = Game.other(f); if (tg) { const spots = []; for (let i = 0; i < (e.n || 6); i++) { const an = i / (e.n || 6) * 6.283; spots.push([Math.cos(an) * 30, Math.sin(an) * 40, an + Math.PI]); } FX.add({ k: 'planted', tgt: tg, spots, life: e.life || 80 }); } SFX.play('block'); break; }
+    case 'webs': { const tg = Game.other(f); if (tg) { const ends = []; for (let i = 0; i < 8; i++) ends.push([i % 2 ? rnd(W) : (i % 4 < 2 ? 0 : W), i % 2 ? 0 : rnd(60, GROUND)]); FX.add({ k: 'webs', tgt: tg, ends, life: e.life || 50 }); } break; }
+    case 'detonate': { const tg = Game.other(f); if (tg) for (let i = 0; i < (e.n || 6); i++) FX.explode(tg.x + rnd(-50, 50), tg.y - tg.box.h * 0.5 + rnd(-50, 50), 60, i % 2 ? '#ff4d6d' : '#ffb35c'); break; }
+    case 'dimcuts': FX.add({ k: 'dimcuts', life: e.life || 40 }); SFX.play('slash'); break;
     case 'chains': { const tg = Game.other(f); if (tg) FX.add({ k: 'chains', tgt: tg, col: e.col, life: 64 }); SFX.play('heavy'); break; }
     case 'demon': FX.add({ k: 'demon', x: f.x - dir * 30, dir, col: e.col, life: 72, back: true }); SFX.play('boom'); break;
     case 'pillar': FX.add({ k: 'pillar', x: f.x + (e.x || 0) * dir, w: e.w || 60, col: e.col, life: e.life || 30, back: true }); SFX.play('charge'); break;
@@ -1568,6 +1786,9 @@ function doFx(f, e) {
     case 'rocks': for (let i = 0; i < 14; i++) FX.add({ k: 'p', x: ox + rnd(-14, 14), y: oy, vx: rnd(-6, 6), vy: rnd(-9, -3), col: i % 3 ? '#5f7a7c' : '#465e61', life: 34, size: rnd(6, 11), g: 0.4 }); break;
   }
 }
+function dominionFx(x, y) { // Presión Dominante: onda negra, rayos y distorsión de pantalla
+  FX.add({ k: 'domring', x, y, life: 26 }); FX.zap(x, y, 10, 90, DOM_COLS); Game.distort = Math.max(Game.distort || 0, 22);
+}
 function moveHits(f, opp) {
   const m = f.move; if (!m || !m.hits) return;
   if (opp.state === 'defeat' || opp.inv > 0) return;
@@ -1577,8 +1798,15 @@ function moveHits(f, opp) {
     const key = h.every ? i + ':' + Math.floor((f.st - h.f[0]) / h.every) : String(i);
     if (f.hitSet.has(key)) continue;
     if (overlap(f.worldBox(h.box), opp.hurt())) {
-      f.hitSet.add(key); applyHit(f, opp, { ...h, dmg: h.dmg * f.dmgMul() }, h.aoe ? (opp.x >= f.x ? 1 : -1) : f.face, false);
+      f.hitSet.add(key);
+      const dir = h.aoe ? (opp.x >= f.x ? 1 : -1) * (h.pull ? -1 : 1) : f.face; // pull: arrastra hacia el atacante
+      if (h.delay && !(opp.state === 'block' && dir === -opp.face)) { // corte retardado: ya ha cortado, el daño llega después
+        f.pending.push({ t: T + h.delay, h: { ...h, dmg: h.dmg * f.dmgMul(), gb: true }, dir });
+        FX.burst(opp.x, opp.y - 50, '#ffffff', 6, 2, 10, 3, 0); continue;
+      }
+      applyHit(f, opp, { ...h, dmg: h.dmg * f.dmgMul() }, dir, false);
       if (f.move !== m) return; // parry: el ataque se ha cancelado
+      if (m.recoil && !f.recoiled) { f.recoiled = true; f.holdT = 0; f.vx = -f.face * m.recoil.vx; f.vy = m.recoil.vy; f.onGround = false; } // rebote seguro
     }
   }
 }
@@ -1594,10 +1822,12 @@ function applyHit(att, tgt, h, dir, isProj) {
   FX.burst(cx, cy, att.def.spark, h.heavy ? 22 : 12, h.heavy ? 6 : 4, 22, 5, 0.1);
   FX.burst(cx, cy, '#ffffff', 6, 3, 12, 3, 0);
   if (h.heavy) FX.ring(cx, cy, att.def.spark, 60, 16, 6);
-  if (h.zap) { FX.zap(cx, cy, 6, h.heavy ? 90 : 55); SFX.play('zap'); }
+  if (h.zap) { FX.zap(cx, cy, 6, h.heavy ? 90 : 55, att.def.zapCol); SFX.play('zap'); }
+  if (h.squish && tgt.ctl === 'remote') tgt.squishT = 14;
   att.energy = Math.min(100, att.energy + dmg * 0.15);
   countCombo(att);
-  const msg = { dmg, kb: h.kb, kby: h.kby || 0, stun: h.stun, dir, heavy: !!h.heavy, proj: isProj, zap: !!h.zap, gb: !!h.gb, daze: !!h.daze, chip: h.chip || 0 };
+  const msg = { dmg, kb: h.kb, kby: h.kby || 0, stun: h.stun, dir, heavy: !!h.heavy, proj: isProj, zap: !!h.zap, gb: !!h.gb, daze: !!h.daze, chip: h.chip || 0,
+    slow: h.slow || 0, bleed: h.bleed || 0, knock: !!h.knock, squish: !!h.squish, bounce: h.bounce || 0, bounceDmg: h.bounceDmg || 0, boom: !!h.boom };
   if (tgt.ctl === 'remote') {
     Net.send({ t: 'hit', r: Game.round, ...msg }); tgt.flash = 6;
     FX.text(tgt.x + rnd(-10, 10), tgt.y - tgt.box.h - 14, String(dmg), h.heavy ? '#ffd27a' : '#ffffff', h.heavy ? 24 : 18);
@@ -1645,6 +1875,10 @@ function getPose(f) {
     if ((m.pose === 'raise' || m.pose === 'leap') && st < kf) { p.arm = 'raise'; p.lean = 0; p.crouch = st < 12 ? 4 : 0; }
     if (m.pose === 'barrage' && p.arm === 'ext' && st < ke - 6) p.reach = (st >> 1) % 2 ? m.reach : m.reach * 0.5;
     if (m.pose === 'spin' && st >= kf) p.spin = true;
+    if (m.pose === 'sling' && st < kf) { p.arm = 'back'; p.crouch = 6; p.lean = -5; }
+    if (m.pose === 'lunge') { p.crouch = 6; p.lean = 6; p.arm = st < kf ? 'wind' : 'ext'; }
+    if (m.pose === 'charge') { p.lean = 6; p.crouch = 3; p.arm = 'block'; }
+    if (m.pose === 'drill') { p.spin = true; p.lean = 5; p.arm = 'ext'; }
     if (m.pose === 'dash' || f.state === 'dash') { p.lean = 4; if (st >= kf - 2) p.arm = 'ext'; }
     if (f.moveName === 'r' && f.def.weapon === 'fist') p.reach = 20;
     if (!f.onGround) p.tuck = 3;
@@ -1694,6 +1928,15 @@ function drawWeapon(c, f, P, mode, hx, hy) {
       box(c, hx - 2, hy - 2, 8, 2, P.guard); Px(c, hx, hy - 16, 4, 14, P.blade); Px(c, hx, hy - 16, 1, 14, P.edge);
     } else {
       box(c, hx - 2, hy + 4, 8, 2, P.guard); Px(c, hx, hy + 6, 4, 13, P.blade); Px(c, hx + 3, hy + 6, 1, 13, P.edge);
+    }
+  } else if (w === 'spear2') { // daga + lanza explosiva montada en el antebrazo (NYRA en foco)
+    if (mode === 'fwd') {
+      box(c, hx + 4, hy - 2, 2, 8, P.guard); Px(c, hx + 6, hy, 14, 4, P.blade); Px(c, hx + 6, hy, 14, 1, P.edge);
+      Px(c, hx - 12, hy + 4, 16, 3, '#5a6270'); Px(c, hx - 12, hy + 4, 16, 1, '#c8ccd4'); Px(c, hx + 4, hy + 4, 3, 3, '#ff4d6d');
+    } else if (mode === 'up' || mode === 'guard') {
+      box(c, hx - 2, hy - 2, 8, 2, P.guard); Px(c, hx, hy - 16, 4, 14, P.blade); Px(c, hx + 4, hy - 2, 3, 14, '#5a6270'); Px(c, hx + 4, hy - 4, 3, 3, '#ff4d6d');
+    } else {
+      box(c, hx - 2, hy + 4, 8, 2, P.guard); Px(c, hx, hy + 6, 4, 13, P.blade); Px(c, hx - 4, hy - 8, 3, 14, '#5a6270'); Px(c, hx - 4, hy + 6, 3, 3, '#ff4d6d');
     }
   } else if (w === 'galeblade') { // hoja de viento condensado (Liora despierta)
     const gl = P.glow;
@@ -1770,6 +2013,7 @@ function drawHead(c, f, P, hx, hy) {
   if (fierce) { Px(c, hx + 9, hy + 10, 3, 2, '#3a1a1a'); Px(c, hx + 9, hy + 10, 3, 1, '#f4f1ea'); }
   else Px(c, hx + 9, hy + 10, 3, 1, sh(skin, -0.4));
   if (f.def.key === 'f1') Px(c, hx + 6, hy + 8, 3, 1, sh(skin, -0.3)); // cicatriz
+  if (f.def.mouthBlade) { Px(c, hx + 5, hy + 10, 4, 2, '#1a1420'); Px(c, hx + 9, hy + 10, 20, 1, P.blade); Px(c, hx + 9, hy + 11, 19, 1, P.edge); } // tercera hoja, en la boca
   if (f.def.key === 'f3') { Px(c, hx + 6, hy + 8, 1, 1, sh(skin, -0.3)); Px(c, hx + 8, hy + 8, 1, 1, sh(skin, -0.3)); }
   drawHair(c, f, P, hx, hy);
 }
@@ -1907,6 +2151,9 @@ function drawHuman(c, f, p, P) {
   const armC = d.weapon === 'fist' ? P.skin : (P.arm || P.top);
   drawBack(c, f, P, lx, b);
   const bax = -11 + lx, bay = -43 + b;
+  if (f.move && f.move.pose === 'sling' && f.st < 13) {
+    for (let k = 0; k <= 12; k++) { const t = k / 12; Px(c, -6 + lx + (-36 + 6 - lx) * t, -42 + b + (40 - b) * t, 3, 3, k % 4 ? P.skin : P.band); Px(c, -2 + lx + (-30 + 2 - lx) * t, -40 + b + (38 - b) * t, 3, 3, sh(P.skin, -0.15)); }
+  }
   if (p.arm === 'ext' && f.move && f.move.double) { // golpe doble: el brazo trasero también se estira
     const len = 8 + Math.round(p.reach / U) + 15, fs = f.move.fistSize || 8;
     box(c, bax, bay + 4, len, 4, sh(armC, -0.2)); box(c, bax + len - 1, bay + 6 - Math.floor(fs / 2), fs, fs, sh(P.wrap || P.skin, -0.12));
@@ -1926,26 +2173,42 @@ function drawHuman(c, f, p, P) {
 }
 function riding(f) { return f.def.aura === 'demon' && f.form && f.moveName === 'r' && f.y < GROUND - 2; }
 
-function drawGolem(c, f, p, P) {
-  const b = p.bob + p.crouch, lx = p.lean, gl = (T >> 3) % 2 ? P.glow : P.eye;
-  box(c, -11 + p.lb, -22, 9, 22, P.stone2); box(c, -12 + p.lb, -5, 11, 5, sh(P.stone2, -0.2));
-  box(c, -20 + lx, -46 + b, 7, 20, P.stone2); box(c, -22 + lx, -27 + b, 10, 10, sh(P.stone2, -0.15));
-  box(c, 2 + p.lf, -22, 9, 22, P.stone); box(c, 1 + p.lf, -5, 12, 5, sh(P.stone, -0.2));
-  Px(c, 4 + p.lf, -14, 4, 1, sh(P.stone, -0.35)); Px(c, -8 + p.lb, -12, 4, 1, sh(P.stone2, -0.35)); Px(c, 6 + p.lf, -10, 1, 4, gl);
-  box(c, -13 + lx, -48 + b, 26, 28, P.stone);
-  const seam = sh(P.stone, -0.32);
-  Px(c, -13 + lx, -38 + b, 26, 1, seam); Px(c, -1 + lx, -48 + b, 1, 10, seam); Px(c, 5 + lx, -38 + b, 1, 18, seam); Px(c, -8 + lx, -38 + b, 1, 18, seam); Px(c, -13 + lx, -29 + b, 26, 1, seam);
-  Px(c, -4 + lx, -44 + b, 2, 9, gl); Px(c, -3 + lx, -36 + b, 6, 2, gl); Px(c, 2 + lx, -34 + b, 2, 8, gl); Px(c, -9 + lx, -30 + b, 4, 2, gl); Px(c, 7 + lx, -42 + b, 2, 5, gl);
-  box(c, -17 + lx, -52 + b, 34, 8, P.stone2);
-  Px(c, -15 + lx, -52 + b, 8, 2, P.moss); Px(c, 6 + lx, -52 + b, 9, 2, P.moss); Px(c, 10 + lx, -50 + b, 3, 2, P.moss); Px(c, -12 + lx, -50 + b, 2, 3, P.moss);
-  box(c, -4 + lx, -60 + b, 13, 10, P.stone2); Px(c, -4 + lx, -57 + b, 13, 2, sh(P.stone2, -0.35));
-  Px(c, 3 + lx, -55 + b, 5, 2, gl); Px(c, 4 + lx, -55 + b, 2, 1, '#ffffff'); Px(c, -2 + lx, -51 + b, 9, 1, sh(P.stone2, -0.4));
+function drawTitan(c, f, p, P) { // gigante de carne y músculo (forma despertada de DORAN)
+  const b = p.bob + p.crouch, lx = p.lean, S = P.skin, M = P.muscle, D = sh(S, -0.18);
+  box(c, -9 + p.lb, -26, 8, 26, D); Px(c, -7 + p.lb, -18, 4, 1, M); box(c, -10 + p.lb, -3, 10, 3, sh(D, -0.15));
+  box(c, -17 + lx, -48 + b, 6, 19, D); Px(c, -16 + lx, -42 + b, 2, 8, M); box(c, -18 + lx, -30 + b, 8, 7, sh(D, -0.1));
+  box(c, 1 + p.lf, -26, 8, 26, S); Px(c, 3 + p.lf, -20, 4, 1, M); Px(c, 2 + p.lf, -13, 5, 1, sh(S, -0.25)); box(c, 0 + p.lf, -3, 11, 3, sh(S, -0.3));
+  box(c, -10 + lx, -31 + b, 20, 7, sh(S, -0.22));
+  box(c, -12 + lx, -51 + b, 24, 21, S);
+  Px(c, -10 + lx, -49 + b, 9, 6, sh(S, 0.08)); Px(c, 1 + lx, -49 + b, 9, 6, sh(S, 0.08)); Px(c, -1 + lx, -49 + b, 2, 12, sh(S, -0.25));
+  for (let i = 0; i < 3; i++) { Px(c, -6 + lx, -41 + b + i * 3, 5, 1, sh(S, -0.22)); Px(c, 1 + lx, -41 + b + i * 3, 5, 1, sh(S, -0.22)); }
+  Px(c, -12 + lx, -47 + b, 3, 12, M); Px(c, 9 + lx, -46 + b, 3, 10, M); Px(c, -11 + lx, -45 + b, 1, 8, P.sinew); Px(c, 10 + lx, -44 + b, 1, 6, P.sinew);
+  box(c, -3 + lx, -55 + b, 7, 5, D); Px(c, -2 + lx, -55 + b, 1, 5, M);
+  box(c, -6 + lx, -65 + b, 13, 11, S);
+  Px(c, -7 + lx, -67 + b, 15, 4, P.hair); Px(c, -8 + lx, -64 + b, 4, 12, P.hair); Px(c, -6 + lx, -53 + b, 2, 3, P.hair);
+  Px(c, 1 + lx, -62 + b, 6, 1, P.dark); Px(c, 2 + lx, -61 + b, 4, 2, P.eye); Px(c, 3 + lx, -61 + b, 1, 1, '#ffffff');
+  Px(c, 4 + lx, -58 + b, 3, 2, M);
+  Px(c, 0 + lx, -56 + b, 8, 2, P.teeth); for (let i = 0; i < 4; i++) Px(c, 1 + lx + i * 2, -56 + b, 1, 2, P.dark);
   switch (p.arm) {
-    case 'ext': box(c, 10 + lx, -44 + b, 24, 9, P.stone); box(c, 32 + lx, -48 + b, 13, 15, P.stone2); Px(c, 41 + lx, -46 + b, 2, 11, gl); Px(c, 20 + lx, -44 + b, 1, 9, seam); break;
-    case 'wind': case 'up': case 'raise': box(c, 10 + lx, -66 + b, 8, 18, P.stone); box(c, 8 + lx, -76 + b, 13, 11, P.stone2); Px(c, 12 + lx, -72 + b, 5, 2, gl); break;
-    case 'block': box(c, 10 + lx, -44 + b, 12, 7, P.stone); box(c, 18 + lx, -56 + b, 9, 18, P.stone2); Px(c, 21 + lx, -52 + b, 2, 8, gl); break;
-    default: box(c, 10 + lx, -46 + b, 8, 20, P.stone); box(c, 9 + lx, -27 + b, 11, 11, P.stone2); Px(c, 11 + lx, -22 + b, 7, 1, sh(P.stone2, -0.4));
+    case 'ext': box(c, 10 + lx, -47 + b, 22, 7, S); Px(c, 14 + lx, -47 + b, 10, 2, M); box(c, 31 + lx, -50 + b, 10, 11, sh(S, -0.05)); Px(c, 38 + lx, -48 + b, 2, 7, sh(S, -0.3)); break;
+    case 'wind': case 'up': case 'raise': box(c, 10 + lx, -67 + b, 7, 19, S); Px(c, 11 + lx, -63 + b, 2, 10, M); box(c, 9 + lx, -76 + b, 10, 10, sh(S, -0.05)); break;
+    case 'block': box(c, 9 + lx, -46 + b, 12, 7, S); box(c, 17 + lx, -58 + b, 8, 18, S); Px(c, 18 + lx, -56 + b, 2, 12, M); break;
+    default: box(c, 10 + lx, -49 + b, 7, 20, S); Px(c, 11 + lx, -45 + b, 2, 9, M); box(c, 9 + lx, -30 + b, 9, 8, sh(S, -0.05));
   }
+}
+function drawAsura(c, face) { // silueta espectral de tres cabezas y seis brazos tras RHOAN
+  const t = T * 0.05, a0 = c.globalAlpha;
+  c.save(); c.scale(face, 1); c.globalAlpha = a0 * (0.28 + Math.sin(t * 2) * 0.05);
+  c.fillStyle = '#2a0f3a'; c.fillRect(-34, -160, 68, 96);
+  c.fillStyle = '#3a1a5a'; for (const [hx, hy] of [[-42, -186], [-11, -198], [20, -186]]) c.fillRect(hx, hy, 22, 24);
+  c.fillStyle = '#d6b8ff'; for (const [hx, hy] of [[-38, -178], [-7, -190], [24, -178]]) { c.fillRect(hx, hy, 5, 3); c.fillRect(hx + 10, hy, 5, 3); }
+  c.lineCap = 'round';
+  for (let i = 0; i < 3; i++) for (const sd of [-1, 1]) {
+    const sx = sd * 30, sy = -150 + i * 22, ex = sx + sd * (46 + i * 6), ey = sy - 30 + i * 30 + Math.sin(t + i + sd) * 6;
+    c.strokeStyle = '#3a1a5a'; c.lineWidth = 10; c.beginPath(); c.moveTo(sx, sy); c.lineTo(ex, ey); c.stroke();
+    c.strokeStyle = '#e9dcff'; c.lineWidth = 3; c.beginPath(); c.moveTo(ex, ey); c.lineTo(ex + sd * 30, ey - 26 + i * 14); c.stroke();
+  }
+  c.lineCap = 'butt'; c.restore();
 }
 
 function drawAtlas(c, f, face) {
@@ -1967,6 +2230,8 @@ function drawFighter(c, f, tint) {
   c.save();
   c.translate(Math.round(f.x), Math.round(f.y));
   if (f.state === 'defeat') { c.translate(0, -4); c.rotate(-f.face * Math.PI / 2 * Math.min(1, f.st / 12)); }
+  else if (f.downT > 0 && f.state === 'hurt') { c.translate(0, -4); c.rotate(-f.face * Math.PI / 2 * Math.min(1, f.st / 6)); } // derribado
+  if (f.squishT > 0) { const k = f.squishT / 14; c.scale(1 + 0.45 * k, 1 - 0.35 * k); } // deformado por un puño inflado
   if (f.form && f.def.toon && f.state !== 'defeat') { // físicas de dibujo animado: se estira al saltar y se aplasta al caer
     const sy = f.squashT > 0 ? 1 - 0.2 * f.squashT / 8 : f.onGround === false ? 1 + clamp(-(f.vy || 0) * 0.014, -0.1, 0.18) : 1;
     c.scale(1 / sy, sy);
@@ -1975,11 +2240,13 @@ function drawFighter(c, f, tint) {
   let face = f.face; if (p.spin && Math.floor(f.st / 4) % 2) face = -face;
   if (f.inv > 0 && !tint && f.state !== 'transform' && (T >> 1) % 2) c.globalAlpha *= 0.55;
   if (!tint && drawAtlas(c, f, face)) { c.restore(); return; }
-  const big = f.form && f.def.formBig, s = big ? 2.1 : 1;
+  const big = f.form && f.def.formBig, s = big ? (f.def.formScale || 2.1) : 1;
   const P = f.form && f.def.formPal ? f.def.formPal : f.def.pal;
-  const paint = () => { c.save(); c.scale(face * s, s); if (big) drawGolem(c, f, p, P); else drawHuman(c, f, p, P); c.restore(); };
+  const paint = () => { c.save(); c.scale(face * s, s); if (big) drawTitan(c, f, p, P); else drawHuman(c, f, p, P); c.restore(); };
   if (!tint && demonAura(f)) { const gr = c.createRadialGradient(0, -45, 6, 0, -45, 78); gr.addColorStop(0, 'rgba(224,35,60,0.45)'); gr.addColorStop(0.6, 'rgba(120,10,25,0.22)'); gr.addColorStop(1, 'rgba(20,10,13,0)'); c.fillStyle = gr; c.fillRect(-80, -125, 160, 160); }
   if (!tint && demonAura(f)) { const fl = 5 + ((T >> 1) % 3); c.save(); c.globalAlpha *= 0.75; OV = (T >> 2) % 4 ? '#e0233c' : '#ff7a85'; for (const [ox, oy] of [[-fl, 0], [fl, 0], [0, -fl], [0, fl], [-fl * 0.7, -fl * 0.7], [fl * 0.7, -fl * 0.7]]) { c.save(); c.translate(ox, oy); paint(); c.restore(); } c.restore(); }
+  if (!tint && f.form && f.def.aura === 'asura') drawAsura(c, face);
+  if (!tint && f.slowT > 0) { c.save(); c.globalAlpha *= 0.4; OV = '#2a0f3a'; for (const ox of [-7, 7]) { c.save(); c.translate(ox, 0); paint(); c.restore(); } c.restore(); } // ralentizado por la presión
   if (!tint) { OV = '#120d1e'; for (const [ox, oy] of [[-2, 0], [2, 0], [0, -2], [0, 2]]) { c.save(); c.translate(ox, oy); paint(); c.restore(); } }
   OV = tint || (f.flash > 0 ? '#ffffff' : null);
   paint();
@@ -2198,10 +2465,12 @@ function onMsg(m) {
     case 's': if (Game.running && Game.opp && sameRound(m)) { Game.opp.applyState(m); if (Net.role === 'guest' && typeof m.tm === 'number') Game.timer = m.tm; } break;
     case 'hit':
       if (Game.running && Game.me && Game.phase === 'fight' && sameRound(m)) {
-        Game.me.takeHit({ dmg: +m.dmg || 0, kb: +m.kb || 0, kby: +m.kby || 0, stun: +m.stun || 0, dir: m.dir === -1 ? -1 : 1, heavy: !!m.heavy, proj: !!m.proj, gb: !!m.gb, daze: !!m.daze, chip: +m.chip || 0 });
+        Game.me.takeHit({ dmg: +m.dmg || 0, kb: +m.kb || 0, kby: +m.kby || 0, stun: +m.stun || 0, dir: m.dir === -1 ? -1 : 1, heavy: !!m.heavy, proj: !!m.proj, gb: !!m.gb, daze: !!m.daze, chip: +m.chip || 0,
+          slow: +m.slow || 0, bleed: +m.bleed || 0, knock: !!m.knock, squish: !!m.squish, bounce: +m.bounce || 0, bounceDmg: +m.bounceDmg || 0 });
+        if (m.boom) FX.explode(Game.me.x, Game.me.y - 50, 75, '#ff4d6d');
         Game.hitstop = Math.max(Game.hitstop, m.heavy ? 7 : 4); Game.shake = Math.max(Game.shake, m.heavy ? 8 : 3);
         FX.burst(Game.me.x, Game.me.y - Game.me.box.h * 0.6, Game.opp.def.spark, m.heavy ? 22 : 12, m.heavy ? 6 : 4, 22, 5, 0.1);
-        if (m.zap) FX.zap(Game.me.x, Game.me.y - Game.me.box.h * 0.6, 6, m.heavy ? 90 : 55);
+        if (m.zap) FX.zap(Game.me.x, Game.me.y - Game.me.box.h * 0.6, 6, m.heavy ? 90 : 55, Game.opp.def.zapCol);
         if (m.proj) killGhostNear(Game.me);
         countCombo(Game.opp);
       }
@@ -2209,10 +2478,11 @@ function onMsg(m) {
     case 'land': if (Game.running && Game.opp && sameRound(m)) { const mv = Game.opp.moveDef(String(m.m)); if (mv && mv.land) Game.opp.landing(mv, true); } break;
     case 'parried':
       if (Game.running && Game.me && Game.phase === 'fight' && sameRound(m)) {
-        Game.me.getParried(+m.s || 30); const o = Game.opp;
+        Game.me.getParried(+m.s || 30, +m.sl || 0); const o = Game.opp;
         Game.stats[o.side].parry++;
         FX.ring(o.x + o.face * 14, o.y - o.box.h * 0.6, '#ffffff', 70, 16, 6); FX.burst(o.x + o.face * 14, o.y - o.box.h * 0.6, '#ffffff', 18, 6, 18, 4, 0);
-        FX.text(o.x, o.y - o.box.h - 16, m.c ? '¡CONTRA!' : '¡PARRY!', '#ffd27a', 24);
+        if (m.dm) dominionFx(o.x + o.face * 14, o.y - o.box.h * 0.6);
+        FX.text(o.x, o.y - o.box.h - 16, m.dm ? '¡DOMINIO!' : m.c ? '¡CONTRA!' : '¡PARRY!', m.dm ? '#e0233c' : '#ffd27a', 24);
         Game.hitstop = Math.max(Game.hitstop, 10); Game.flash = Math.max(Game.flash, 4); SFX.play('parry');
       }
       break;
@@ -2270,7 +2540,7 @@ function beginRound() {
   if (prev.length === 2) G.fighters.forEach((f, i) => { f.energy = Math.min(100, Math.round(prev[i].energy)); }); // la energía se conserva entre rondas
   G.me = G.fighters[mySide]; G.opp = G.fighters[1 - mySide];
   G.projs = []; FX.l = []; G.timer = ROUND_TIME; G.frameCount = 0; G.introT = 0; G.endT = 0; G.phase = 'intro';
-  G.hitstop = 0; G.shake = 0; G.flash = 0; G.cine = null; G.paused = false; G.overlay = false; G.freeze = 0; G.freezeBy = null;
+  G.hitstop = 0; G.shake = 0; G.flash = 0; G.cine = null; G.paused = false; G.overlay = false; G.freeze = 0; G.freezeBy = null; G.distort = 0;
   G.running = true; AI.t = 0; AI.hold = 0; Keys.edge.clear();
   hideAll();
 }
@@ -2307,7 +2577,9 @@ function step() {
     const opp = G.other(f);
     if (G.freeze > 0 && f !== G.freezeBy) { if (f.flash > 0) f.flash--; continue; } // tiempo congelado por la definitiva
     if (f.ctl === 'remote') f.updateRemote();
+    else if (f.slowT > 0 && (f.slowT--, (f.slowAcc += 0.25) < 1)) { f.tickFx(); continue; } // ralentizado al 25 %: solo avanza 1 de cada 4 frames
     else {
+      if (f.slowAcc >= 1) f.slowAcc -= 1;
       const inp = G.phase !== 'fight' ? NOINPUT : f.ctl === 'cpu' ? cpuInput(f, opp) : local;
       f.update(inp, opp);
     }
@@ -2315,6 +2587,18 @@ function step() {
     if (f.comboShow > 0) f.comboShow--;
     f.hpLag += (f.hp - f.hpLag) * 0.06; if (f.hpLag < f.hp) f.hpLag = f.hp;
   }
+  for (const f of G.fighters) if (f.pending.length) { // golpes retardados (Estocada Relámpago)
+    const tgt = G.other(f);
+    f.pending = f.pending.filter(q => {
+      if (T < q.t) return true;
+      if (G.phase === 'fight' && tgt.state !== 'defeat') {
+        FX.slash(tgt.x, tgt.y - 50, 1, '#ffffff', 60, false, 10, '#0b0612'); FX.slash(tgt.x, tgt.y - 50, -1, '#dfe8ff', 56, true, 8); SFX.play('slash');
+        applyHit(f, tgt, q.h, q.dir, false);
+      }
+      return false;
+    });
+  }
+  if (G.distort > 0) G.distort--;
   separate(G.fighters[0], G.fighters[1]);
   if (G.training) trainingTick();
 
@@ -2348,19 +2632,31 @@ function step() {
   if (G.phase === 'end') { G.endT++; if (G.endT === ROUND_END) afterRound(); }
   sendState();
 }
+/* Caja de empuje: separada de la de daño. En humanos cubre la mitad inferior (se puede saltar por encima);
+   en el gigante cubre el 75 % de su altura para que nadie lo atraviese ni aterrice dentro de él. */
+function pushbox(f) {
+  const b = f.box, ph = b.h * (f.big ? 0.75 : 0.55), pw = b.w * (f.big ? 0.85 : 1);
+  return { x: f.x - pw / 2, y: f.y - ph, w: pw, h: ph };
+}
 function separate(a, b) {
   if (a.state === 'defeat' || b.state === 'defeat' || a.inv > 0 || b.inv > 0) return;
-  const A = a.hurt(), B = b.hurt();
-  if (!overlap(A, B) || Math.abs(a.y - b.y) > 70) return;
-  const ov = (A.w + B.w) / 2 - Math.abs(a.x - b.x); if (ov <= 0) return;
+  const A = pushbox(a), B = pushbox(b);
+  if (!overlap(A, B)) return;
+  const need = (A.w + B.w) / 2, ov = need - Math.abs(a.x - b.x); if (ov <= 0) return;
   const s = a.x < b.x ? -1 : a.x > b.x ? 1 : (a.side === 0 ? -1 : 1);
-  if (a.ctl !== 'remote') a.x = clamp(a.x + s * ov / 2, 16 + A.w / 2, W - 16 - A.w / 2);
-  if (b.ctl !== 'remote') b.x = clamp(b.x - s * ov / 2, 16 + B.w / 2, W - 16 - B.w / 2);
+  const wa = a.big ? 0.15 : 0.5, wb = b.big ? 0.15 : 0.5; // el gigante apenas cede al empujar a un humano
+  const lim = f => [16 + f.box.w / 2, W - 16 - f.box.w / 2], [a0, a1] = lim(a), [b0, b1] = lim(b);
+  let pa = clamp(a.x + s * ov * wa / (wa + wb), a0, a1), pb = clamp(b.x - s * ov * wb / (wa + wb), b0, b1);
+  if (Math.abs(pa - pb) < need - 0.5) { // esquina: si la pared frena a uno, el otro absorbe todo el empuje
+    if (pa <= a0 || pa >= a1) pb = clamp(pa - s * need, b0, b1); else pa = clamp(pb + s * need, a0, a1);
+  }
+  if (a.ctl !== 'remote') a.x = pa;
+  if (b.ctl !== 'remote') b.x = pb;
 }
 function sendState() {
   if (Game.mode !== 'online' || !Game.running) return;
   const f = Game.me;
-  const s = { t: 's', r: Game.round, x: Math.round(f.x), y: Math.round(f.y), f: f.face, s: f.state, st: f.st, m: f.moveName, ms: f.moveSeq, hp: f.hp, e: Math.round(f.energy), fm: f.form, ft: f.formT, iv: f.inv, cr: f.cdR, u: f.ultUsed ? 1 : 0, dz: f.dazeT, ex: f.exhaustT };
+  const s = { t: 's', r: Game.round, x: Math.round(f.x), y: Math.round(f.y), f: f.face, s: f.state, st: f.st, m: f.moveName, ms: f.moveSeq, hp: f.hp, e: Math.round(f.energy), fm: f.form, ft: f.formT, iv: f.inv, cr: f.cdR, u: f.ultUsed ? 1 : 0, dz: f.dazeT, ex: f.exhaustT, sl: f.slowT, bl: f.bleedT, dn: f.downT };
   if (Net.role === 'host') s.tm = Game.timer;
   Net.send(s);
 }
@@ -2421,6 +2717,11 @@ function render() {
   if (G.running && G.freeze > 0) { c.fillStyle = 'rgba(159,245,216,0.12)'; c.fillRect(-60, -60, W + 120, H + 120); c.fillStyle = 'rgba(255,255,255,0.05)'; for (let y = 0; y < H; y += 6) c.fillRect(-60, y, W + 120, 2); }
   if (cine && cine.mode === 'focus' && G.running) drawFighter(c, cine.f); // en la transformación el personaje siempre queda a la vista
   c.restore();
+  if (G.running && G.distort > 0) {
+    const a = G.distort / 22;
+    for (let y = 0; y < H; y += 18) { const off = Math.round(Math.sin(y * 0.09 + T * 0.8) * 10 * a); if (off) c.drawImage(cv, 0, y, W, 18, off, y, W, 18); }
+    c.fillStyle = `rgba(11,6,18,${0.25 * a})`; c.fillRect(0, 0, W, H);
+  }
   if (G.flash > 0) { c.fillStyle = `rgba(255,255,255,${G.flash / (cine && cine.mode === 'focus' ? 40 : 16)})`; c.fillRect(0, 0, W, H); if (!G.paused) G.flash--; }
   if (cine) { const a = Math.max(0, Math.min(1, cine.t / 10, (cine.dur - cine.t) / 12)); c.fillStyle = '#000'; c.fillRect(0, 0, W, 34 * a); c.fillRect(0, H - 34 * a, W, 34 * a); }
   if (G.running && G.me && G.me.hp / G.me.def.hp < 0.25 && G.phase === 'fight' && !G.training) { // aviso de vida baja
