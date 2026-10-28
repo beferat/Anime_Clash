@@ -694,9 +694,9 @@ const ROSTER = {
   f1: {
     key: 'f1', parry: 'parry', name: 'VAREK', title: 'Caballero del Pacto', hp: 1100, speed: 3.3, jumpV: 11.5, jumps: 2, airJumpMul: 0.85, cdR: 70,
     box: { w: 38, h: 86 }, canTransform: true, formSpeed: 4.8, formDmg: 1.15, formName: 'PACTO CARMESÍ', absorb: true,
-    hair: 'crop', weapon: 'greatsword', formWeapon: 'katana', spark: '#ff4d5e', aura: 'demon',
-    pal: { skin: '#e7b48c', hair: '#b4472a', top: '#2b2529', arm: '#2b2529', belt: '#7a1c26', pants: '#3a3036', boots: '#1a1416', eye: '#1a1420', blade: '#6f6b74', edge: '#e9e4ea', guard: '#a8202f', plate: '#77727c' },
-    formPal: { skin: '#9c8086', hair: '#1a0d12', flame: '#e0233c', glowEye: '#ff4d5e', top: '#140a0d', arm: '#1f1015', belt: '#e0233c', pants: '#1a0c11', boots: '#0b0508', eye: '#ff4d5e', blade: '#1a0d12', edge: '#ff4d5e', guard: '#e0233c', plate: '#2a1419' },
+    hair: 'ash', weapon: 'greatsword', formWeapon: 'katana', spark: '#ff4d5e', aura: 'demon',
+    pal: { skin: '#e9c09a', hair: '#c9c9ce', band2: '#16161a', top: '#26262c', arm: '#26262c', cape: '#141418', belt: '#4a3a2a', pants: '#3a3a42', boots: '#2a2018', eye: '#3aa860', blade: '#2a2a30', edge: '#6a6a74', guard: '#3a3a42' },
+    formPal: { skin: '#b8a0a0', hair: '#1a1a1e', flame: '#34343c', glowEye: '#ff4d5e', top: '#0e0e12', arm: '#16161c', cape: '#0a0a0e', belt: '#e0233c', pants: '#121216', boots: '#0b0508', eye: '#ff4d5e', blade: '#16161a', edge: '#ff4d5e', guard: '#e0233c' },
     stats: { vida: 0.95, vel: 0.45, alc: 0.75 },
     desc: { m2: 'Parry antimagia: anula el golpe y aturde al rival', e: 'Mandoble pesado en 3 golpes: lento pero contundente', r: 'Aura demoníaca: salta y cae con una onda expansiva (hay que saltarla)', f: 'Tajo Carmesí: corte a distancia que anula proyectiles', g: 'Pacto Carmesí: katana demoníaca, R para cabalgar el mandoble y F con un corte imparable. G otra vez: Réquiem del Pacto' },
     moves: {
@@ -761,9 +761,9 @@ const ROSTER = {
   f2: {
     key: 'f2', parry: 'parry', name: 'LIORA', title: 'Maga del Viento', hp: 900, speed: 3.8, jumpV: 11, jumps: 2, airJumpMul: 1.08, nativeDouble: true, cdR: 60, ranged: true,
     box: { w: 34, h: 84 }, canTransform: true, formSpeed: 5.0, formName: 'DESPERTAR DEL CÉFIRO',
-    hair: 'braid', weapon: 'wind', formWeapon: 'galeblade', spark: '#9ff5d8', aura: 'tempest',
-    pal: { skin: '#f0c8a4', hair: '#dfe9e4', top: '#c08a2e', arm: '#c08a2e', belt: '#f3e3b8', pants: '#5d3d1e', boots: '#3a2614', eye: '#1d3b36', glow: '#9ff5d8', trim: '#f3e3b8' },
-    formPal: { skin: '#f0c8a4', hair: '#f2fffb', flame: '#9ff5d8', glowEye: '#d8fff2', top: '#14423d', arm: '#14423d', belt: '#9ff5d8', pants: '#0f2e2a', boots: '#0a1c1a', eye: '#d8fff2', glow: '#d8fff2', trim: '#f3e3b8' },
+    hair: 'windy', weapon: 'wind', formWeapon: 'galeblade', spark: '#9ff5d8', aura: 'tempest',
+    pal: { skin: '#f0d0b0', hair: '#18181f', top: '#ececf0', arm: '#ececf0', belt: '#d7a63c', pants: '#2a2a34', boots: '#3a2a1a', eye: '#d7a63c', glow: '#5ef0a0', trim: '#d7a63c' },
+    formPal: { skin: '#f0d0b0', hair: '#18181f', flame: '#5ef0a0', glowEye: '#ffe08a', top: '#e8fff4', arm: '#e8fff4', belt: '#5ef0a0', pants: '#1e3a30', boots: '#14241e', eye: '#ffe08a', glow: '#c8fff0', trim: '#d7a63c' },
     stats: { vida: 0.6, vel: 0.65, alc: 1 },
     desc: { m2: 'Parry de viento: anula el golpe y aturde al rival', e: 'Ráfagas de aire comprimido en 4 golpes a media distancia; el último aparta al rival', r: 'Estela: dash cortante que lanza al rival por los aires (enlaza con E)', f: 'Vendaval: proyectil que al tocar suelo o rival se vuelve un tornado que atrapa', g: 'Despertar del Céfiro: onda que repele y más velocidad. R: picado dirigido que rompe guardias · F: haz que cruza el escenario · G otra vez: Tempestad Primordial (consume la forma)' },
     moves: {
@@ -819,8 +819,8 @@ const ROSTER = {
   f3: {
     key: 'f3', parry: 'dominion', name: 'BRAM', title: 'Púgil Elástico', hp: 1000, speed: 3.9, jumpV: 12, jumps: 2, airJumpMul: 0.85, cdR: 55,
     box: { w: 36, h: 84 }, canTransform: true, formSpeed: 5.4, formJump: 15, formJumps: 2, formAirJumpMul: 1.1, formGrav: 0.8, toon: true, formName: 'DIOS BLANCO',
-    hair: 'topknot', weapon: 'fist', spark: '#ffd27a', aura: 'liberty', zapCol: ['#0b0612', '#e9dcff'], formBurst: '#ffffff',
-    pal: { skin: '#c98b5e', hair: '#1c1a22', top: '#6b2f6e', arm: '#c98b5e', belt: '#e6c25a', pants: '#d8c39a', boots: '#2d2018', eye: '#1c1a22', wrap: '#f4efe4', band: '#a8714a' },
+    hair: 'straw', weapon: 'fist', spark: '#ffd27a', aura: 'liberty', zapCol: ['#0b0612', '#e9dcff'], formBurst: '#ffffff',
+    pal: { skin: '#e2b088', hair: '#16141c', top: '#c42a2a', arm: '#e2b088', belt: '#e6c25a', pants: '#3a5aa8', boots: '#8a5a32', eye: '#16141c', wrap: '#e2b088', band: '#c42a2a' },
     formPal: { skin: '#d9a07a', hair: '#ffffff', flame: '#eef0ff', glowEye: '#ffffff', top: '#f4efe4', arm: '#d9a07a', belt: '#ffffff', pants: '#ffffff', boots: '#e8e0f0', eye: '#ffffff', wrap: '#ffffff', band: '#c9b8d8' },
     stats: { vida: 0.8, vel: 0.68, alc: 0.9 },
     desc: { m2: 'Presión Dominante: el parry exacto ralentiza al atacante un 75 % para castigarlo', e: 'Puños elásticos con rebote en 4 golpes; el último, a dos manos, empuja contra la pared', r: 'Tirachinas: se tensa anclado al suelo, sale rasante, placa con los pies y rebota hacia atrás', f: 'Ametralladora elástica: ráfaga continua que inmoviliza en guardia', g: 'Dios Blanco: puños inflados que deforman · R: cuerda de saltar (3 rebotes) · F: lona de goma que absorbe y catapulta · G otra vez: Puño Titánico Estelar' },
@@ -877,9 +877,9 @@ const ROSTER = {
   f4: {
     key: 'f4', parry: 'dominion', domCounter: true, name: 'RHOAN', title: 'Espadachín de Tres Filos', hp: 950, speed: 4.2, jumpV: 11.5, jumps: 2, airJumpMul: 0.85, cdR: 50,
     box: { w: 34, h: 86 }, canTransform: true, formSpeed: 4.8, formName: 'MANIFESTACIÓN ASURA', mouthBlade: true,
-    hair: 'tail', weapon: 'katana', spark: '#dfe8ff', aura: 'asura', zapCol: ['#0b0612', '#b48cff'], formBurst: '#b48cff',
-    pal: { skin: '#e2b08a', hair: '#1f2a4f', top: '#6e1f2e', arm: '#6e1f2e', belt: '#d7a63c', pants: '#2b2433', boots: '#17121c', eye: '#141020', blade: '#cfd8e8', edge: '#ffffff', guard: '#d7a63c', scab: '#3b1820' },
-    formPal: { skin: '#d6a07e', hair: '#141a33', top: '#2a0f1c', arm: '#2a0f1c', belt: '#b48cff', pants: '#16121c', boots: '#0b0910', eye: '#141020', glowEye: '#d6b8ff', blade: '#3a3248', edge: '#d6b8ff', guard: '#b48cff', scab: '#1a0d14' },
+    hair: 'moss', weapon: 'katana', spark: '#dfe8ff', aura: 'asura', zapCol: ['#0b0612', '#b48cff'], formBurst: '#b48cff',
+    pal: { skin: '#e2b08a', hair: '#4a9a52', top: '#2f5a3c', arm: '#2f5a3c', belt: '#a8202f', pants: '#26262c', boots: '#141418', eye: '#141020', blade: '#dfe6f0', edge: '#ffffff', guard: '#d7a63c', scab: '#1a1a1e' },
+    formPal: { skin: '#d6a07e', hair: '#2f6a3a', top: '#1a3a26', arm: '#1a3a26', belt: '#b48cff', pants: '#16121c', boots: '#0b0910', eye: '#141020', glowEye: '#d6b8ff', blade: '#3a3248', edge: '#d6b8ff', guard: '#b48cff', scab: '#1a0d14' },
     stats: { vida: 0.7, vel: 0.8, alc: 0.7 },
     desc: { m2: 'Presión Dominante: el parry exacto ralentiza al rival un 75 % y responde con un corte que hace sangrar', e: 'Cadencia de tres hojas; el 4.º golpe es una tijera que derriba', r: 'Estocada Relámpago: cruza al rival y el corte llega 0,4 s después', f: 'Corte Volador: espiral cortante que arrastra proyectiles menores', g: 'Nueve Hojas: silueta asura de seis brazos. E: vendaval de cortes · R: paso fantasmal que rompe guardias · F: torbellino que succiona y ralentiza · G otra vez: Juicio de los Mil Mundos' },
     moves: {
@@ -927,9 +927,9 @@ const ROSTER = {
   f5: {
     key: 'f5', parry: 'parry', name: 'DORAN', title: 'Cambiaformas', hp: 1000, speed: 4.4, jumpV: 12, jumps: 2, airJumpMul: 0.85, cdR: 50,
     box: { w: 34, h: 84 }, canTransform: true, formBig: true, formScale: 2.3, formBox: { w: 92, h: 220 }, formSpeed: 2.4, formJump: 9, formJumps: 1, formArmor: 0.7, formKb: 0.45,
-    formName: 'TITÁN COLOSAL', hair: 'short', weapon: 'dagger2', spark: '#d9e2ea', aura: 'titan', formBurst: '#ffe08a',
-    pal: { skin: '#e9be97', hair: '#d9b45a', top: '#33353f', arm: '#33353f', belt: '#e07a2e', pants: '#7c6d58', boots: '#2a2018', eye: '#1d2a20', blade: '#c9d2dc', edge: '#ffffff', guard: '#4a4f5a', metal: '#8e98a6' },
-    formPal: { skin: '#c47a5e', muscle: '#9c4f3f', sinew: '#e8a58a', hair: '#2a1d18', eye: '#ffe08a', teeth: '#f4ead8', dark: '#5a2a22' },
+    formName: 'TITÁN COLOSAL', hair: 'topknot', weapon: 'dagger2', spark: '#d9e2ea', aura: 'titan', formBurst: '#ffe08a',
+    pal: { skin: '#e9c09a', hair: '#3a2a1e', top: '#a87c4c', arm: '#a87c4c', belt: '#3a2618', pants: '#e8e2d6', boots: '#4a3020', eye: '#2fa070', blade: '#c9d2dc', edge: '#ffffff', guard: '#4a4f5a', metal: '#8e98a6', cape: '#3a6a3a' },
+    formPal: { skin: '#c47a5e', muscle: '#9c4f3f', sinew: '#e8a58a', hair: '#2a1d18', eye: '#7ad8a0', teeth: '#f4ead8', dark: '#5a2a22' },
     stats: { vida: 0.8, vel: 0.85, alc: 0.6 },
     desc: { m2: 'Parry: anula el golpe y aturde al rival (también como Titán)', e: 'Tajos dobles a quemarropa con cuchillas desechables', r: 'Arpón: se ancla junto al rival, tira del cable con gas y remata con una patada giratoria', f: 'Giro con gas: se mantiene en el aire cortando en círculo', g: 'Titán Colosal: lento, súper armadura en sus golpes. R: embestida que arrolla hasta la esquina · F: arranca y lanza un bloque del suelo · G otra vez: Rugido y Aplastamiento' },
     moves: {
@@ -983,9 +983,9 @@ const ROSTER = {
   f6: {
     key: 'f6', parry: 'counter', name: 'NYRA', title: 'Danzante de Hojas Gemelas', hp: 880, speed: 4.8, jumpV: 11.5, jumps: 2, airJumpMul: 1.08, nativeDouble: true, cdR: 45,
     box: { w: 32, h: 82 }, canTransform: true, formSpeed: 6.6, formJump: 12.5, formName: 'INSTINTO DE LINAJE',
-    hair: 'hood', weapon: 'dagger2', formWeapon: 'spear2', spark: '#7ff0ff', aura: 'focus', formBurst: '#ff8fb8',
-    pal: { skin: '#f2c9ad', hair: '#ff8fb8', top: '#2b3a55', arm: '#2b3a55', belt: '#7ff0ff', pants: '#1d2638', boots: '#10141e', eye: '#14202e', blade: '#bfefff', edge: '#ffffff', guard: '#7ff0ff', cloak: '#3d5878', trim: '#7ff0ff' },
-    formPal: { skin: '#f2c9ad', hair: '#ff8fb8', top: '#232e45', arm: '#232e45', belt: '#ff8fb8', pants: '#161d2c', boots: '#0b0f18', eye: '#ff4d6d', glowEye: '#ff8fb8', blade: '#e8f6ff', edge: '#ffffff', guard: '#ff4d6d', cloak: '#2e4260', trim: '#ff8fb8' },
+    hair: 'bob', weapon: 'dagger2', formWeapon: 'spear2', spark: '#7ff0ff', aura: 'focus', formBurst: '#ff8fb8',
+    pal: { skin: '#f2d4bc', hair: '#14141a', top: '#a87c4c', arm: '#a87c4c', shirt: '#eeeae2', belt: '#3a2618', pants: '#e8e2d6', boots: '#4a3020', eye: '#20202a', blade: '#d8dde8', edge: '#ffffff', guard: '#5a5f6a', cape: '#3a6a3a', trim: '#5a3a24', scarf: '#c4202a', metal: '#8e98a6' },
+    formPal: { skin: '#f2d4bc', hair: '#14141a', top: '#a87c4c', arm: '#a87c4c', shirt: '#eeeae2', belt: '#3a2618', pants: '#e8e2d6', boots: '#4a3020', eye: '#ff4d5a', glowEye: '#ff5a5a', blade: '#eef4ff', edge: '#ffffff', guard: '#c4202a', cape: '#2e5a2e', trim: '#c4202a', scarf: '#e0233c', metal: '#8e98a6' },
     stats: { vida: 0.55, vel: 1, alc: 0.55 },
     desc: { m2: 'Contra sombra: aparece a su espalda y corta', e: 'Estocadas quirúrgicas; el 4.º golpe pivota a la espalda y corta la nuca', r: 'Péndulo: se cuelga de un gancho, esquiva por arriba y cae detrás del rival', f: 'Ráfaga de hojas dobles: avance con cortes cruzados que empujan', g: 'Instinto de Linaje: velocidad multiplicada y lanzas explosivas. E: cortes con detonación de gas · R: tirabuzón que atraviesa · F: lanza que detona 0,5 s después · G otra vez: Ráfaga de Asalto Terminal' },
     moves: {
@@ -1029,8 +1029,8 @@ const ROSTER = {
     key: 'f7', parry: 'counter', name: 'TORVAL', title: 'El Viejo Puño de Hierro', hp: 1150, speed: 3.5, jumpV: 11.5, jumps: 2, airJumpMul: 0.8, cdR: 60,
     box: { w: 40, h: 86 }, canTransform: true, formSpeed: 4.4, formName: 'DESPERTAR DEL HÉROE', passOnly: true, passLv: 50,
     hair: 'elder', weapon: 'fist', spark: '#ff8a3d', aura: 'hero', zapCol: ['#c4201a', '#ffa040'], formBurst: '#ff6a1a',
-    pal: { skin: '#d9a07a', hair: '#eeeeee', top: '#e8e2d4', coat: '#2f4a3a', trim: '#d7a63c', belt: '#3a2a1c', pants: '#2a2f3a', boots: '#1a1416', eye: '#1a1420', wrap: '#e6b48c', band: '#a8714a' },
-    formPal: { skin: '#d9a07a', hair: '#ffffff', top: '#e8e2d4', coat: '#1e2e26', trim: '#ff6a1a', belt: '#3a2a1c', pants: '#1e222c', boots: '#120e10', eye: '#1a1420', glowEye: '#ff6a1a', wrap: '#1a1420', fistArm: '#2a2026', band: '#ff6a1a' },
+    pal: { skin: '#d9a07a', hair: '#eeeeee', top: '#e8e2d4', coat: '#ececf0', trim: '#2a4a8a', belt: '#3a2a1c', pants: '#2a3a5a', boots: '#1a1416', eye: '#1a1420', wrap: '#e6b48c', band: '#a8714a' },
+    formPal: { skin: '#d9a07a', hair: '#ffffff', top: '#e8e2d4', coat: '#dcdce2', trim: '#ff6a1a', belt: '#3a2a1c', pants: '#1e2a40', boots: '#120e10', eye: '#1a1420', glowEye: '#ff6a1a', wrap: '#1a1420', fistArm: '#2a2026', band: '#ff6a1a' },
     stats: { vida: 1, vel: 0.5, alc: 0.7 },
     desc: { m2: 'Contra del veterano: bloquea y devuelve un puñetazo demoledor', e: 'Puñetazos de hierro en 4 golpes; el último, a dos puños, tumba al rival', r: 'Paso de Hierro: embestida con el puño que no se detiene ante golpes ligeros', f: 'Lluvia de Cañonazos: lanza a mano 5 balas de cañón en arco', g: 'Despertar del Héroe: puños negros con rayos. R: bala de cañón gigante · F: impacto de hueso con ondas · G otra vez: SPACE IMPACT' },
     moves: {
@@ -2894,7 +2894,7 @@ function drawHair(c, f, P, hx, hy) {
   if (f.form && P.flame) {
     for (let i = -2; i < 15; i++) { const h = 3 + (((T >> 2) + i * 5) % 6); Px(c, hx + i, hy - 2 - h, 1, h + 3, i % 2 ? H : P.flame); }
     Px(c, hx - 2, hy - 2, 16, 4, H); Px(c, hx - 2, hy + 1, 4, 6, H); Px(c, hx + 9, hy + 1, 4, 2, P.flame);
-    if (f.def.aura === 'demon') for (const bx of [hx + 1, hx + 9]) { Px(c, bx, hy - 7, 3, 6, '#0b0508'); Px(c, bx + 1, hy - 11, 2, 4, '#0b0508'); Px(c, bx + 1, hy - 13, 1, 2, '#e0233c'); Px(c, bx, hy - 6, 1, 3, '#3a1018'); }
+    if (f.def.aura === 'demon') { const bx = hx + 2; box(c, bx, hy - 9, 4, 8, '#4a4a54'); Px(c, bx + 1, hy - 14, 3, 5, '#4a4a54'); Px(c, bx + 2, hy - 17, 2, 3, '#6a6a74'); Px(c, bx + 2, hy - 18, 1, 1, '#e0233c'); }
     return;
   }
   if (s === 'crop') {
@@ -2923,6 +2923,27 @@ function drawHair(c, f, P, hx, hy) {
     Px(c, hx + 7, hy + 9, 8, 2, H); Px(c, hx + 13, hy + 10, 2, 2, Hd); // bigote
     Px(c, hx + 2, hy + 11, 12, 4, H); Px(c, hx + 4, hy + 15, 9, 3, H); Px(c, hx + 6, hy + 18, 5, 2, Hd); Px(c, hx + 8, hy + 12, 3, 1, Hd); // barba
     Px(c, hx + 8, hy + 7, 4, 1, sh(P.skin, -0.3)); // arrugas
+  } else if (s === 'ash') { // pelo gris de punta con cinta negra en la frente
+    Px(c, hx - 1, hy - 1, 15, 3, H); Px(c, hx - 2, hy + 1, 4, 6, H);
+    for (const [dx, dy, w, h] of [[-4, -3, 3, 3], [-1, -5, 3, 4], [2, -7, 3, 6], [5, -6, 3, 5], [8, -5, 3, 4], [11, -3, 3, 3], [-5, 1, 3, 2], [13, 0, 2, 2]]) Px(c, hx + dx, hy + dy, w, h, (dx + dy) % 3 ? H : Hl);
+    Px(c, hx - 2, hy + 1, 16, 2, P.band2); Px(c, hx - 5, hy + 1, 4, 2, P.band2); Px(c, hx - 6, hy + 3, 3, 3, P.band2); // cinta y nudo
+    Px(c, hx + 9, hy + 3, 3, 2, H); Px(c, hx + 12, hy + 3, 2, 2, Hd);
+  } else if (s === 'windy') { // pelo negro con flequillo de lado
+    Px(c, hx - 1, hy - 2, 15, 4, H); Px(c, hx - 3, hy, 5, 9, H); Px(c, hx - 5, hy + 1, 3, 2, H); Px(c, hx - 5, hy + 5, 3, 2, Hd);
+    Px(c, hx + 7, hy + 1, 7, 2, H); Px(c, hx + 11, hy + 3, 2, 4, H); Px(c, hx + 2, hy - 3, 8, 1, H); Px(c, hx + 3, hy - 2, 6, 1, Hl);
+  } else if (s === 'straw') { // pelo negro revuelto y sombrero de paja con cinta roja
+    Px(c, hx - 1, hy - 1, 15, 3, H); Px(c, hx - 2, hy + 1, 4, 6, H); Px(c, hx + 10, hy + 1, 4, 2, H); Px(c, hx + 11, hy + 3, 2, 2, H); Px(c, hx - 4, hy + 4, 2, 2, H);
+    const Y = '#e8c860', Yd = '#b8983a';
+    box(c, hx + 1, hy - 7, 12, 6, Y); Px(c, hx + 1, hy - 3, 12, 2, '#c42a2a');
+    for (let i = 0; i < 4; i++) Px(c, hx + 2 + i * 3, hy - 6, 1, 3, Yd);
+    box(c, hx - 5, hy - 2, 24, 2, Y); Px(c, hx - 5, hy - 1, 24, 1, Yd);
+  } else if (s === 'moss') { // pelo verde muy corto
+    Px(c, hx - 1, hy - 2, 15, 4, H); Px(c, hx - 2, hy + 1, 4, 5, H); Px(c, hx + 10, hy, 4, 2, H);
+    for (let i = 0; i < 5; i++) Px(c, hx + i * 3, hy - 3, 2, 2, i % 2 ? Hl : H);
+    Px(c, hx + 2, hy - 2, 8, 1, Hl);
+  } else if (s === 'bob') { // media melena negra
+    Px(c, hx - 1, hy - 2, 15, 4, H); Px(c, hx - 3, hy, 5, 11, H); Px(c, hx + 9, hy + 1, 5, 3, H); Px(c, hx + 12, hy + 3, 2, 7, H);
+    Px(c, hx - 3, hy + 10, 4, 1, Hd); Px(c, hx + 2, hy - 2, 8, 1, Hl); Px(c, hx + 12, hy + 9, 2, 1, Hd);
   } else if (s === 'split') { // mitad blanca (delante) y mitad roja (detrás)
     const H2 = P.hair2;
     Px(c, hx - 1, hy - 2, 8, 4, H2); Px(c, hx + 7, hy - 2, 7, 4, H); Px(c, hx - 2, hy + 1, 4, 7, H2); Px(c, hx - 3, hy + 4, 2, 4, sh(H2, -0.2));
@@ -2976,6 +2997,9 @@ function drawHead(c, f, P, hx, hy) {
   if (f.def.key === 'f1') Px(c, hx + 6, hy + 8, 3, 1, sh(skin, -0.3)); // cicatriz
   if (f.def.mouthBlade) { Px(c, hx + 5, hy + 10, 4, 2, '#1a1420'); Px(c, hx + 9, hy + 10, 20, 1, P.blade); Px(c, hx + 9, hy + 11, 19, 1, P.edge); } // tercera hoja, en la boca
   if (f.def.key === 'f3') { Px(c, hx + 6, hy + 8, 1, 1, sh(skin, -0.3)); Px(c, hx + 8, hy + 8, 1, 1, sh(skin, -0.3)); }
+  if (key === 'f3') { Px(c, hx + 8, hy + 9, 4, 1, sh(skin, -0.35)); Px(c, hx + 9, hy + 8, 1, 3, sh(skin, -0.35)); Px(c, hx + 11, hy + 8, 1, 3, sh(skin, -0.35)); } // cicatriz bajo el ojo
+  if (key === 'f4') { Px(c, hx + 10, hy + 2, 1, 8, '#8a3a3a'); for (const [ex, ey] of [[2, 9], [3, 10], [4, 9]]) Px(c, hx + ex, hy + ey, 1, 2, '#e8c050'); if (f.form) { Px(c, hx - 1, hy - 3, 15, 3, '#1a1a1e'); Px(c, hx - 5, hy - 2, 4, 2, '#1a1a1e'); Px(c, hx - 6, hy, 3, 3, '#1a1a1e'); } } // cicatriz, 3 pendientes y pañuelo negro al luchar en serio
+  if (key === 'f7') Px(c, hx + 10, hy + 2, 1, 6, '#9a5a4a'); // cicatriz en el ojo
   if (key === 'f11') { Px(c, hx + 3, hy + 10, 11, 4, P.top); Px(c, hx + 3, hy + 10, 11, 1, sh(P.top, 0.3)); } // cuello alto que tapa la boca
   drawHair(c, f, P, hx, hy);
 }
@@ -2985,7 +3009,8 @@ function drawBack(c, f, P, lx, b) {
   const key = f.def.key, sway = Math.round(Math.sin(T / 9 + f.side * 2) * 1.5);
   if (key === 'f1') {
     if (f.form) for (let i = 0; i < 6; i++) { const h = 12 + (((T >> 2) + i * 7) % 9); Px(c, -15 + lx + i * 5, -46 + b - h + 20, 3, h, i % 2 ? P.belt : '#140a0d'); }
-    box(c, -13 + lx - sway, -44 + b, 6, 25, sh(P.top, -0.3)); Px(c, -13 + lx - sway, -20 + b, 6, 1, P.guard);
+    box(c, -14 + lx - sway, -46 + b, 8, 26, P.cape); Px(c, -14 + lx - sway, -21 + b, 8, 1, sh(P.cape, 0.25)); // capa de los Toros Negros
+    if (!f.form) { Px(c, -12 + lx - sway, -38 + b, 4, 3, '#e8e4dc'); Px(c, -13 + lx - sway, -40 + b, 1, 2, '#e8e4dc'); Px(c, -8 + lx - sway, -40 + b, 1, 2, '#e8e4dc'); } // emblema del toro
     if (f.form) { for (let i = 0; i < 4; i++) Px(c, -13 + lx - sway + (i % 2) * 3, -19 + b + i * 2, 3, 2, '#140a0d'); }
     if (f.form && !riding(f)) {
       Px(c, -8 + lx, -66 + b, 3, 10, '#2a1d16'); Px(c, -8 + lx, -63 + b, 3, 1, '#e0233c');
@@ -2995,20 +3020,29 @@ function drawBack(c, f, P, lx, b) {
     }
   }
   if (key === 'f2') {
-    const H = P.hair;
-    for (let i = 0; i < 7; i++) Px(c, -12 + lx + (i % 2) - Math.round(sway * i / 4), -52 + b + i * 4, 4, 4, i % 2 ? H : sh(H, -0.18));
-    Px(c, -12 + lx - sway * 2, -24 + b, 4, 2, P.trim);
-    const cx = -18 + lx, cy = -58 + b + Math.round(Math.sin(T / 14) * 2);
-    for (let k = 0; k < 10; k++) { const a = k / 10 * 6.283 + T / 24; Px(c, cx + Math.cos(a) * 6, cy + Math.sin(a) * 3, 2, 2, k % 2 ? P.glow : P.trim); }
-    Px(c, cx - 1, cy - 1, 2, 2, '#ffffff');
+    box(c, -14 + lx - sway, -46 + b, 8, 30 + sway, sh(P.top, -0.12)); Px(c, -14 + lx - sway, -17 + b + sway, 8, 1, P.trim); Px(c, -11 + lx - sway, -40 + b, 2, 2, P.trim); // túnica del Amanecer Dorado
+    if (!f.form) { // hada del viento que la acompaña
+      const fx = -20 + lx, fy = -66 + b + Math.round(Math.sin(T / 10) * 3), fl = (T >> 3) % 2;
+      Px(c, fx - 4, fy - 2 - fl, 4, 4 + fl, '#c8fff0'); Px(c, fx + 4, fy - 2 - fl, 4, 4 + fl, '#c8fff0');
+      box(c, fx, fy, 4, 6, '#3ac880'); Px(c, fx, fy - 4, 4, 4, '#f0d8c0'); Px(c, fx - 1, fy - 5, 6, 2, '#2a8a5a'); Px(c, fx + 2, fy - 3, 1, 1, '#14141a');
+    }
   }
-  if (key === 'f4') { box(c, -12 + lx, -50 + b, 3, 26, P.scab); box(c, -13 + lx, -52 + b, 5, 2, P.guard); Px(c, -12 + lx, -58 + b, 3, 6, '#1a1420'); Px(c, -12 + lx, -56 + b, 3, 1, P.guard); }
+  if (key === 'f4') { // tres vainas con sus empuñaduras: blanca, roja y negra
+    box(c, -14 + lx, -46 + b, 3, 24, P.scab); box(c, -11 + lx, -47 + b, 3, 25, sh(P.scab, 0.12)); box(c, -8 + lx, -46 + b, 3, 24, P.scab);
+    Px(c, -14 + lx, -53 + b, 3, 7, '#e8e4dc'); Px(c, -11 + lx, -55 + b, 3, 8, '#a8202f'); Px(c, -8 + lx, -53 + b, 3, 7, '#2a1a3a');
+    Px(c, -14 + lx, -47 + b, 9, 1, P.guard);
+  }
+  if (key === 'f5' || key === 'f6') { // capa verde con las alas de la libertad
+    const cx = -16 + lx - sway; box(c, cx, -47 + b, 10, 30 + sway, P.cape); Px(c, cx, -18 + b + sway, 10, 1, sh(P.cape, -0.3));
+    Px(c, cx + 1, -40 + b, 4, 4, '#3a6ab8'); Px(c, cx + 5, -40 + b, 4, 4, '#f4f4f4'); Px(c, cx + 2, -36 + b, 6, 1, '#2a2a2a'); Px(c, cx + 4, -41 + b, 1, 6, '#2a2a2a');
+    if (key === 'f6') { box(c, cx - 1 - sway, -48 + b, 12, 4, P.scarf); Px(c, cx - 4 - sway * 2, -45 + b, 6, 3, sh(P.scarf, -0.15)); } // bufanda roja al viento
+  }
   if (key === 'f7') { // abrigo largo a la espalda
     box(c, -15 + lx - sway, -46 + b, 9, 36 + sway, sh(P.coat, -0.2)); Px(c, -15 + lx - sway, -11 + b + sway, 9, 2, P.trim); Px(c, -11 + lx - sway, -42 + b, 1, 28, sh(P.coat, -0.4));
   }
   if (key === 'f10') { box(c, -12 + lx, -51 + b, 9, 8, P.hood); Px(c, -11 + lx, -51 + b, 7, 1, sh(P.hood, 0.25)); Px(c, -12 + lx, -44 + b, 9, 1, sh(P.hood, -0.3)); } // capucha roja
   if (key === 'f11') { box(c, -14 + lx - sway, -40 + b, 8, 36 + sway, sh(P.top, -0.15)); Px(c, -14 + lx - sway, -5 + b + sway, 8, 1, P.trim); } // faldón del abrigo
-  if (key === 'f6') { box(c, -15 + lx - sway, -46 + b, 7, 30 + sway, P.cloak); Px(c, -15 + lx - sway, -17 + b + sway, 7, 1, P.trim); Px(c, -11 + lx - sway, -40 + b, 1, 20, sh(P.cloak, -0.25)); }
+
 }
 
 /* --- piernas --- */
@@ -3016,10 +3050,10 @@ function drawLeg(c, f, P, x, tk, back) {
   const key = f.def.key, dk = back ? -0.14 : 0, top = -24;
   const pants = sh(P.pants, dk), boots = sh(P.boots, dk);
   if (key === 'f3') {
-    box(c, x, top, 7, 12 - Math.min(tk, 2), pants); Px(c, x, top + 10, 7, 1, sh(P.pants, -0.3)); Px(c, x + 2, top + 2, 1, 7, sh(P.pants, -0.12));
+    box(c, x, top, 7, 12 - Math.min(tk, 2), pants); Px(c, x, top + 10, 7, 2, '#f4efe4'); Px(c, x + 2, top + 2, 1, 7, sh(P.pants, -0.12));
     box(c, x + 1, top + 12, 5, 9 - tk, sh(P.skin, dk));
     Px(c, x + 1, -8 - tk, 5, 1, P.wrap); Px(c, x + 1, -6 - tk, 5, 1, P.wrap);
-    box(c, x, -3 - tk, 8, 3, sh(P.skin, dk - 0.06));
+    box(c, x, -3 - tk, 8, 3, sh(P.skin, dk - 0.06)); Px(c, x, -1 - tk, 9, 1, sh(P.boots, dk)); Px(c, x + 2, -3 - tk, 1, 2, sh(P.boots, dk)); // sandalia
     return;
   }
   box(c, x, top, 6, 17 - tk, pants);
@@ -3027,9 +3061,8 @@ function drawLeg(c, f, P, x, tk, back) {
   box(c, x - 1, -9 - tk, 8, 7, boots);
   box(c, x - 1, -2 - tk, 10, 2, sh(P.boots, -0.4));
   Px(c, x, -8 - tk, 6, 1, sh(P.boots, 0.3));
-  if (key === 'f1') { box(c, x - 1, -16 - tk, 7, 5, sh(P.plate, dk)); Px(c, x + 2, -14 - tk, 1, 1, P.guard); }
   if (key === 'f5') { Px(c, x, -18 - tk, 6, 1, P.belt); Px(c, x, -12 - tk, 6, 1, P.belt); }
-  if (key === 'f6') Px(c, x + 5, -9 - tk, 1, 7, P.trim);
+  if (key === 'f6') { Px(c, x, -18 - tk, 6, 1, P.belt); Px(c, x, -12 - tk, 6, 1, P.belt); }
   if (key === 'f9') { Px(c, x - 1, -18 - tk, 8, 4, P.trim); Px(c, x, -17 - tk, 6, 1, sh(P.trim, 0.3)); } // rodilleras
   if (key === 'f10') Px(c, x - 1, -9 - tk, 8, 2, '#c42a3a');
   if (key === 'f4') Px(c, x - 1, -24, 8, 10, sh(P.pants, dk + 0.05));
@@ -3038,14 +3071,12 @@ function drawLeg(c, f, P, x, tk, back) {
 /* --- torso por personaje --- */
 function drawTorso(c, f, P, tx, ty, b) {
   const key = f.def.key, form = f.form;
-  if (key === 'f1') {
-    box(c, tx - 4, ty - 2, 7, 6, sh(P.plate, -0.2));
-    box(c, tx, ty, 16, 20, P.top);
-    box(c, tx + 2, ty + 2, 12, 10, P.plate); Px(c, tx + 7, ty + 2, 2, 10, sh(P.plate, 0.25));
-    for (const [rx, ry] of [[3, 3], [12, 3], [3, 10], [12, 10]]) Px(c, tx + rx, ty + ry, 1, 1, P.guard);
+  if (key === 'f1') { // camiseta oscura, capa corta sobre el hombro y grimorio con trébol en la cadera
+    box(c, tx, ty, 16, 20, P.top); Px(c, tx + 1, ty, 14, 1, sh(P.top, 0.22)); Px(c, tx + 7, ty + 2, 2, 13, sh(P.top, -0.3));
+    box(c, tx - 4, ty - 2, 9, 8, P.cape); Px(c, tx - 4, ty - 2, 9, 1, sh(P.cape, 0.3));
     if (form) { Px(c, tx + 5, ty + 4, 1, 6, P.belt); Px(c, tx + 10, ty + 5, 1, 5, P.belt); Px(c, tx + 5, ty + 9, 6, 1, P.belt); }
-    box(c, tx - 1, ty + 16, 18, 3, P.belt); box(c, tx + 6, ty + 16, 4, 3, P.guard);
-    box(c, tx + 3, ty + 19, 10, 7, P.top); Px(c, tx + 3, ty + 25, 10, 1, P.guard); Px(c, tx + 8, ty + 19, 1, 6, sh(P.top, -0.25));
+    box(c, tx - 1, ty + 16, 18, 3, P.belt); box(c, tx + 6, ty + 16, 4, 3, sh(P.belt, 0.3));
+    box(c, tx + 12, ty + 13, 6, 8, '#1a1a1e'); Px(c, tx + 14, ty + 15, 2, 2, '#3a8a3a'); Px(c, tx + 13, ty + 16, 1, 1, '#3a8a3a'); Px(c, tx + 16, ty + 16, 1, 1, '#3a8a3a'); Px(c, tx + 14, ty + 18, 2, 1, '#2a6a2a'); // grimorio
   } else if (key === 'f2') {
     box(c, tx - 1, -24 + b, 18, 21 - b, P.top);
     Px(c, tx + 4, -22 + b, 1, 18 - b, sh(P.top, -0.2)); Px(c, tx + 11, -22 + b, 1, 18 - b, sh(P.top, -0.2));
@@ -3054,12 +3085,11 @@ function drawTorso(c, f, P, tx, ty, b) {
     Px(c, tx + 6, ty, 4, 20, P.trim); Px(c, tx + 7, ty + 1, 2, 18, sh(P.trim, -0.15));
     box(c, tx - 1, ty + 15, 18, 3, sh(P.top, -0.28)); Px(c, tx + 6, ty + 15, 4, 3, P.glow);
     Px(c, tx + 2, ty, 12, 2, P.trim);
-  } else if (key === 'f3') {
+  } else if (key === 'f3') { // chaleco rojo abierto, pecho al aire con la cicatriz en X y faja amarilla
     box(c, tx, ty, 16, 20, P.skin);
-    box(c, tx + 3, ty + 1, 10, 15, P.top);
-    Px(c, tx + 3, ty + 1, 10, 1, sh(P.top, 0.3)); Px(c, tx + 6, ty + 1, 4, 3, P.skin); Px(c, tx + 7, ty + 3, 2, 1, sh(P.skin, -0.25));
-    Px(c, tx + 5, ty + 7, 6, 1, sh(P.top, -0.25)); Px(c, tx + 5, ty + 11, 6, 1, sh(P.top, -0.25));
-    Px(c, tx + 1, ty + 4, 2, 6, sh(P.skin, -0.18)); Px(c, tx + 13, ty + 4, 2, 6, sh(P.skin, 0.1));
+    Px(c, tx + 4, ty + 4, 2, 7, sh(P.skin, -0.12)); Px(c, tx + 10, ty + 4, 2, 7, sh(P.skin, -0.12));
+    for (let i = 0; i < 6; i++) { Px(c, tx + 5 + i, ty + 3 + i, 1, 1, sh(P.skin, -0.32)); Px(c, tx + 10 - i, ty + 3 + i, 1, 1, sh(P.skin, -0.32)); }
+    box(c, tx - 1, ty - 1, 5, 17, P.top); box(c, tx + 12, ty - 1, 5, 17, P.top); Px(c, tx + 3, ty - 1, 1, 16, sh(P.top, 0.25)); Px(c, tx + 12, ty - 1, 1, 16, sh(P.top, -0.2));
     box(c, tx - 1, ty + 15, 18, 5, P.belt); box(c, tx - 3, ty + 17, 4, 9, P.belt); Px(c, tx - 3, ty + 25, 4, 1, sh(P.belt, -0.35));
   } else if (key === 'f4') {
     box(c, tx - 4, ty + 16, 6, 16, sh(P.top, -0.22));
@@ -3102,12 +3132,13 @@ function drawTorso(c, f, P, tx, ty, b) {
     Px(c, tx + 8, ty + 1, 1, 20, sh(P.top, 0.18)); Px(c, tx + 1, ty, 14, 1, sh(P.top, 0.15));
     box(c, tx - 1, ty + 18, 18, 12, P.top); Px(c, tx + 8, ty + 18, 1, 12, sh(P.top, -0.4)); Px(c, tx - 1, ty + 29, 18, 1, P.trim);
     if (form) for (let i = 0; i < 3; i++) Px(c, tx + 3 + i * 5, ty + 6 + ((T >> 3) + i * 3) % 10, 2, 2, '#bff6ff');
-  } else if (key === 'f6') {
-    box(c, tx, ty, 16, 20, P.top);
-    Px(c, tx + 7, ty + 1, 2, 18, P.trim); Px(c, tx + 1, ty, 14, 1, P.trim);
-    for (let i = 0; i < 4; i++) { Px(c, tx + 3, ty + 4 + i * 4, 3, 1, sh(P.top, 0.2)); Px(c, tx + 11, ty + 4 + i * 4, 3, 1, sh(P.top, 0.2)); }
-    box(c, tx - 1, ty + 16, 18, 3, sh(P.top, -0.38)); Px(c, tx + 6, ty + 16, 4, 3, P.trim);
-    box(c, tx + 1, ty + 19, 14, 6, sh(P.top, -0.15)); Px(c, tx + 8, ty + 19, 1, 6, sh(P.top, -0.35));
+  } else if (key === 'f6') { // camisa blanca, chaqueta corta, arnés, cajas de gas y bufanda roja
+    box(c, tx, ty, 16, 20, P.shirt);
+    box(c, tx - 1, ty - 1, 6, 13, P.top); box(c, tx + 11, ty - 1, 6, 13, P.top); Px(c, tx + 4, ty - 1, 1, 12, sh(P.top, 0.25));
+    for (let i = 0; i < 6; i++) { Px(c, tx + 3 + i * 1.6, ty + 4 + i * 2, 2, 1, P.belt); Px(c, tx + 12 - i * 1.6, ty + 4 + i * 2, 2, 1, P.belt); }
+    box(c, tx - 1, ty + 16, 18, 3, P.belt); Px(c, tx + 6, ty + 16, 4, 3, sh(P.belt, 0.35));
+    box(c, tx - 4, ty + 12, 4, 9, P.metal); Px(c, tx - 3, ty + 12, 2, 1, '#ffffff'); box(c, tx + 16, ty + 12, 4, 9, P.metal);
+    box(c, tx + 2, ty - 4, 13, 5, P.scarf); Px(c, tx + 2, ty - 4, 13, 1, sh(P.scarf, 0.25)); box(c, tx + 10, ty, 4, 7, sh(P.scarf, -0.1));
   }
 }
 
@@ -3262,8 +3293,8 @@ function drawFighter(c, f, tint) {
   const big = f.form && f.def.formBig, s = big ? (f.def.formScale || 2.1) : 1;
   const P = f.form && f.def.formPal ? f.def.formPal : f.def.pal;
   const paint = () => { c.save(); c.scale(face * s, s); if (big) drawTitan(c, f, p, P); else drawHuman(c, f, p, P); c.restore(); };
-  if (!tint && demonAura(f)) { const gr = c.createRadialGradient(0, -45, 6, 0, -45, 78); gr.addColorStop(0, 'rgba(224,35,60,0.45)'); gr.addColorStop(0.6, 'rgba(120,10,25,0.22)'); gr.addColorStop(1, 'rgba(20,10,13,0)'); c.fillStyle = gr; c.fillRect(-80, -125, 160, 160); }
-  if (!tint && demonAura(f)) { const fl = 5 + ((T >> 1) % 3); c.save(); c.globalAlpha *= 0.75; OV = (T >> 2) % 4 ? '#e0233c' : '#ff7a85'; for (const [ox, oy] of [[-fl, 0], [fl, 0], [0, -fl], [0, fl], [-fl * 0.7, -fl * 0.7], [fl * 0.7, -fl * 0.7]]) { c.save(); c.translate(ox, oy); paint(); c.restore(); } c.restore(); }
+  if (!tint && demonAura(f)) { const gr = c.createRadialGradient(0, -45, 6, 0, -45, 78); gr.addColorStop(0, 'rgba(10,10,14,0.55)'); gr.addColorStop(0.6, 'rgba(30,10,16,0.25)'); gr.addColorStop(1, 'rgba(10,10,14,0)'); c.fillStyle = gr; c.fillRect(-80, -125, 160, 160); }
+  if (!tint && demonAura(f)) { const fl = 5 + ((T >> 1) % 3); c.save(); c.globalAlpha *= 0.75; OV = (T >> 2) % 4 ? '#121218' : '#e0233c'; for (const [ox, oy] of [[-fl, 0], [fl, 0], [0, -fl], [0, fl], [-fl * 0.7, -fl * 0.7], [fl * 0.7, -fl * 0.7]]) { c.save(); c.translate(ox, oy); paint(); c.restore(); } c.restore(); }
   if (!tint && f.form && f.def.aura === 'asura') drawAsura(c, face);
   if (!tint && f.buffs && f.buffs.power > 0) { c.save(); c.globalAlpha *= 0.45; OV = (T >> 2) % 2 ? '#ff4d5e' : '#ffd27a'; for (const [ox, oy] of [[-3, 0], [3, 0], [0, -3]]) { c.save(); c.translate(ox, oy); paint(); c.restore(); } c.restore(); }
   if (!tint && f.slowT > 0) { c.save(); c.globalAlpha *= 0.4; OV = '#2a0f3a'; for (const ox of [-7, 7]) { c.save(); c.translate(ox, 0); paint(); c.restore(); } c.restore(); } // ralentizado por la presión
