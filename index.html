@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
 <meta name="theme-color" content="#0f0c1c">
-<title>Arena Umbral</title>
+<title>Anime Clash</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=Chakra+Petch:wght@400;600;700&display=swap">
@@ -338,7 +338,30 @@ h1,h2,h3{font-family:var(--display);margin:0;letter-spacing:.04em;text-wrap:bala
 .tb{border-radius:50%;background:#ffffff14;border:.3cqw solid #ffffff40;color:#fff;font-family:var(--display);font-size:2.6cqw;
   display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1;touch-action:none;padding:0}
 .tb small{font-size:.85cqw;opacity:.7;margin-top:.3cqh}
-.tb.down{background:#ff7a3d66;border-color:var(--ember)}
+.tb.down{background:#ff7a3d66;border-color:var(--ember);transform:scale(.94)}
+.tzone{position:absolute;left:0;bottom:0;width:42%;height:74%;pointer-events:auto;touch-action:none}
+.tstick{position:absolute;left:4cqw;bottom:4cqw;width:17cqw;height:17cqw;border-radius:50%;pointer-events:none;opacity:.5;transition:opacity .15s;
+  background:radial-gradient(circle,#ffffff14 0 40%,#ffffff08 41% 70%,#ffffff18 71% 72%,#ffffff06 73%);border:.3cqw solid #ffffff38}
+.tstick.on{opacity:1}
+.tknob{position:absolute;left:50%;top:50%;width:7.6cqw;height:7.6cqw;margin:-3.8cqw 0 0 -3.8cqw;border-radius:50%;background:radial-gradient(circle at 35% 35%,#ffffff60,#ffffff22);border:.3cqw solid #ffffffa0;box-shadow:0 0 1.6cqw #0009}
+.tstick .ar{position:absolute;font-family:var(--display);font-size:1.3cqw;color:#ffffff70}
+.ar.u{top:.7cqw;left:50%;transform:translateX(-50%)}.ar.d{bottom:.7cqw;left:50%;transform:translateX(-50%)}
+.ar.l{left:.9cqw;top:50%;transform:translateY(-50%)}.ar.r{right:.9cqw;top:50%;transform:translateY(-50%)}
+.tstick .ar.hot{color:var(--gold)}
+.thint{position:absolute;left:4cqw;bottom:1cqw;font-size:1cqw;color:#ffffff70;pointer-events:none;white-space:nowrap}
+.tacts{position:absolute;right:0;bottom:0;width:40cqw;height:30cqw;pointer-events:none}
+.tacts .tb{position:absolute;pointer-events:auto;overflow:hidden;transition:transform .06s}
+.tacts .tb b{font-weight:400;font-size:2.6cqw;line-height:1;position:relative}
+.tacts .tb small{position:relative;font-size:.8cqw}
+.t-e{right:2cqw;bottom:2cqw;width:12cqw;height:12cqw;background:#ff7a3d33!important;border-color:#ff7a3daa!important}.t-e b{font-size:3.8cqw!important}
+.t-j{right:15.5cqw;bottom:1.5cqw;width:9cqw;height:9cqw}
+.t-r{right:2.5cqw;bottom:15cqw;width:8.5cqw;height:8.5cqw}
+.t-f{right:12.5cqw;bottom:12cqw;width:8cqw;height:8cqw}
+.t-g{right:21.5cqw;bottom:11cqw;width:7.5cqw;height:7.5cqw}
+.t-q{right:26cqw;bottom:1.5cqw;width:7.5cqw;height:7.5cqw}
+.tb .cd{position:absolute;inset:0;border-radius:50%;background:conic-gradient(#ff7a3d55 calc(var(--p,1) * 360deg),#00000070 0)}
+.tb.ready{border-color:var(--gold);box-shadow:0 0 1.4cqw #ffd27a66}
+.tb.lock{opacity:.45}
 .tb.sm{font-size:2cqw}
 .tpause{position:absolute;top:21cqh;left:50%;transform:translateX(-50%);pointer-events:auto;width:6cqw;height:6cqw;border-radius:50%;
   background:#0b0916aa;border:.25cqw solid #ffffff40;color:#fff;font-family:var(--display);font-size:1.8cqw;touch-action:none}
@@ -358,18 +381,17 @@ h1,h2,h3{font-family:var(--display);margin:0;letter-spacing:.04em;text-wrap:bala
 
     <div id="touch">
       <button class="tpause" id="t-pause" aria-label="Pausa">II</button>
-      <div class="tpad l">
-        <span></span><button class="tb" data-code="KeyW" aria-label="Saltar">▲</button><span></span>
-        <button class="tb" data-code="KeyA" aria-label="Izquierda">◀</button>
-        <button class="tb" data-code="KeyS" aria-label="Agacharse">▼</button>
-        <button class="tb" data-code="KeyD" aria-label="Derecha">▶</button>
+      <div class="tzone" id="t-zone" aria-label="Joystick de movimiento">
+        <div class="tstick" id="t-stick"><span class="ar u">▲</span><span class="ar d">▼</span><span class="ar l">◀</span><span class="ar r">▶</span><i class="tknob" id="t-knob"></i></div>
+        <span class="thint">Desliza para moverte · arriba salta · abajo se agacha</span>
       </div>
-      <div class="tpad r">
-        <button class="tb" data-code="KeyF" aria-label="Especial">F<small>ESP</small></button>
-        <button class="tb" data-code="KeyG" aria-label="Transformación">G<small>FORMA</small></button>
-        <button class="tb sm" data-code="KeyQ" aria-label="Guardia">⛨<small>GUARD</small></button>
-        <button class="tb" data-code="KeyE" aria-label="Ataque">E<small>ATQ</small></button>
-        <button class="tb" data-code="KeyR" aria-label="Movilidad">R<small>MOV</small></button>
+      <div class="tacts">
+        <button class="tb t-e" data-code="KeyE" aria-label="Ataque"><b>E</b><small>ATAQUE</small></button>
+        <button class="tb t-j" data-code="KeyW" aria-label="Saltar"><b>▲</b><small>SALTO</small></button>
+        <button class="tb t-r" data-code="KeyR" aria-label="Movilidad"><i class="cd"></i><b>R</b><small>MOV</small></button>
+        <button class="tb t-f" data-code="KeyF" aria-label="Especial"><i class="cd"></i><b>F</b><small>ESP</small></button>
+        <button class="tb t-g" data-code="KeyG" aria-label="Transformación"><i class="cd"></i><b>G</b><small>FORMA</small></button>
+        <button class="tb t-q" data-code="KeyQ" aria-label="Guardia"><b>⛨</b><small>GUARDIA</small></button>
       </div>
     </div>
 
@@ -382,7 +404,7 @@ h1,h2,h3{font-family:var(--display);margin:0;letter-spacing:.04em;text-wrap:bala
         <button class="btn small" id="btn-mute" aria-label="Sonido">♪ ON</button>
       </div>
       <div class="menu-left">
-        <h1 class="logo">ARENA<br>UMBRAL<small>DUELO 1 VS 1</small></h1>
+        <h1 class="logo">ANIME<br>CLASH<small>DUELO 1 VS 1</small></h1>
         <nav class="menu-list" aria-label="Menú principal">
           <button class="mbtn hot" id="b-cpu"><span class="mi">⚔</span><span><b>Versus CPU</b><small>Al mejor de 3 rondas contra la máquina</small></span></button>
           <button class="mbtn" id="b-train"><span class="mi">◎</span><span><b>Entrenamiento</b><small>Sin K.O. y con energía infinita</small></span></button>
@@ -466,7 +488,8 @@ h1,h2,h3{font-family:var(--display);margin:0;letter-spacing:.04em;text-wrap:bala
           <ul class="ctl-list">
             <li><span class="k"><b>A</b><b>D</b></span><span>Moverse</span></li>
             <li><span class="k"><b>W</b><b>Espacio</b></span><span>Saltar · otra vez en el aire: doble salto con voltereta</span></li>
-            <li><span class="k"><b>S</b></span><span>Agacharse: esquiva los golpes altos</span></li>
+            <li><span class="k"><b>S</b><b>Ctrl</b></span><span>Agacharse: los golpes altos y los proyectiles a media altura pasan por encima</span></li>
+            <li><span class="k"><b>Ctrl</b>+<b>E</b></span><span>Barrido: golpe bajo que derriba a quien se agacha</span></li>
             <li><span class="k"><b>S</b>+<b>W</b></span><span>Bajar de una plataforma flotante (o mantén <b>S</b>)</span></li>
             <li><span class="k"><b>R</b></span><span>Movilidad propia de cada luchador</span></li>
           </ul></div>
@@ -481,7 +504,7 @@ h1,h2,h3{font-family:var(--display);margin:0;letter-spacing:.04em;text-wrap:bala
         <div class="ctl-card"><h3>Objetos del cielo</h3>
           <ul class="ctl-list ctl-items" id="ctl-items"></ul></div>
       </div>
-      <p class="note"><b class="kbd">Esc</b>/<b class="kbd">P</b> pausa · <b class="kbd">M</b> sonido · En móvil: cruceta a la izquierda (▼ agacharse) y acciones a la derecha (⛨ guardia).</p>
+      <p class="note"><b class="kbd">Esc</b>/<b class="kbd">P</b> pausa · <b class="kbd">M</b> sonido · En móvil: joystick a la izquierda (arriba salta, abajo se agacha) y botones a la derecha con su recarga.</p>
       <button class="btn" id="b-ctl-back">Volver</button>
     </section>
 
@@ -620,7 +643,7 @@ h1,h2,h3{font-family:var(--display);margin:0;letter-spacing:.04em;text-wrap:bala
 <script>
 'use strict';
 /* =====================================================================
-   ARENA UMBRAL — motor de lucha 1v1 en Canvas con multijugador P2P
+   ANIME CLASH — motor de lucha 1v1 en Canvas con multijugador P2P
    Módulos: CONFIG · SPRITES/Atlas · ROSTER · FX · Proyectiles · Fighter
             · Render · Input · CPU · Net (PeerJS) · UI · Bucle principal
    ===================================================================== */
@@ -633,10 +656,10 @@ const ROUND_TIME = 99;       // segundos
 const WINS_NEEDED = 2;       // al mejor de 3 rondas
 const INTRO_LEN = 80;        // frames de «RONDA N» antes de «¡LUCHA!»
 const ROUND_END = 150;       // frames entre el K.O. y la siguiente ronda / resultado
-const PEER_PREFIX = 'arenaumbral-v1-';
+const PEER_PREFIX = 'animeclash-v1-';
 
 /* Preferencias guardadas en el navegador */
-const SET_KEY = 'arena-umbral-settings';
+const SET_KEY = 'arena-umbral-settings'; // las claves de guardado conservan el nombre antiguo para no perder el progreso
 const Settings = { muted: false, diff: 'normal', shake: true, map: 'ocaso', items: true };
 try { Object.assign(Settings, JSON.parse(localStorage.getItem(SET_KEY) || '{}')); } catch (e) {}
 function saveSettings() { try { localStorage.setItem(SET_KEY, JSON.stringify(Settings)); } catch (e) {} }
@@ -1275,6 +1298,11 @@ const PROJ = {
   aircleave: { w: 50, h: 96,  vx: 12,  life: 42,  dmg: 44, kb: 6, kby: -3, stun: 18, breaksMinor: true, col: '#9ff5d8' },                 // rompe proyectiles menores
 };
 
+/* Barrido: agachado + E. Golpe bajo que derriba (contrarresta a quien se queda agachado) */
+const COMMON_MOVES = {
+  low: { dur: 26, low: true, pose: 'sweep', hits: [{ f: [7, 11], box: [0, -26, 100, 26], dmg: 30, kb: 4, kby: -5, stun: 30, knock: true }], fx: [{ f: 7, k: 'dust', x: 50 }, { f: 7, k: 'sweepfx' }] },
+};
+
 /* ---------------- Utilidades ---------------- */
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 const rnd = (a = 1, b) => b === undefined ? Math.random() * a : a + Math.random() * (b - a);
@@ -1550,6 +1578,16 @@ const FX = {
             c.stroke();
           }
           c.fillStyle = '#ffffff'; c.globalAlpha = open; c.beginPath(); c.arc(p.x2, p.y2, 40 * open + 10, 0, 6.283); c.fill();
+          break;
+        }
+        case 'airjump': { // onda de aire bajo los pies del doble salto
+          const k = p.t / p.life, r = p.r * (0.3 + 0.7 * Math.sqrt(k));
+          c.globalAlpha = Math.max(0, 1 - k);
+          c.save(); c.translate(p.x, p.y); c.scale(1, 0.3);
+          c.strokeStyle = p.col; c.lineWidth = 7 * (1 - k) + 1; c.beginPath(); c.arc(0, 0, r, 0, 6.283); c.stroke();
+          c.strokeStyle = '#ffffff'; c.lineWidth = 2; c.beginPath(); c.arc(0, 0, r * 0.68, 0, 6.283); c.stroke();
+          c.restore();
+          for (let i = 0; i < 8; i++) { const an = i / 8 * 6.283 + 0.2, x = p.x + Math.cos(an) * r, y = p.y + Math.sin(an) * r * 0.3 + k * 8; c.fillStyle = i % 2 ? '#ffffff' : p.col; c.fillRect(x - 2, y - 2, 4, 4); }
           break;
         }
         case 'icespikes': { // cristales de hielo que brotan del suelo
@@ -2108,20 +2146,21 @@ class Fighter {
   }
   get big() { return this.form && !!this.def.formBig; }
   get box() { return this.big ? this.def.formBox : this.def.box; }
-  hurt() { const b = this.box, h = this.state === 'crouch' ? b.h * 0.62 : b.h; return { x: this.x - b.w / 2, y: this.y - h, w: b.w, h }; } // agachado: caja más baja
+  hurt() { const b = this.box, low = this.state === 'crouch' || (this.move && this.move.low), h = low ? b.h * 0.55 : b.h; return { x: this.x - b.w / 2, y: this.y - h, w: b.w, h }; } // agachado: esquiva los golpes altos
   moves() { return this.form && this.def.formMoves ? this.def.formMoves : this.def.moves; }
-  moveDef(n) { return this.moves()[n] || this.def.moves[n] || (this.def.formMoves || {})[n] || null; }
+  moveDef(n) { return this.moves()[n] || this.def.moves[n] || (this.def.formMoves || {})[n] || COMMON_MOVES[n] || null; }
+  standBox() { const b = this.box; return { x: this.x - b.w / 2, y: this.y - b.h, w: b.w, h: b.h }; }
   speed() { return (this.form ? this.def.formSpeed : this.def.speed) * (this.buffs.speed > 0 ? 1.4 : 1) * (this.relic.spd || 1); }
   dmgMul() { return (this.form ? (this.def.formDmg || 1) : 1) * (this.buffs.power > 0 ? 1.35 : 1) * (this.relic.dmg || 1); }
   maxJumps() { return this.form && this.def.formJumps || this.def.jumps; }
   pal() { return this.form && this.def.formPal ? this.def.formPal : this.def.pal; }
   worldBox(b) { return { x: this.face === 1 ? this.x + b[0] : this.x - b[0] - b[2], y: this.y + b[1], w: b[2], h: b[3] }; }
-  snap() { return { def: this.def, id: this.id, side: this.side, form: this.form, face: this.face, state: this.state, st: this.st, move: this.move, moveName: this.moveName, x: this.x, y: this.y, flash: 0, inv: 0 }; }
+  snap() { return { def: this.def, id: this.id, side: this.side, form: this.form, face: this.face, state: this.state, st: this.st, move: this.move, moveName: this.moveName, x: this.x, y: this.y, flash: 0, inv: 0, flipT: this.flipT, onGround: this.onGround, vy: this.vy, vx: this.vx, box: this.box }; }
 
   startMove(name) {
     const m = this.moveDef(name); if (!m) return;
     this.move = m; this.moveName = name; this.moveSeq++;
-    this.state = name.startsWith('atk') ? 'attack' : name === 'r' ? 'dash' : name === 'tf' ? 'transform' : 'special';
+    this.state = name.startsWith('atk') || name === 'low' ? 'attack' : name === 'r' ? 'dash' : name === 'tf' ? 'transform' : 'special';
     this.st = -1; this.hitSet.clear(); this.holdT = 0; this.buf = 0; this.landed = false; this.diveDone = false; this.ride = m.ride ? 0 : null;
     if (m.endsForm) { this.formT = m.dur + 2; this.pendingExhaust = true; } // la definitiva consume la forma al terminar
     this.recoiled = false; this.sw = null;
@@ -2153,7 +2192,7 @@ class Fighter {
     if (this.move) { this.runMove(inp, opp); this.physics(); this.st++; return; }
 
     // Acciones
-    if (inp.atk) this.startMove('atk1');
+    if (inp.atk) this.startMove(inp.crouch && this.onGround && !this.big ? 'low' : 'atk1');
     else if (inp.r && this.cdR <= 0) { this.cdR = Math.round(d.cdR * (this.relic.cd || 1)); this.startMove('r'); if (this === Game.me) Missions.track('useR'); }
     else if (inp.f && this.energy >= F_COST) {
       this.energy -= F_COST; this.startMove('f'); if (this === Game.me) Missions.track('useF');
@@ -2175,16 +2214,20 @@ class Fighter {
     this.crouchT = inp.crouch && this.onGround && !this.big ? this.crouchT + 1 : 0;
     if (this.plat && this.onGround && inp.crouch && (inp.jump || this.crouchT > 10)) { // bajar de una plataforma flotante
       this.dropT = 14; this.onGround = false; this.plat = null; this.y += 3; this.vy = 1.5; this.crouchT = 0; this.state = 'jump'; this.st = 0;
-    } else if (inp.block && this.onGround) { if (this.state !== 'block') { this.state = 'block'; this.st = 0; } this.vx = 0; }
-    else if (this.crouchT > 0) { if (this.state !== 'crouch') { this.state = 'crouch'; this.st = 0; } this.vx = 0; }
+    } else if (inp.block && this.onGround) { if (this.state !== 'block') { this.state = 'block'; this.st = 0; } this.vx *= 0.5; }
+    else if (this.crouchT > 0) { if (this.state !== 'crouch') { this.state = 'crouch'; this.st = 0; this.squashT = 4; } this.vx *= 0.5; }
     else {
-      this.vx = mv * sp;
+      // inercia: acelera y frena en unos pocos frames (en el aire, algo menos de control)
+      const tv = mv * sp, ac = this.onGround ? (mv ? 0.34 : 0.42) : 0.2;
+      if (this.onGround && mv && Math.sign(this.vx) === -mv && Math.abs(this.vx) > 1.8) { // derrape al cambiar de sentido
+        if (T % 2 === 0) FX.cloud(this.x - mv * 6, this.y - 3, '#b8a690', 6, -mv * rnd(0.5, 1.5), -0.4, 16);
+        this.skidT = 6;
+      }
+      this.vx += (tv - this.vx) * ac; if (Math.abs(this.vx) < 0.05) this.vx = 0;
       if (inp.jump && this.jumpsLeft > 0) {
         const air = !this.onGround, mul = air ? (this.form && d.formAirJumpMul) || d.airJumpMul || 0.85 : 1, jv = (this.form && d.formJump ? d.formJump : d.jumpV) * mul;
-        if (air) { // doble salto: voltereta con estela
-          this.flipT = 20; this.airJumps++; FX.ring(this.x, this.y - 30, d.spark, 44, 14, 4); FX.burst(this.x, this.y, d.spark, 12, 3, 18, 4, 0);
-          for (let i = 0; i < 5; i++) FX.cloud(this.x + rnd(-12, 12), this.y, '#ffffff', 6, rnd(-1, 1), 1, 14);
-        } else { FX.dust(this.x, this.y, 8); this.squashT = 5; }
+        if (air) { this.airJumps++; this.airJumpFx(); if (mv) this.vx = mv * sp; } // doble salto: puede cambiar de dirección en el aire
+        else { FX.dust(this.x, this.y, 8); FX.cloud(this.x - 10, this.y - 2, '#b8a690', 7, -1.2, -0.3, 16); FX.cloud(this.x + 10, this.y - 2, '#b8a690', 7, 1.2, -0.3, 16); this.squashT = 5; }
         this.vy = -jv; this.jumpsLeft--; this.onGround = false; this.plat = null; SFX.play('jump');
       }
       const ns = this.onGround ? (mv ? 'run' : 'idle') : 'jump';
@@ -2313,7 +2356,7 @@ class Fighter {
       FX.dust(this.x, floor, 12); FX.add({ k: 'gring', x: this.x, r: 70, col: '#ffffff', life: 16 }); Game.shake = Math.max(Game.shake, 5); SFX.play('hit');
       this.lethal(this.face);
     } else if (this.y >= floor) {
-      if (!this.onGround && this.vy > 4) { FX.dust(this.x, floor, this.big ? 16 : 7); this.squashT = Math.max(this.squashT || 0, this.big ? 4 : 7); }
+      if (!this.onGround && this.vy > 4) { FX.dust(this.x, floor, this.big ? 16 : 7); this.squashT = Math.max(this.squashT || 0, this.big ? 4 : 7); if (this.vy > 9 && !this.big) FX.add({ k: 'gring', x: this.x, r: 40, col: '#b8a690', life: 14 }); }
       this.y = floor; this.vy = 0; this.plat = plat;
       if (!this.onGround) {
         this.onGround = true; this.jumpsLeft = this.maxJumps(); this.flipT = 0;
@@ -2324,6 +2367,15 @@ class Fighter {
     this.x = clamp(this.x, 16 + hw, W - 16 - hw);
   }
 
+  airJumpFx() { // doble salto: voltereta encogida, onda de aire bajo los pies, estela y líneas de velocidad
+    const col = this.def.spark;
+    this.flipT = 22; this.ghostT = 10;
+    FX.add({ k: 'airjump', x: this.x, y: this.y + 2, r: 46, col, life: 18 });
+    for (let i = 0; i < 6; i++) FX.add({ k: 'p', x: this.x + rnd(-14, 14), y: this.y, vx: rnd(-2.5, 2.5), vy: rnd(2, 5), col: i % 2 ? '#ffffff' : col, life: 16, size: 4, g: 0.05 });
+    for (let i = 0; i < 4; i++) { const xx = this.x + rnd(-18, 18); FX.line(xx, this.y + 4, xx, this.y + rnd(30, 60), i % 2 ? '#ffffffaa' : col, 10, 2); }
+    FX.cloud(this.x - 14, this.y, '#ffffff', 7, -1.6, 0.4, 14); FX.cloud(this.x + 14, this.y, '#ffffff', 7, 1.6, 0.4, 14);
+    SFX.play('whoosh');
+  }
   becomeForm() {
     this.form = true; this.formT = Math.round(FORM_TIME * (this.relic.form || 1)); this.ultUsed = false;
     if (this === Game.me && this.ctl !== 'remote') Missions.track('transform');
@@ -2440,7 +2492,7 @@ class Fighter {
     const prevState = this.state, prevForm = this.form;
     this.form = s.fm; this.formT = s.ft; this.hp = s.hp; this.energy = s.e; this.inv = s.iv; this.cdR = s.cr;
     this.state = s.s; this.st = s.st; this.moveName = s.m; this.move = s.m ? this.moveDef(s.m) : null; this.ultUsed = !!s.u; this.dazeT = s.dz || 0; this.exhaustT = s.ex || 0; this.og = !!s.og;
-    if ((s.aj || 0) > this.airJumps) this.flipT = 20; this.airJumps = s.aj || 0;
+    if ((s.aj || 0) > this.airJumps) this.airJumpFx(); this.airJumps = s.aj || 0;
     const bf = s.bf || 0; this.buffs.power = bf & 1 ? 30 : 0; this.buffs.shield = bf & 2 ? 30 : 0; this.buffs.speed = bf & 4 ? 30 : 0; this.slowT = s.sl || 0; this.bleedT = s.bl || 0; this.downT = s.dn || 0;
     if (s.ms !== this.lastMs) { this.lastMs = s.ms; if (s.m && this.move) { this.vMove = this.move; this.vSt = Math.max(0, s.st); SFX.play(s.m === 'f' || s.m === 'ult' ? 'charge' : s.m === 'tf' ? 'transform' : 'whoosh'); } }
     if (this.state === 'transform' && prevState !== 'transform') FX.ring(this.x, this.y - 50, this.def.spark, 90, 30, 6);
@@ -2467,6 +2519,7 @@ class Fighter {
     if (this.squishT > 0) this.squishT--;
     if (this.heroT > 0) { this.heroT--; FX.zap(this.x + rnd(-16, 16), this.y - rnd(10, this.box.h), 2, rnd(30, 70), this.def.zapCol); if (T % 2 === 0) FX.rise(this.x + rnd(-20, 20), this.y - rnd(0, 90), rnd() < 0.5 ? '#ff3a1a' : '#ffa040', 4); }
     if (this.flipT > 0) this.flipT--;
+    if (this.skidT > 0) this.skidT--;
     if (this.turnT > 0) this.turnT--;
     if (this.state === 'run' && this.onGround && this.st % 8 === 0) FX.cloud(this.x - this.face * 10, this.y - 3, '#8a7a6c', 5, -this.face * 0.6, -0.3, 16); // polvo al correr
     if (this.state === 'run' && this.speed() > 4.6 && T % 3 === 0) FX.line(this.x - this.face * 18, this.y - rnd(20, 70), this.x - this.face * rnd(46, 70), this.y - rnd(20, 70), '#ffffff55', 6, 1);
@@ -2544,6 +2597,7 @@ function doFx(f, e) {
     case 'cosmicfist': FX.add({ k: 'cosmic', f, life: e.life || 60 }); SFX.play('charge'); break;
     case 'spacebeam': { const tg = Game.other(f); FX.add({ k: 'spacebeam', x1: f.x + f.face * 10, y1: f.y - 92, x2: tg ? tg.x : f.x, y2: tg ? tg.y - 30 : GROUND, life: e.life || 40 }); SFX.play('boom'); FX.text(W / 2, 120, 'SPACE IMPACT!!', '#ffd27a', 34); break; }
     case 'boomOpp': { const tg = Game.other(f); if (tg) { FX.explode(tg.x, tg.y - 40, 140, '#ff6a1a'); FX.add({ k: 'dome', x: tg.x, y: GROUND, r: 380, col: '#ff8a3d', col2: '#2a0f3a', life: 30 }); FX.zap(tg.x, tg.y - 40, 16, 180, ['#c4201a', '#ffa040']); } break; }
+    case 'sweepfx': FX.add({ k: 'slash', x: f.x + dir * 30, y: f.y - 10, dir, col: '#ffffff', r: 40, flip: true, w: 4, life: 10 }); SFX.play('whoosh'); break;
     case 'frost': FX.burst(ox, oy, '#e8fbff', 10, 3, 18, 4, 0.05); FX.burst(ox, oy, '#9ae8ff', 6, 2, 22, 3, 0.1); break;
     case 'embers': FX.burst(ox, oy, '#ffd27a', 8, 3, 16, 4, -0.05); FX.burst(ox, oy, '#ff4a1a', 8, 2, 20, 4, -0.08); break;
     case 'icespikes': FX.add({ k: 'icespikes', x: ox, n: e.n || 5, h: e.h || 100, life: e.life || 40 }); FX.burst(ox, GROUND - 20, '#e8fbff', 16, 4, 22, 4, 0.1); SFX.play('block'); break;
@@ -2636,7 +2690,13 @@ function moveHits(f, opp) {
     if (f.st < h.f[0] || f.st > h.f[1]) continue;
     const key = h.every ? i + ':' + Math.floor((f.st - h.f[0]) / h.every) : String(i);
     if (f.hitSet.has(key)) continue;
-    if (overlap(f.worldBox(h.box), opp.hurt())) {
+    if (!overlap(f.worldBox(h.box), opp.hurt())) {
+      if ((opp.state === 'crouch' || (opp.move && opp.move.low)) && !h.aoe && !f.hitSet.has('dg') && overlap(f.worldBox(h.box), opp.standBox())) { // pasa por encima
+        f.hitSet.add('dg'); FX.text(opp.x, opp.y - 64, '¡ESQUIVA!', '#7ff0ff', 14); FX.burst(opp.x, opp.y - 50, '#ffffff', 6, 2, 12, 3, 0);
+      }
+      continue;
+    }
+    {
       f.hitSet.add(key);
       const dir = h.aoe ? (opp.x >= f.x ? 1 : -1) * (h.pull ? -1 : 1) : f.face; // pull: arrastra hacia el atacante
       if (h.delay && !(opp.state === 'block' && dir === -opp.face)) { // corte retardado: ya ha cortado, el daño llega después
@@ -2704,9 +2764,19 @@ function getPose(f) {
   const p = { bob: 0, lf: 0, lb: 0, lean: 0, crouch: 0, reach: 0, arm: 'down', spin: false, tuck: 0 };
   const s = f.state, st = f.st;
   if (s === 'idle') { p.bob = Math.floor((T + f.side * 9) / 22) % 2; p.armOff = Math.round(Math.sin((T + f.side * 20) / 18)); }
-  else if (s === 'run') { const ph = Math.floor(st / 4) % 6; p.lf = [-6, -3, 2, 6, 3, -2][ph]; p.lb = -p.lf; p.bob = ph % 3 === 0 ? 0 : 1; p.lean = 2; p.armOff = -Math.round(p.lf / 2); }
-  else if (s === 'jump') { const up = (f.vy || 0) < 0; p.lf = up ? 3 : -1; p.lb = up ? -5 : 3; p.arm = up ? 'up' : 'down'; p.tuck = up ? 4 : 1; p.armOff = up ? 0 : 2; }
-  else if (s === 'crouch') { p.drop = 11; p.tuck = 10; p.crouch = 3; p.lf = 3; p.lb = -4; p.lean = 2; p.arm = 'block'; }
+  else if (s === 'run') {
+    const ph = Math.floor(st / 3) % 8, sp = Math.min(1, Math.abs(f.vx || 0) / 4);
+    p.lf = Math.round([-7, -5, -1, 4, 7, 5, 1, -4][ph] * (0.5 + 0.5 * sp)); p.lb = -p.lf; p.bob = [0, 1, 1, 0, 0, 1, 1, 0][ph]; p.lean = 2 + Math.round(sp * 2); p.armOff = -Math.round(p.lf * 0.6);
+    if (f.skidT > 0) { p.lean = -3; p.lf = 5; p.lb = 2; p.crouch = 2; p.armOff = 3; } // derrape
+  }
+  else if (s === 'jump') {
+    const vy = f.vy || 0;
+    if (f.flipT > 3) { p.tuck = 9; p.crouch = 5; p.lf = 4; p.lb = 1; p.arm = 'block'; } // hecho una bola durante la voltereta
+    else if (vy < -4) { p.lf = 4; p.lb = -5; p.arm = 'up'; p.tuck = 5; } // subiendo
+    else if (vy < 2) { p.lf = 2; p.lb = -3; p.arm = 'ext'; p.reach = 0; p.tuck = 3; } // punto más alto: se abre
+    else { p.lf = -2; p.lb = 4; p.arm = 'down'; p.tuck = 0; p.armOff = 3; p.lean = 1; } // cayendo: piernas listas para aterrizar
+  }
+  else if (s === 'crouch') { p.squat = true; p.drop = 12; p.crouch = (Math.floor(st / 24) % 2); p.lean = 3; p.arm = 'block'; }
   else if (s === 'block') { p.arm = 'block'; p.crouch = 2; }
   else if (s === 'hurt') { p.lean = -6; p.arm = 'back'; p.lf = -2; p.lb = 3; }
   else if (s === 'transform' && !f.move) { p.arm = 'raise'; p.crouch = st < 16 ? 4 : 0; }
@@ -2721,6 +2791,7 @@ function getPose(f) {
       return p;
     }
     if (m.phases) { const ph = m.phases.find(q => st < q.to); if (ph) { Object.assign(p, ph); return p; } } // definitivas por fases
+    if (m.pose === 'sweep') { p.squat = true; p.drop = 12; p.sweep = st >= 5 && st < 17; p.arm = 'back'; p.lean = p.sweep ? 4 : 2; return p; } // barrido
     const kf = m.hits ? m.hits[0].f[0] : (m.proj ? m.proj[0].f : Math.floor(m.dur * 0.4));
     const ke = m.hits ? m.hits[m.hits.length - 1].f[1] : kf + 8;
     if (st < kf) { p.arm = 'wind'; p.lean = -2; p.crouch = 2; }
@@ -3073,9 +3144,20 @@ function drawFrontArm(c, f, p, P, sx, sy) {
   }
 }
 
+function drawSquatLegs(c, f, P, p) { // en cuclillas: pierna delantera flexionada, la de atrás con la rodilla casi en el suelo
+  const pants = P.pants || P.top, boots = P.boots || sh(P.pants || P.top, -0.3), bp = sh(pants, -0.14), bb = sh(boots, -0.14);
+  const xb = -7 + (p.lb || 0) - 2, xf = 1 + (p.lf || 0);
+  box(c, xb, -24, 6, 9, bp); box(c, xb - 8, -16, 10, 4, bp); box(c, xb - 12, -17, 5, 6, bb);
+  if (p.sweep) { // pierna estirada a ras de suelo
+    box(c, xf - 1, -23, 12, 6, pants); box(c, xf + 10, -18, 15, 5, pants); box(c, xf + 24, -19, 5, 8, boots); Px(c, xf + 10, -18, 15, 1, sh(pants, 0.25));
+  } else {
+    box(c, xf - 1, -24, 11, 5, pants); box(c, xf + 6, -21, 5, 9, pants); box(c, xf + 5, -14, 8, 4, boots); Px(c, xf + 6, -21, 5, 1, sh(pants, 0.25));
+  }
+}
 function drawHuman(c, f, p, P) {
   const d = f.def, b = p.bob + p.crouch, lx = p.lean, tk = p.tuck;
   if (p.drop) c.translate(0, p.drop * U); // agachado: todo el cuerpo baja con las piernas flexionadas
+  if (p.squat) { c.translate(0, -24 * U); c.scale(1, 0.84); c.translate(0, 24 * U); } // el tronco se encoge
   const armC = d.weapon === 'fist' ? (P.fistArm || P.skin) : (P.arm || P.top);
   drawBack(c, f, P, lx, b);
   const bax = -11 + lx, bay = -43 + b;
@@ -3093,8 +3175,8 @@ function drawHuman(c, f, p, P) {
     const o = -(p.armOff || 0); box(c, bax + o, bay, 4, 13, sh(armC, -0.2)); box(c, bax + o, bay + 13, 4, 4, sh(P.skin, -0.16));
     if (d.weapon === 'dagger2' || d.weapon === 'katana') drawWeapon(c, f, P, 'down', bax + o, bay + 13);
   }
-  drawLeg(c, f, P, -7 + p.lb, tk, true);
-  drawLeg(c, f, P, 1 + p.lf, tk, false);
+  if (p.squat) drawSquatLegs(c, f, P, p);
+  else { drawLeg(c, f, P, -7 + p.lb, tk, true); drawLeg(c, f, P, 1 + p.lf, tk, false); }
   drawTorso(c, f, P, -8 + lx, -44 + b, b);
   drawHead(c, f, P, -6 + lx, -58 + b);
   drawFrontArm(c, f, p, P, 4 + lx, -43 + b);
@@ -3172,7 +3254,7 @@ function drawFighter(c, f, tint) {
     c.scale(1 / sy, sy);
   }
   if (f.turnT > 0) c.scale(1 - 0.3 * f.turnT / 6, 1); // giro rápido al cambiar de lado
-  if (f.flipT > 0 && f.onGround === false) { const a = (1 - f.flipT / 20) * Math.PI * 2 * f.face; c.translate(0, -f.box.h * 0.5); c.rotate(a); c.translate(0, f.box.h * 0.5); } // voltereta del doble salto
+  if (f.flipT > 0 && f.onGround === false) { const k = 1 - f.flipT / 22, e = 1 - Math.pow(1 - k, 3), a = e * Math.PI * 2 * f.face; c.translate(0, -f.box.h * 0.42); c.rotate(a); c.translate(0, f.box.h * 0.42); } // voltereta del doble salto
   const p = getPose(f);
   let face = f.face; if (p.spin && Math.floor(f.st / 4) % 2) face = -face;
   if (f.inv > 0 && !tint && f.state !== 'transform' && (T >> 1) % 2) c.globalAlpha *= 0.55;
@@ -3810,14 +3892,14 @@ function applyRelics(f) {
 
 /* ---------------- Entrada ---------------- */
 const Keys = { down: new Set(), edge: new Set() };
-const GAME_KEYS = new Set(['KeyA', 'KeyD', 'KeyW', 'KeyS', 'KeyQ', 'KeyE', 'KeyR', 'KeyF', 'KeyG', 'Space', 'ShiftLeft', 'ShiftRight', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown']);
+const GAME_KEYS = new Set(['ControlLeft', 'ControlRight', 'KeyA', 'KeyD', 'KeyW', 'KeyS', 'KeyQ', 'KeyE', 'KeyR', 'KeyF', 'KeyG', 'Space', 'ShiftLeft', 'ShiftRight', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown']);
 addEventListener('keydown', e => {
   const tag = e.target.tagName;
   if (tag === 'INPUT' || tag === 'TEXTAREA') { if (e.code === 'Escape') e.target.blur(); return; }
   if (e.code === 'Escape' || (e.code === 'KeyP' && Game.running)) { e.preventDefault(); onEscape(); return; }
   if (!e.repeat && selectKey(e)) { e.preventDefault(); return; }
   if (tag === 'SELECT') return;
-  if (GAME_KEYS.has(e.code) && Game.running) e.preventDefault();
+  if ((GAME_KEYS.has(e.code) || e.ctrlKey) && Game.running) e.preventDefault(); // evita atajos del navegador (Ctrl+D, Ctrl+S…) al agacharse con Ctrl
   if (!e.repeat) Keys.edge.add(e.code);
   Keys.down.add(e.code);
   if (e.code === 'KeyM' && !e.repeat) toggleMute();
@@ -3834,7 +3916,7 @@ function readLocal() {
   const i = {
     left: D.has('KeyA') || D.has('ArrowLeft'), right: D.has('KeyD') || D.has('ArrowRight'),
     block: D.has('KeyQ') || D.has('ShiftLeft') || D.has('ShiftRight') || D.has('Mouse2'),
-    crouch: D.has('KeyS') || D.has('ArrowDown'),
+    crouch: D.has('KeyS') || D.has('ArrowDown') || D.has('ControlLeft') || D.has('ControlRight'),
     jump: E.has('KeyW') || E.has('Space') || E.has('ArrowUp'), atk: E.has('KeyE') || E.has('Mouse0'),
     r: E.has('KeyR'), f: E.has('KeyF'), g: E.has('KeyG'),
     blockPress: E.has('KeyQ') || E.has('ShiftLeft') || E.has('ShiftRight') || E.has('Mouse2'),
@@ -3853,6 +3935,46 @@ touchEl.querySelectorAll('.tb').forEach(b => {
   b.addEventListener('pointerdown', on); b.addEventListener('pointerup', off); b.addEventListener('pointercancel', off); b.addEventListener('lostpointercapture', off);
 });
 document.getElementById('t-pause').addEventListener('pointerdown', e => { e.preventDefault(); openPause(); });
+// joystick: aparece donde pones el dedo; izquierda/derecha para andar, arriba para saltar (otra vez para el doble salto), abajo para agacharse
+const Stick = { id: null, ox: 0, oy: 0, latch: false, el: document.getElementById('t-stick'), knob: document.getElementById('t-knob'), zone: document.getElementById('t-zone') };
+const stickKey = (code, on) => { if (on) Keys.down.add(code); else Keys.down.delete(code); };
+function stickReset() {
+  Stick.id = null; Stick.latch = false; ['KeyA', 'KeyD', 'KeyS', 'KeyW'].forEach(k => Keys.down.delete(k));
+  Stick.el.classList.remove('on'); Stick.el.style.left = Stick.el.style.top = Stick.el.style.bottom = ''; Stick.knob.style.transform = '';
+  Stick.el.querySelectorAll('.ar').forEach(a => a.classList.remove('hot'));
+}
+Stick.zone.addEventListener('pointerdown', e => {
+  e.preventDefault(); SFX.init(); if (Stick.id !== null) return;
+  Stick.id = e.pointerId; try { Stick.zone.setPointerCapture(e.pointerId); } catch (_) {}
+  const zr = touchEl.getBoundingClientRect(), sz = Stick.el.offsetWidth;
+  Stick.ox = e.clientX; Stick.oy = e.clientY;
+  Stick.el.style.left = clamp(e.clientX - zr.left - sz / 2, 4, zr.width - sz - 4) + 'px'; Stick.el.style.top = clamp(e.clientY - zr.top - sz / 2, 4, zr.height - sz - 4) + 'px'; Stick.el.style.bottom = 'auto';
+  const hint = touchEl.querySelector('.thint'); if (hint) hint.remove(); // la ayuda desaparece al primer toque
+  Stick.el.classList.add('on');
+});
+Stick.zone.addEventListener('pointermove', e => {
+  if (e.pointerId !== Stick.id) return; e.preventDefault();
+  const dx = e.clientX - Stick.ox, dy = e.clientY - Stick.oy, R0 = Stick.el.offsetWidth * 0.38, dz = R0 * 0.3, L = Math.hypot(dx, dy), k = L > R0 ? R0 / L : 1;
+  Stick.knob.style.transform = `translate(${dx * k}px, ${dy * k}px)`;
+  const left = dx < -dz, right = dx > dz, down = dy > dz * 1.3 && dy > Math.abs(dx) * 0.55, up = dy < -dz * 1.7 && -dy > Math.abs(dx) * 0.5;
+  stickKey('KeyA', left); stickKey('KeyD', right); stickKey('KeyS', down);
+  if (up && !Stick.latch) { Stick.latch = true; Keys.down.add('KeyW'); Keys.edge.add('KeyW'); if (navigator.vibrate) try { navigator.vibrate(6); } catch (_) {} }
+  else if (!up && Stick.latch) { Stick.latch = false; Keys.down.delete('KeyW'); }
+  const hot = { l: left, r: right, d: down, u: up }; Stick.el.querySelectorAll('.ar').forEach(a => a.classList.toggle('hot', !!hot[a.classList[1]]));
+});
+['pointerup', 'pointercancel', 'lostpointercapture'].forEach(ev => Stick.zone.addEventListener(ev, e => { if (e.pointerId === Stick.id) stickReset(); }));
+// recargas y energía sobre los botones
+const TB = { r: touchEl.querySelector('.t-r'), f: touchEl.querySelector('.t-f'), g: touchEl.querySelector('.t-g') };
+function touchHud() {
+  const me = Game.me; if (!me || !touchEl.classList.contains('on')) return;
+  const set = (b, p, ready, lock, label) => { b.style.setProperty('--p', clamp(p, 0, 1).toFixed(3)); b.classList.toggle('ready', ready); b.classList.toggle('lock', !!lock); if (label) b.querySelector('small').textContent = label; };
+  set(TB.r, 1 - me.cdR / Math.max(1, me.def.cdR * (me.relic.cd || 1)), me.cdR <= 0);
+  set(TB.f, me.energy / F_COST, me.energy >= F_COST);
+  if (!me.def.canTransform) set(TB.g, 0, false, true, 'FORMA');
+  else if (me.tfLocked) set(TB.g, 0, false, true, 'BLOQ.');
+  else if (me.form) set(TB.g, me.ultUsed ? 0 : 1, !me.ultUsed, me.ultUsed, 'DEFIN.');
+  else set(TB.g, me.energy / 100, me.energy >= 100, false, 'FORMA');
+}
 
 /* ---------------- CPU ---------------- */
 const AI = { t: 0, plan: 'approach', hold: 0, crouch: 0 };
@@ -3879,7 +4001,7 @@ function cpuInput(me, opp) {
   const threat = (opp.move && d < 170) || Game.projs.some(p => p.owner === opp && Math.abs(p.x - me.x) < 200 && Math.sign(me.x - p.x) === p.dir);
   switch (AI.plan) {
     case 'approach': i[toward] = true; if (d < 220 && rnd() < 0.04) i.r = true; break;
-    case 'press': if (d > reach) i[toward] = true; else if (rnd() < L.atk) i.atk = true; break;
+    case 'press': if (d > reach) i[toward] = true; else if (rnd() < L.atk) { i.atk = true; if (opp.state === 'crouch' && d < 110 && me.onGround && !me.big && rnd() < 0.7) i.crouch = true; } break;
     case 'guard': if (threat && rnd() < L.threatBlock) i.block = true; else if (d > reach) i[toward] = true; break;
     case 'retreat': i[away] = true; if (rnd() < 0.03) i.jump = true; break;
     case 'zone': if (d < 300) i[away] = true; if (rnd() < 0.05) i.r = true; break;
@@ -3892,7 +4014,7 @@ function cpuInput(me, opp) {
   if (me.plat && opp.y > me.y + 60 && rnd() < 0.06) AI.crouch = 14;
   if (me.blocked > 0 && (i.left || i.right) && me.onGround) i.jump = true; // salta los obstáculos
   if (threat && me.onGround && !i.block && rnd() < L.react * 0.04) AI.crouch = 18; // se agacha para esquivar
-  if (AI.crouch > 0) { AI.crouch--; i.crouch = true; i.left = i.right = false; }
+  if (AI.crouch > 0) { AI.crouch--; i.crouch = true; i.left = i.right = false; i.atk = i.atk && opp.state === 'crouch'; }
   // objetos cercanos
   const it = !threat && Items.list.find(q => q.landed && Math.abs(q.x - me.x) < 260 && Math.abs(q.y - me.y) < 120);
   if (it && rnd() < 0.85) { i.left = it.x < me.x - 6; i.right = it.x > me.x + 6; if (it.y < me.y - 30 && me.onGround) i.jump = true; }
@@ -4485,7 +4607,7 @@ function show(id) {
   const first = $(id).querySelector('.btn.primary:not([disabled]), .btn:not([disabled])');
   if (first && !matchMedia('(pointer:coarse)').matches) first.focus({ preventScroll: true });
 }
-function hideAll() { SCREENS.forEach(s => $(s).hidden = true); touchEl.style.visibility = 'visible'; stageEl.classList.add('ingame'); if (document.activeElement) document.activeElement.blur(); }
+function hideAll() { stickReset(); SCREENS.forEach(s => $(s).hidden = true); touchEl.style.visibility = 'visible'; stageEl.classList.add('ingame'); if (document.activeElement) document.activeElement.blur(); }
 function visible(id) { return !$(id).hidden; }
 function updateMenu() {
   const lv = Prof.level(), pend = Prof.pending(), tk = Prof.d.tickets;
@@ -4647,7 +4769,7 @@ const Gacha = {
       b.textContent = this.welcome ? '¡A luchar!' : 'Continuar'; b.disabled = false;
     } else if (this.phase === 'spin') { $('gacha-msg').textContent = 'Invocando…'; b.disabled = true; }
     else {
-      $('gacha-msg').textContent = this.welcome ? '¡Bienvenido a la Arena Umbral! Tu primera invocación es gratis y te dará un luchador completamente al azar. El resto se desbloquea con tickets.'
+      $('gacha-msg').textContent = this.welcome ? '¡Bienvenido a Anime Clash! Tu primera invocación es gratis y te dará un luchador completamente al azar. El resto se desbloquea con tickets.'
         : pool.length ? 'Cada invocación desbloquea un luchador al azar que todavía no tienes. Los tickets se ganan con misiones, logros y el pase de batalla.' : '¡Colección completa! Ya tienes a todos los luchadores del gacha.';
       b.textContent = this.welcome ? 'Invocación gratis' : 'Invocar'; b.disabled = !pool.length || (!this.welcome && tk < GACHA_COST);
     }
@@ -5096,6 +5218,7 @@ function frame(now) {
   if (visible('scr-result')) Res.draw();
   if (visible('scr-controls')) drawCtlIcons();
   if (visible('scr-gacha')) Gacha.draw();
+  if (Game.running) touchHud();
   requestAnimationFrame(frame);
 }
 (document.fonts ? document.fonts.load('16px Silkscreen') : Promise.resolve()).catch(() => {}).finally(() => requestAnimationFrame(frame));
@@ -5104,7 +5227,11 @@ addEventListener('load', () => {
   if (!Net.available()) { setMenuMsg('Modo online no disponible: PeerJS no ha cargado. Versus CPU y Entrenamiento funcionan.', true); return; }
   if (sala.length === 5) { $('in-code').value = sala; if (Prof.d.unlocked.length && !Cloud.configured()) Net.join(sala); }
 });
-window.addEventListener('beforeunload', () => { Net.close(); if (Cloud.pending) Cloud.push(); });
+window.addEventListener('beforeunload', e => { // Ctrl+W en pleno combate: pide confirmación antes de cerrar
+  if (Cloud.pending) Cloud.push();
+  if (Game.running && Game.phase === 'fight' && !Game.paused) { e.preventDefault(); e.returnValue = ''; }
+});
+window.addEventListener('pagehide', () => Net.close());
 </script>
 </body>
 </html>
