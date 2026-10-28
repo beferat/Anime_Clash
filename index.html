@@ -259,6 +259,10 @@ h1,h2,h3{font-family:var(--display);margin:0;letter-spacing:.04em;text-wrap:bala
 .gacha-pool .own small{color:var(--gold)}
 #b-pull{font-size:1.6cqw;padding:1.6cqh 1cqw}
 .dtabs{margin:.2cqh 0 .2cqh}
+.det-tier{display:flex;align-items:center;gap:.8cqw;font-size:1cqw;color:var(--mute);width:100%;min-width:0;white-space:nowrap}
+.det-tier[hidden]{display:none}
+.det-tier select{flex:1;min-width:0;width:100%;font-family:var(--display);font-size:1cqw;background:#0b0916;color:var(--gold);border:.2cqw solid var(--line);padding:.5cqh .6cqw}
+.tf-box .sec{color:var(--mute);font-style:italic;font-size:1cqw;line-height:1.35}
 .dtabs button{font-size:1cqw;padding:.6cqh .9cqw}
 .dtabs em{font-style:normal;color:var(--mute)}
 .det-mis{display:flex;flex-direction:column;gap:1cqh;font-size:1.1cqw}
@@ -359,6 +363,7 @@ h1,h2,h3{font-family:var(--display);margin:0;letter-spacing:.04em;text-wrap:bala
 .t-f{right:12.5cqw;bottom:12cqw;width:8cqw;height:8cqw}
 .t-g{right:21.5cqw;bottom:11cqw;width:7.5cqw;height:7.5cqw}
 .t-q{right:26cqw;bottom:1.5cqw;width:7.5cqw;height:7.5cqw}
+.t-d{right:29.5cqw;bottom:10.5cqw;width:7cqw;height:7cqw}
 .tb .cd{position:absolute;inset:0;border-radius:50%;background:conic-gradient(#ff7a3d55 calc(var(--p,1) * 360deg),#00000070 0)}
 .tb.ready{border-color:var(--gold);box-shadow:0 0 1.4cqw #ffd27a66}
 .tb.lock{opacity:.45}
@@ -391,7 +396,8 @@ h1,h2,h3{font-family:var(--display);margin:0;letter-spacing:.04em;text-wrap:bala
         <button class="tb t-r" data-code="KeyR" aria-label="Movilidad"><i class="cd"></i><b>R</b><small>MOV</small></button>
         <button class="tb t-f" data-code="KeyF" aria-label="Especial"><i class="cd"></i><b>F</b><small>ESP</small></button>
         <button class="tb t-g" data-code="KeyG" aria-label="Transformación"><i class="cd"></i><b>G</b><small>FORMA</small></button>
-        <button class="tb t-q" data-code="KeyQ" aria-label="Guardia"><b>⛨</b><small>GUARDIA</small></button>
+        <button class="tb t-q" data-code="ShiftLeft" aria-label="Guardia"><b>⛨</b><small>GUARDIA</small></button>
+        <button class="tb t-d" data-code="KeyQ" aria-label="Dash"><b>»</b><small>DASH</small></button>
       </div>
     </div>
 
@@ -456,6 +462,7 @@ h1,h2,h3{font-family:var(--display);margin:0;letter-spacing:.04em;text-wrap:bala
         <div class="detail" id="detail">
           <h3 id="det-name"></h3>
           <div class="sub" id="det-title"></div>
+          <label class="det-tier" id="det-tier-row">Transformación <select id="det-tier" aria-label="Transformación"></select></label>
           <div class="seg dtabs" id="det-tabs" role="tablist"><button data-t="moves">Habilidades</button><button data-t="mis">Misiones <em id="det-pct"></em></button></div>
           <div id="det-a">
             <div class="tags" id="det-tags"></div>
@@ -496,7 +503,8 @@ h1,h2,h3{font-family:var(--display);margin:0;letter-spacing:.04em;text-wrap:bala
         <div class="ctl-card"><h3>Combate</h3>
           <ul class="ctl-list">
             <li><span class="k"><b>E</b><b>Clic</b></span><span>Ataque: pulsa varias veces para el combo</span></li>
-            <li><span class="k"><b>Q</b><b>Shift</b><b>Clic der.</b></span><span>Guardia · justo antes del golpe: parry</span></li>
+            <li><span class="k"><b>Shift</b><b>Clic der.</b></span><span>Guardia · justo antes del golpe: parry</span></li>
+            <li><span class="k"><b>Q</b></span><span>Dash corto en la dirección que pulses (también uno en el aire)</span></li>
             <li><span class="k"><b>F</b></span><span>Especial (35 de energía)</span></li>
             <li><span class="k"><b>G</b></span><span>Transformación (100 de energía)</span></li>
             <li><span class="k"><b>G</b> en forma</span><span>Definitiva: consume la forma y te agota</span></li>
@@ -717,7 +725,7 @@ const ROSTER = {
            proj: [{ f: 16, kind: 'demonslash', dx: 50, dy: -56 }] },
       tf: { dur: 84, pose: 'raise', inv: [0, 62], becomeAt: 40,
             hits: [{ f: [42, 50], box: [-220, -220, 440, 220], dmg: 120, kb: 12, kby: -9, stun: 40, heavy: true, aoe: true, zap: true }],
-            fx: [{ f: 0, k: 'cine', mode: 'focus', name: 'PACTO CARMESÍ', sub: 'EL DEMONIO DESPIERTA', col: '#e0233c', col2: '#140a0d', dur: 82, zoom: 1.9 },
+            fx: [{ f: 0, k: 'cine', mode: 'focus', name: '@form', sub: '@sub', col: '#e0233c', col2: '#140a0d', dur: 82, zoom: 1.9 },
                  { f: 2, k: 'charge', col: '#ff4d5e' }, { f: 8, k: 'aura', t: 40 }, { f: 10, k: 'zaps', n: 4, len: 50 }, { f: 16, k: 'charge', col: '#140a0d' },
                  { f: 20, k: 'zaps', n: 6, len: 70 }, { f: 24, k: 'pillar', col: '#140a0d', w: 60, life: 30 }, { f: 30, k: 'zaps', n: 8, len: 90 },
                  { f: 32, k: 'pillar', col: '#e0233c', w: 80, life: 34 }, { f: 40, k: 'dome', col: '#ff4d5e', col2: '#140a0d', r: 220 },
@@ -781,7 +789,7 @@ const ROSTER = {
       f: { dur: 40, fx: [{ f: 0, k: 'charge', col: '#9ff5d8' }], proj: [{ f: 16, kind: 'galeball', dx: 40, dy: -64 }] },
       tf: { dur: 70, pose: 'raise', inv: [0, 56], becomeAt: 34,
             hits: [{ f: [34, 40], box: [-210, -190, 420, 190], dmg: 40, kb: 15, kby: -5, stun: 24, aoe: true }],
-            fx: [{ f: 0, k: 'cine', mode: 'focus', name: 'DESPERTAR DEL CÉFIRO', sub: 'LA TEMPESTAD RESPONDE', col: '#9ff5d8', col2: '#14423d', dur: 68, zoom: 1.8 },
+            fx: [{ f: 0, k: 'cine', mode: 'focus', name: '@form', sub: '@sub', col: '#9ff5d8', col2: '#14423d', dur: 68, zoom: 1.8 },
                  { f: 2, k: 'charge', col: '#c8fff0' }, { f: 14, k: 'charge', col: '#ffffff' }, { f: 20, k: 'pillar', col: '#9ff5d8', w: 70, life: 30 },
                  { f: 34, k: 'dome', col: '#c8fff0', col2: '#14423d', r: 220 }, { f: 34, k: 'gring', col: '#ffffff', r: 240 }, { f: 34, k: 'dust', x: 0 },
                  { f: 34, k: 'shake', a: 10 }, { f: 34, k: 'flash' }, { f: 36, k: 'gring', col: '#9ff5d8', r: 300 }] },
@@ -1260,6 +1268,154 @@ const ROSTER = {
     },
   },
 };
+
+/* ---------------- Transformaciones por niveles (BRAM, VAREK y LIORA) ----------------
+   Cada nivel tiene sus propias misiones y se desbloquea en orden; en combate se usa la que elijas en Preparación. */
+function scaleMoves(mv, k) { const o = JSON.parse(JSON.stringify(mv)); for (const n in o) { if (n === 'ult') continue; for (const h of o[n].hits || []) h.dmg = Math.round(h.dmg * k); } return o; }
+function tierMis(n, extra) {
+  const r = 20 + 15 * n, f = 10 + 8 * n, w = 3 + 2 * n, d = 3000 + 3000 * n;
+  return [{ ev: 'useR', goal: r, desc: 'Usa R ' + r + ' veces' }, { ev: 'useF', goal: f, desc: 'Usa F ' + f + ' veces' }, { ev: 'win', goal: w, desc: 'Gana ' + w + ' combates' },
+    { ev: 'dmg', goal: d, desc: 'Inflige ' + d.toLocaleString('es') + ' de daño' },
+    ...(n ? [{ ev: 'transform', goal: 3 + 2 * n, desc: 'Transfórmate ' + (3 + 2 * n) + ' veces' }] : []), ...(n >= 2 ? [{ ev: 'ult', goal: n, desc: 'Lanza ' + n + ' definitivas' }] : []), ...(extra || [])];
+}
+const gearTf = (col, col2, extra) => ({ dur: 70, pose: 'raise', inv: [0, 50], becomeAt: 30,
+  hits: [{ f: [30, 36], box: [-200, -190, 400, 190], dmg: 40, kb: 14, kby: -6, stun: 24, aoe: true }],
+  fx: [{ f: 0, k: 'cine', mode: 'focus', name: '@form', sub: '@sub', col, col2, dur: 66, zoom: 1.8 }, { f: 4, k: 'steamS' }, { f: 10, k: 'charge', col }, { f: 18, k: 'steamS' },
+       { f: 30, k: 'dome', col, col2, r: 220 }, { f: 30, k: 'shake', a: 11 }, { f: 30, k: 'flash' }, { f: 32, k: 'gring', col: '#ffffff', r: 250 }, ...(extra || [])] });
+const LOCK = stun => ({ f: [2, 5], box: FULLBOX, dmg: 10, kb: 0, kby: 0, stun, aoe: true, gb: true });
+const P3 = ROSTER.f3.pal;
+ROSTER.f3.tiers = [
+  { tkey: 'g2', formName: 'GEAR 2', formSub: 'LA SANGRE BOMBEA A TODA VELOCIDAD', formSpeed: 5.6, aura: 'gear2', toon: false, formJump: undefined, formJumps: undefined, formAirJumpMul: undefined, formGrav: undefined, formBurst: '#ffb0a0',
+    formPal: { ...P3, skin: '#ee9c8e', arm: '#ee9c8e', wrap: '#ee9c8e' }, tf: gearTf('#ffb0a0', '#3a1418'), missions: tierMis(0),
+    desc: { g: 'GEAR 2: cuerpo al rojo y velocidad extrema. E: pistolas a reacción · R: paso a reacción · F: gatling a reacción · G otra vez: GATLING A REACCIÓN' },
+    formMoves: {
+      atk1: { dur: 12, cancel: 7, reach: 70, fistSize: 9, hits: [{ f: [4, 6], box: [0, -84, 120, 36], dmg: 38, kb: 2, kby: -1, stun: 14 }], fx: [{ f: 4, k: 'impact', x: 100, y: -64, col: '#ffb0a0' }] },
+      atk2: { alt: true, dur: 12, cancel: 7, reach: 70, fistSize: 9, hits: [{ f: [4, 6], box: [0, -80, 124, 36], dmg: 40, kb: 2, kby: -1, stun: 14 }], fx: [{ f: 4, k: 'impact', x: 102, y: -60, col: '#ffb0a0' }] },
+      atk3: { dur: 14, cancel: 8, reach: 80, fistSize: 10, hits: [{ f: [5, 7], box: [0, -98, 130, 46], dmg: 44, kb: 2.5, kby: -3, stun: 15 }], fx: [{ f: 5, k: 'impact', x: 108, y: -74, col: '#ffb0a0' }, { f: 3, k: 'steamS' }] },
+      atk4: { double: true, dur: 30, reach: 110, fistSize: 12, hits: [{ f: [10, 13], box: [0, -104, 160, 74], dmg: 92, kb: 14, kby: -5, stun: 26, heavy: true }], fx: [{ f: 2, k: 'steamS' }, { f: 10, k: 'impact', x: 140, y: -70, col: '#ffb0a0' }, { f: 10, k: 'shake', a: 8 }] },
+      r: { dur: 26, pose: 'dash', reach: 30, vel: [{ f: 2, vx: 19, hold: 10 }], hits: [{ f: [3, 12], box: [0, -84, 80, 84], dmg: 52, kb: 9, kby: -5, stun: 22 }], fx: [{ f: 1, k: 'steamS' }, { f: 2, k: 'trail', col: '#ffb0a0' }, { f: 2, k: 'ghosts', n: 4 }] },
+      f: { dur: 54, costT: 150, pose: 'barrage', reach: 120, hits: [{ f: [8, 44], every: 4, box: [0, -100, 190, 70], dmg: 12, kb: 0.5, kby: 0, stun: 14 }], fx: [{ f: 4, k: 'barrage', dur: 38, col: '#ffb0a0' }, { f: 4, k: 'steamS' }] },
+      ult: { dur: 150, inv: [0, 150], endsForm: true, tp: { f: 12 }, phases: [{ to: 12, arm: 'raise', crouch: 5 }, { to: 118, arm: 'ext', reach: 60, lean: 4 }, { to: 999, arm: 'ext', reach: 80, lean: 7, backExt: true }],
+             hits: [LOCK(160), { f: [20, 100], every: 8, box: FULLBOX, dmg: 12, kb: 0, kby: 0, stun: 40, aoe: true, gb: true }, { f: [120, 124], box: FULLBOX, dmg: 174, kb: 15, kby: -12, stun: 50, heavy: true, aoe: true, gb: true }],
+             fx: [{ f: 0, k: 'cine', name: 'GATLING A REACCIÓN', sub: 'DEFINITIVA', col: '#ffb0a0', col2: '#3a1418', dur: 60, banner: 50 }, { f: 2, k: 'steamS' }, { f: 12, k: 'ghosts', n: 5 },
+                  { f: 20, k: 'barrage', dur: 84, col: '#ffb0a0' }, { f: 40, k: 'shake', a: 6 }, { f: 70, k: 'shake', a: 8 }, { f: 100, k: 'steamS' }, { f: 116, k: 'shout', s: '¡BAZUCA A REACCIÓN!', col: '#ffb0a0' },
+                  { f: 120, k: 'impact', x: 90, y: -70, col: '#ffffff' }, { f: 120, k: 'flash' }, { f: 120, k: 'shake', a: 22 }, { f: 120, k: 'dome', col: '#ffb0a0', col2: '#3a1418', r: 260 }] },
+    } },
+  { tkey: 'g3', formName: 'GEAR 3', formSub: 'HUESOS INFLADOS COMO UN GIGANTE', formSpeed: 3.9, aura: 'gear3', toon: false, formJump: undefined, formJumps: undefined, formAirJumpMul: undefined, formGrav: undefined, formBurst: '#e2b088',
+    formPal: { ...P3 }, tf: gearTf('#e2b088', '#3a2418', [{ f: 30, k: 'bigfist', x: 60, y: -70, from: 20, to: 70, col: '#e2b088', life: 20 }]), missions: tierMis(1),
+    desc: { g: 'GEAR 3: puños gigantes, lentos y demoledores. E: pistola de elefante · R: hacha de gigante · F: gatling de elefante · G otra vez: PISTOLA DEL REY GORILA' },
+    formMoves: {
+      atk1: { dur: 18, cancel: 11, reach: 70, big: true, fistSize: 18, hits: [{ f: [7, 9], box: [0, -110, 150, 70], dmg: 46, kb: 2, kby: -1, stun: 16 }], fx: [{ f: 7, k: 'impact', x: 120, y: -74, col: '#e2b088' }] },
+      atk2: { alt: true, dur: 18, cancel: 11, reach: 70, fistSize: 18, hits: [{ f: [7, 9], box: [0, -106, 150, 70], dmg: 48, kb: 2, kby: -1, stun: 16 }], fx: [{ f: 7, k: 'impact', x: 122, y: -70, col: '#e2b088' }] },
+      atk3: { dur: 20, cancel: 12, reach: 80, big: true, fistSize: 20, hits: [{ f: [8, 10], box: [0, -120, 160, 80], dmg: 52, kb: 2, kby: -3, stun: 17 }], fx: [{ f: 8, k: 'impact', x: 126, y: -80, col: '#e2b088' }, { f: 8, k: 'shake', a: 4 }] },
+      atk4: { dur: 46, reach: 120, big: true, fistSize: 34, hits: [{ f: [18, 22], box: [0, -150, 200, 140], dmg: 112, kb: 16, kby: -6, stun: 30, heavy: true }],
+              fx: [{ f: 2, k: 'charge', col: '#e2b088' }, { f: 8, k: 'shout', s: '¡PISTOLA DE ELEFANTE!', col: '#e2b088', size: 16 }, { f: 18, k: 'impact', x: 170, y: -80, col: '#ffffff' }, { f: 18, k: 'gring', x: 150, col: '#e2b088', r: 120 }, { f: 18, k: 'shake', a: 12 }] },
+      r: { dur: 50, pose: 'leap', vel: [{ f: 6, vx: 3.4, vy: -13 }], land: { after: 10, rec: 16, hit: { box: [-60, -100, 220, 100], dmg: 72, kb: 8, kby: -9, stun: 28, heavy: true }, fx: [{ k: 'dust' }, { k: 'crack', col: '#e6c25a', len: 160 }, { k: 'shake', a: 10 }] } },
+      f: { dur: 60, costT: 150, pose: 'barrage', reach: 120, big: true, fistSize: 22, hits: [{ f: [10, 46], every: 6, box: [0, -140, 210, 130], dmg: 19, kb: 0.5, kby: 0, stun: 20 }], fx: [{ f: 6, k: 'barrage', dur: 40, col: '#e2b088' }, { f: 10, k: 'shake', a: 6 }] },
+      ult: { dur: 120, inv: [0, 120], endsForm: true, big: true, fistSize: 40, phases: [{ to: 66, arm: 'back', crouch: 4, lean: -3 }, { to: 999, arm: 'ext', reach: 60, lean: 6 }],
+             hits: [LOCK(140), { f: [40, 60], every: 10, box: FULLBOX, dmg: 15, kb: 0, kby: 0, stun: 60, aoe: true, gb: true }, { f: [70, 74], box: FULLBOX, dmg: 261, kb: 17, kby: -8, stun: 50, heavy: true, aoe: true, gb: true }],
+             fx: [{ f: 0, k: 'cine', name: 'PISTOLA DEL REY GORILA', sub: 'DEFINITIVA', col: '#e2b088', col2: '#3a2418', dur: 60, banner: 50 }, { f: 6, k: 'charge', col: '#e2b088' },
+                  { f: 10, k: 'shout', s: '¡GEAR 3!', col: '#e2b088' }, { f: 14, k: 'bigfist', x: -50, y: -150, from: 30, to: 220, col: '#e2b088', life: 56 }, { f: 40, k: 'shake', a: 6 }, { f: 55, k: 'shake', a: 8 },
+                  { f: 70, k: 'bigfist', x: 230, y: -100, from: 240, to: 260, col: '#e2b088', life: 18 }, { f: 70, k: 'impact', x: 220, y: -90, col: '#ffffff' }, { f: 70, k: 'flash' }, { f: 70, k: 'shake', a: 24 },
+                  { f: 70, k: 'dome', col: '#e2b088', col2: '#3a2418', r: 320 }, { f: 72, k: 'crackOpp' }] },
+    } },
+  { tkey: 'g4b', formName: 'GEAR 4: BOUNDMAN', formSub: 'MÚSCULOS DE GOMA ENDURECIDOS', formSpeed: 3.7, formScaleH: 1.24, bouncy: true, formArmor: 0.85, aura: 'g4', toon: false, formJump: 14, formJumps: undefined, formAirJumpMul: undefined, formGrav: 0.85, formBurst: '#e0233c', zapCol: ['#1a1418', '#e0233c'],
+    formPal: { ...P3, skin: '#dca07a', arm: '#1a1418', fistArm: '#1a1418', wrap: '#1a1418', band: '#e0233c', legSkin: '#1a1418' }, tf: gearTf('#e0233c', '#1a1418', [{ f: 20, k: 'zaps', n: 8, len: 80 }]), missions: tierMis(2),
+    desc: { g: 'GEAR 4 BOUNDMAN: cuerpo enorme que rebota y puños endurecidos. E: pistolas de gorila · R: rebote · F: culebrina · G otra vez: CAÑÓN DEL REY GORILA' },
+    formMoves: {
+      atk1: { dur: 16, cancel: 9, reach: 70, fistSize: 15, hits: [{ f: [6, 8], box: [0, -104, 140, 60], dmg: 50, kb: 2, kby: -1, stun: 16, zap: true }], fx: [{ f: 6, k: 'impact', x: 110, y: -74, col: '#e0233c' }] },
+      atk2: { alt: true, dur: 16, cancel: 9, reach: 70, fistSize: 15, hits: [{ f: [6, 8], box: [0, -100, 144, 60], dmg: 52, kb: 2, kby: -1, stun: 16, zap: true }], fx: [{ f: 6, k: 'impact', x: 112, y: -70, col: '#e0233c' }] },
+      atk3: { dur: 18, cancel: 10, reach: 76, fistSize: 16, hits: [{ f: [7, 9], box: [0, -116, 150, 70], dmg: 56, kb: 2, kby: -3, stun: 17, zap: true }], fx: [{ f: 7, k: 'impact', x: 116, y: -84, col: '#e0233c' }, { f: 7, k: 'shake', a: 4 }] },
+      atk4: { dur: 40, reach: 110, big: true, fistSize: 30, hits: [{ f: [16, 20], box: [0, -140, 210, 120], dmg: 118, kb: 17, kby: -7, stun: 30, heavy: true, zap: true }],
+              fx: [{ f: 2, k: 'charge', col: '#e0233c' }, { f: 8, k: 'shout', s: '¡CAÑÓN DE GORILA!', col: '#e0233c', size: 16 }, { f: 16, k: 'impact', x: 160, y: -80, col: '#ffffff' }, { f: 16, k: 'gring', x: 150, col: '#e0233c', r: 110 }, { f: 16, k: 'shake', a: 12 }] },
+      r: { dur: 60, pose: 'leap', vel: [{ f: 4, vx: 4.2, vy: -11 }], land: { after: 8, rec: 14, hit: { box: [-80, -110, 240, 110], dmg: 66, kb: 9, kby: -10, stun: 26, heavy: true }, fx: [{ k: 'dust' }, { k: 'gring', col: '#e0233c', r: 120 }, { k: 'shake', a: 9 }] } },
+      f: { dur: 44, costT: 150, reach: 60, fistSize: 14, proj: [{ f: 16, kind: 'hakifist', dx: 50, dy: -76 }], fx: [{ f: 0, k: 'charge', col: '#e0233c' }, { f: 16, k: 'shout', s: '¡CULEBRINA!', col: '#e0233c' }] },
+      ult: { dur: 150, inv: [0, 150], endsForm: true, phases: [{ to: 20, arm: 'raise', crouch: 6 }, { to: 110, arm: 'back', tuck: 4 }, { to: 999, arm: 'ext', reach: 50, lean: 5 }],
+             vel: [{ f: 20, vy: -22 }], skyHold: [36, 104, 150], above: { f: 104 }, dropAt: { f: 106, vy: 28 },
+             hits: [LOCK(170), { f: [118, 124], box: FULLBOX, dmg: 306, kb: 16, kby: -12, stun: 50, heavy: true, aoe: true, gb: true, zap: true }],
+             fx: [{ f: 0, k: 'cine', name: 'CAÑÓN DEL REY GORILA', sub: 'DEFINITIVA', col: '#e0233c', col2: '#1a1418', dur: 60, banner: 50 }, { f: 20, k: 'dust' }, { f: 20, k: 'shake', a: 8 },
+                  { f: 36, k: 'bigfist', x: 30, y: 70, from: 40, to: 240, col: '#1a1418', band: '#e0233c', life: 76 }, { f: 60, k: 'shake', a: 6 }, { f: 90, k: 'shake', a: 8 },
+                  { f: 118, k: 'bigfist', x: 0, y: -40, from: 300, to: 320, col: '#1a1418', band: '#e0233c', life: 20 }, { f: 118, k: 'dome', col: '#e0233c', col2: '#1a1418', r: 380 }, { f: 118, k: 'crack', col: '#e0233c', len: 400 },
+                  { f: 118, k: 'flash' }, { f: 118, k: 'shake', a: 26 }, { f: 120, k: 'shatter' }] },
+    } },
+  { tkey: 'g4s', formName: 'GEAR 4: SNAKEMAN', formSub: 'PUÑOS QUE SERPENTEAN SIN FIN', formSpeed: 5.0, formScaleH: 1.1, snakeCape: true, aura: 'g4', toon: false, formJump: undefined, formJumps: undefined, formAirJumpMul: undefined, formGrav: undefined, formBurst: '#c42a2a', zapCol: ['#1a1418', '#e0233c'],
+    formPal: { ...P3, skin: '#dca07a', arm: '#1a1418', fistArm: '#1a1418', wrap: '#1a1418', band: '#c42a2a', legSkin: '#1a1418', top: '#2a1418' }, tf: gearTf('#c42a2a', '#1a1418', [{ f: 20, k: 'zaps', n: 8, len: 80 }]), missions: tierMis(3),
+    desc: { g: 'GEAR 4 SNAKEMAN: puños rapidísimos de largo alcance. E: puños serpiente · R: culebrina a reacción · F: mamba negra · G otra vez: COBRA REY' },
+    formMoves: {
+      atk1: { dur: 13, cancel: 8, reach: 120, fistSize: 11, hits: [{ f: [4, 6], box: [0, -90, 190, 40], dmg: 42, kb: 2, kby: -1, stun: 14, zap: true }], fx: [{ f: 4, k: 'impact', x: 170, y: -70, col: '#c42a2a' }] },
+      atk2: { alt: true, dur: 13, cancel: 8, reach: 120, fistSize: 11, hits: [{ f: [4, 6], box: [0, -84, 200, 40], dmg: 44, kb: 2, kby: -1, stun: 14, zap: true }], fx: [{ f: 4, k: 'impact', x: 176, y: -64, col: '#c42a2a' }] },
+      atk3: { dur: 15, cancel: 9, reach: 130, fistSize: 12, hits: [{ f: [5, 7], box: [0, -104, 210, 50], dmg: 48, kb: 3, kby: -3, stun: 15, zap: true }], fx: [{ f: 5, k: 'impact', x: 186, y: -80, col: '#c42a2a' }] },
+      atk4: { dur: 30, reach: 200, fistSize: 14, hits: [{ f: [10, 13], box: [0, -110, 260, 70], dmg: 100, kb: 13, kby: -6, stun: 26, heavy: true, zap: true }], fx: [{ f: 2, k: 'charge', col: '#c42a2a' }, { f: 4, k: 'shout', s: '¡PITÓN!', col: '#c42a2a', size: 16 }, { f: 10, k: 'impact', x: 230, y: -76, col: '#ffffff' }, { f: 10, k: 'shake', a: 9 }] },
+      r: { dur: 28, tp: { f: 5 }, inv: [0, 9], reach: 50, fistSize: 12, hits: [{ f: [9, 12], box: [0, -96, 100, 96], dmg: 58, kb: 10, kby: -6, stun: 24, zap: true }], fx: [{ f: 4, k: 'puff', x: 0, col: '#1a1418' }, { f: 9, k: 'impact', x: 70, y: -66, col: '#c42a2a' }] },
+      f: { dur: 56, costT: 150, pose: 'barrage', reach: 160, hits: [{ f: [8, 44], every: 4, box: [0, -120, 220, 110], dmg: 13, kb: 1, kby: 0, stun: 14, zap: true }], fx: [{ f: 4, k: 'barrage', dur: 40, col: '#1a1418' }, { f: 4, k: 'shout', s: '¡MAMBA NEGRA!', col: '#c42a2a', size: 16 }] },
+      ult: { dur: 140, inv: [0, 140], endsForm: true, phases: [{ to: 44, arm: 'back', crouch: 3, lean: -3 }, { to: 999, arm: 'ext', reach: 90, lean: 6 }],
+             hits: [LOCK(160), { f: [48, 52], box: FULLBOX, dmg: 216, kb: 0, kby: 0, stun: 70, heavy: true, aoe: true, gb: true }, { f: [56, 86], every: 6, box: FULLBOX, dmg: 15, kb: 0, kby: 0, stun: 50, aoe: true, gb: true }],
+             fx: [{ f: 0, k: 'cine', name: 'COBRA REY', sub: 'DEFINITIVA', col: '#c42a2a', col2: '#1a1418', dur: 60, banner: 50 }, { f: 6, k: 'charge', col: '#1a1418' }, { f: 22, k: 'charge', col: '#c42a2a' },
+                  { f: 44, k: 'snakepunch', life: 50 }, { f: 48, k: 'flash' }, { f: 48, k: 'shake', a: 18 }, { f: 56, k: 'barrage', dur: 30, col: '#1a1418' }, { f: 86, k: 'flash' }, { f: 86, k: 'shake', a: 24 },
+                  { f: 86, k: 'dome', col: '#c42a2a', col2: '#1a1418', r: 320 }, { f: 88, k: 'crackOpp' }] },
+    } },
+  { tkey: 'g5', formName: 'GEAR 5: DIOS BLANCO', formSub: 'RESUENAN LOS TAMBORES DE LA LIBERACIÓN', missions: tierMis(4) },
+];
+const P1 = ROSTER.f1.pal, P2 = ROSTER.f2.pal;
+ROSTER.f1.tiers = [
+  { tkey: 'half', formName: 'MEDIO DEMONIO', formSub: 'LIEBE LE PRESTA UN ALA', formSpeed: 4.4, formDmg: 1.0, horn: 'small', wings: { n: 1, kind: 'demon' }, missions: tierMis(0),
+    formPal: { ...P1, hair: '#6a6a72', arm: '#121216', cape: '#0e0e12', eye: '#ff4d5e', blade: '#1a1a1e', edge: '#ff4d5e', guard: '#e0233c' },
+    desc: { g: 'MEDIO DEMONIO: un ala demoníaca y la katana de Liebe. R: cabalga el mandoble · F: corte imparable · G otra vez: Réquiem del Pacto' } },
+  { tkey: 'full', formName: 'UNIÓN DEMONÍACA', formSub: 'ASTA Y LIEBE, UN SOLO CUERPO', formSpeed: 5.0, formDmg: 1.15, wings: { n: 2, kind: 'demon' }, missions: tierMis(1),
+    desc: { g: 'UNIÓN DEMONÍACA: dos alas y el cuerpo entero fundido con Liebe. F: divisor negro · G otra vez: DESTRUCTOR DEMONÍACO' },
+    formMoves: Object.assign(scaleMoves(ROSTER.f1.formMoves, 1.08), {
+      f: { dur: 56, costT: 150, proj: [{ f: 14, kind: 'blackdiv', dx: 40, dy: -40 }, { f: 22, kind: 'blackdiv', dx: 40, dy: -80 }, { f: 30, kind: 'blackdiv', dx: 40, dy: -60 }],
+           fx: [{ f: 0, k: 'charge', col: '#16161c' }, { f: 8, k: 'zaps', n: 6, len: 70 }, { f: 14, k: 'shake', a: 6 }, { f: 30, k: 'shake', a: 8 }] },
+      ult: { dur: 150, inv: [0, 150], endsForm: true, phases: [{ to: 24, arm: 'raise', crouch: 5 }, { to: 92, arm: 'wind' }, { to: 999, arm: 'ext', reach: 30, lean: 6 }],
+             vel: [{ f: 24, vy: -18 }], skyHold: [36, 90, 170], above: { f: 92 }, dropAt: { f: 94, vy: 30 },
+             hits: [LOCK(160), { f: [30, 86], every: 8, box: FULLBOX, dmg: 7, kb: 0, kby: 0, stun: 50, aoe: true, gb: true }, { f: [100, 106], box: FULLBOX, dmg: 209, kb: 16, kby: -11, stun: 50, heavy: true, aoe: true, gb: true }],
+             fx: [{ f: 0, k: 'cine', name: 'DESTRUCTOR DEMONÍACO', sub: 'DEFINITIVA', col: '#e0233c', col2: '#0a0a0e', dur: 60, banner: 50 }, { f: 10, k: 'demon', col: '#16161c' }, { f: 24, k: 'dust' },
+                  { f: 30, k: 'dimcuts', life: 60 }, { f: 40, k: 'zaps', n: 10, len: 110 }, { f: 60, k: 'shake', a: 8 }, { f: 80, k: 'charge', col: '#e0233c' },
+                  { f: 100, k: 'rift', col: '#e0233c', len: 240 }, { f: 100, k: 'dome', col: '#16161c', col2: '#e0233c', r: 360 }, { f: 100, k: 'crack', col: '#e0233c', len: 420 }, { f: 100, k: 'flash' }, { f: 100, k: 'shake', a: 26 }, { f: 102, k: 'shatter' }] },
+    }) },
+];
+ROSTER.f2.tiers = [
+  { tkey: 'half', formName: 'DESCENSO A MEDIAS', formSub: 'BELL SE FUNDE CON MEDIO CUERPO', formSpeed: 4.6, wings: { n: 1, kind: 'wind' }, missions: tierMis(0),
+    formPal: { ...P2, trim: '#5ef0a0', belt: '#5ef0a0', glow: '#5ef0a0', eye: '#d7a63c' },
+    desc: { g: 'DESCENSO A MEDIAS: un ala de viento. R: picado dirigido que rompe guardias · F: haz que cruza el escenario · G otra vez: Tempestad Primordial' } },
+  { tkey: 'full', formName: 'DESCENSO ESPIRITUAL', formSub: 'EL ESPÍRITU DEL VIENTO, COMPLETO', formSpeed: 5.2, wings: { n: 2, kind: 'wind' }, missions: tierMis(1),
+    desc: { g: 'DESCENSO ESPIRITUAL: dos alas, el viento entero. F: tormenta de plumas · G otra vez: Tempestad Primordial' },
+    formMoves: Object.assign(scaleMoves(ROSTER.f2.formMoves, 1.06), {
+      f: { dur: 56, costT: 150, proj: [12, 18, 24, 30, 36].map((f, i) => ({ f, kind: 'feather', dx: 40, dy: [-50, -76, -40, -90, -62][i] })), fx: [{ f: 0, k: 'charge', col: '#c8fff0' }, { f: 12, k: 'shout', s: 'TORMENTA DE PLUMAS', col: '#5ef0a0', size: 14 }] },
+    }) },
+  { tkey: 'star', secret: true, formName: 'CÉFIRO ESTELAR', formSub: 'DOS GRIMORIOS, UN SOLO DESTINO', formSpeed: 5.4, formArmor: 0.9, aura: 'stars', starMark: true, wings: { n: 2, kind: 'wind', kind2: 'star' },
+    formBurst: '#ffe08a', zapCol: ['#ffe08a', '#5ef0a0'], spark: '#ffe08a',
+    hint: 'Dos grimorios despiertan ante un único rival. Véncelo en su punto más alto, con el viento entero de tu lado y sin caer ni una sola vez.',
+    missions: [{ ev: 'secretYuno', goal: 1, desc: 'Gana a VAREK con LIORA en DESCENSO ESPIRITUAL, sin perder ninguna ronda (CPU en Difícil u online)' }],
+    formPal: { skin: '#f0d0b0', hair: '#18181f', flame: '#ffe08a', glowEye: '#ffe08a', top: '#1a1a3a', arm: '#1a1a3a', belt: '#5ef0a0', pants: '#12122a', boots: '#0a0a1a', eye: '#ffe08a', glow: '#ffe08a', trim: '#ffd27a' },
+    desc: { g: 'CÉFIRO ESTELAR (secreta): viento y estrellas a la vez. E: cortes estelares · R: paso estelar · F: lluvia de estrellas · G otra vez: GÉNESIS ESTELAR' },
+    formMoves: {
+      atk1: { dur: 13, cancel: 8, reach: 30, hits: [{ f: [4, 6], box: [0, -92, 130, 44], dmg: 46, kb: 2, kby: -1, stun: 15 }], fx: [{ f: 4, k: 'stars', x: 100, y: -66 }] },
+      atk2: { alt: true, dur: 13, cancel: 8, reach: 30, hits: [{ f: [4, 6], box: [0, -88, 134, 44], dmg: 48, kb: 2, kby: -1, stun: 15 }], fx: [{ f: 4, k: 'stars', x: 104, y: -62 }] },
+      atk3: { dur: 15, cancel: 9, reach: 30, hits: [{ f: [5, 7], box: [0, -104, 140, 54], dmg: 52, kb: 3, kby: -4, stun: 16 }], fx: [{ f: 5, k: 'stars', x: 110, y: -78 }], proj: [{ f: 5, kind: 'feather', dx: 40, dy: -70 }] },
+      atk4: { dur: 34, reach: 30, hits: [{ f: [12, 15], box: [0, -130, 190, 130], dmg: 106, kb: 12, kby: -7, stun: 28, heavy: true }], fx: [{ f: 2, k: 'charge', col: '#ffe08a' }, { f: 12, k: 'starsOpp' }, { f: 12, k: 'shake', a: 9 }] },
+      r: { dur: 26, tp: { f: 5 }, inv: [0, 10], hits: [{ f: [9, 12], box: [0, -100, 90, 100], dmg: 58, kb: 10, kby: -6, stun: 24 }], fx: [{ f: 4, k: 'stars', x: 0, y: -50 }, { f: 9, k: 'stars', x: 40, y: -60 }] },
+      f: { dur: 50, costT: 150, pose: 'raise', proj: [14, 20, 26, 32, 38].map((f, i) => ({ f, kind: 'starfall', atOpp: true, dx: [-90, -40, 0, 40, 90][i], cy: -40 })),
+           fx: [{ f: 0, k: 'charge', col: '#ffe08a' }, { f: 10, k: 'shout', s: 'LLUVIA DE ESTRELLAS', col: '#ffe08a', size: 16 }] },
+      ult: { dur: 190, inv: [0, 190], endsForm: true, phases: [{ to: 40, arm: 'block' }, { to: 130, arm: 'raise' }, { to: 999, arm: 'ext', reach: 30, lean: 4 }],
+             vel: [{ f: 20, vy: -14 }], skyHold: [30, 160, 260],
+             hits: [LOCK(220), { f: [120, 160], every: 8, box: FULLBOX, dmg: 10, kb: 0, kby: 0, stun: 50, aoe: true, gb: true }, { f: [164, 168], box: FULLBOX, dmg: 246, kb: 16, kby: -12, stun: 50, heavy: true, aoe: true, gb: true }],
+             fx: [{ f: 0, k: 'cine', name: 'GÉNESIS ESTELAR', sub: 'DEFINITIVA SECRETA', col: '#ffe08a', col2: '#0e0e2a', dur: 70, banner: 60 }, { f: 20, k: 'domain', d: 'starsky', dur: 168 }, { f: 20, k: 'flash' },
+                  { f: 40, k: 'constellation', life: 130 }, { f: 60, k: 'shoutOpp', s: '★', col: '#ffe08a', size: 30 }, { f: 100, k: 'comet', life: 66 }, { f: 120, k: 'shake', a: 8 }, { f: 140, k: 'shake', a: 12 },
+                  { f: 164, k: 'flash' }, { f: 164, k: 'shake', a: 26 }, { f: 164, k: 'dome', col: '#ffe08a', col2: '#0e0e2a', r: 380 }, { f: 164, k: 'stars', x: 0, y: -40 }, { f: 166, k: 'shatter' }] },
+    } },
+];
+const TIER_CACHE = {};
+function tierDef(id, t) { // definición del luchador con la transformación elegida
+  const base = ROSTER[id], tr = base && base.tiers; if (!tr) return base;
+  t = clamp(t | 0, 0, tr.length - 1); const k = id + ':' + t; if (TIER_CACHE[k]) return TIER_CACHE[k];
+  const o = Object.assign({}, base, tr[t], { tier: t, desc: { ...base.desc, ...(tr[t].desc || {}) } });
+  if (tr[t].tf) o.moves = { ...base.moves, tf: tr[t].tf };
+  return (TIER_CACHE[k] = o);
+}
+const tierCount = id => (ROSTER[id].tiers || [0]).length;
+const tierName = (id, t) => ROSTER[id].tiers ? ROSTER[id].tiers[t].formName : ROSTER[id].formName;
+function randTier(id) { const tr = ROSTER[id].tiers; if (!tr) return 0; const ok = tr.map((x, i) => i).filter(i => !tr[i].secret); return ok[Math.floor(Math.random() * ok.length)]; }
 const ROSTER_IDS = Object.keys(ROSTER);
 const COMBO_NEXT = { atk1: 'atk2', atk2: 'atk3', atk3: 'atk4' }; // la cadena sigue mientras exista el siguiente golpe
 
@@ -1286,6 +1442,10 @@ const PROJ = {
   cannonball: { w: 26, h: 26, vx: 7, vy: -6, grav: 0.32, life: 160, dmg: 32, kb: 5, kby: -4, stun: 18, shatter: true, platHit: true, col: '#ffd27a' },          // TORVAL: balas lanzadas a mano
   megacannon: { w: 72, h: 72, vx: 12, life: 90, dmg: 110, kb: 12, kby: -6, stun: 30, heavy: true, cancels: true, col: '#ff6a1a' },               // TORVAL despierto
   boneshock:  { w: 76, h: 40, vx: 9, life: 60, dmg: 50, kb: 4, kby: -9, stun: 24, ground: true, col: '#ff6a1a' },                                  // onda del impacto de hueso
+  hakifist:  { w: 72, h: 56, vx: 13, life: 80, dmg: 116, kb: 15, kby: -7, stun: 30, heavy: true, cancels: true, col: '#1a1418' },                       // GEAR 4: culebrina
+  blackdiv:  { w: 50, h: 110, vx: 13, life: 60, dmg: 52, kb: 6, kby: -3, stun: 20, cancels: true, col: '#2a2a34' },                                // VAREK: divisor negro
+  feather:   { w: 40, h: 16, vx: 14, life: 50, dmg: 26, kb: 3, kby: -1, stun: 14, col: '#c8fff0' },                                                  // LIORA: plumas de viento
+  starfall:  { w: 44, h: 44, vx: 0, vy: 12, life: 80, dmg: 30, kb: 4, kby: -6, stun: 18, col: '#ffe08a' },                                           // LIORA estelar: caen del cielo
   icewave:   { w: 96, h: 80, vx: 8, life: 70, dmg: 90, kb: 5, kby: -10, stun: 30, slow: 90, heavy: true, ground: true, col: '#9ae8ff' },                 // KAIRO: glaciar que avanza
   flamewave: { w: 70, h: 130, vx: 9.5, life: 80, dmg: 112, kb: 10, kby: -5, stun: 28, bleed: 120, heavy: true, cancels: true, col: '#ff6a1a' },     // KAIRO: ola de fuego
   apshot:    { w: 80, h: 12, vx: 22, life: 40, dmg: 96, kb: 10, kby: -3, stun: 26, heavy: true, pierce: true, col: '#ffb02e' },                    // VOLKAR: disparo perforante
@@ -1302,6 +1462,7 @@ const PROJ = {
 
 /* Barrido: agachado + E. Golpe bajo que derriba (contrarresta a quien se queda agachado) */
 const COMMON_MOVES = {
+  dash: { dur: 15, pose: 'dash', dashMove: true, inv: [0, 5] },
   low: { dur: 26, low: true, pose: 'sweep', hits: [{ f: [7, 11], box: [0, -26, 100, 26], dmg: 30, kb: 4, kby: -5, stun: 30, knock: true }], fx: [{ f: 7, k: 'dust', x: 50 }, { f: 7, k: 'sweepfx' }] },
 };
 
@@ -1582,6 +1743,38 @@ const FX = {
           c.fillStyle = '#ffffff'; c.globalAlpha = open; c.beginPath(); c.arc(p.x2, p.y2, 40 * open + 10, 0, 6.283); c.fill();
           break;
         }
+        case 'bigfist': { // puño que se infla hasta ser gigante
+          const f2 = p.f; if (!f2) break; const k = Math.min(1, p.t / Math.max(1, p.life - 4)), sz = p.from + (p.to - p.from) * k, x = f2.x + f2.face * p.x, y = f2.y + p.y;
+          c.globalAlpha = 1; c.strokeStyle = p.col; c.lineWidth = Math.max(8, sz * 0.32); c.beginPath(); c.moveTo(f2.x + f2.face * 10, f2.y - 66); c.lineTo(x, y); c.stroke();
+          c.fillStyle = p.col; c.fillRect(x - sz / 2, y - sz / 2, sz, sz); c.fillStyle = 'rgba(0,0,0,0.25)'; c.fillRect(x - sz / 2, y + sz * 0.2, sz, sz * 0.3);
+          for (let i = 1; i < 4; i++) { c.fillStyle = 'rgba(0,0,0,0.3)'; c.fillRect(x + (f2.face > 0 ? sz * 0.18 : -sz * 0.5), y - sz / 2 + i * sz / 4, sz * 0.32, Math.max(2, sz * 0.03)); }
+          if (p.band) { c.fillStyle = p.band; for (let i = 0; i < 3; i++) c.fillRect(x - sz / 2 + sz * (0.15 + i * 0.25), y - sz / 2, Math.max(3, sz * 0.05), sz); }
+          break;
+        }
+        case 'snakepunch': { // brazo que serpentea hasta el rival
+          const f2 = p.f, tg = p.tgt; if (!f2 || !tg) break; const k = Math.min(1, p.t / 10), x0 = f2.x + f2.face * 20, y0 = f2.y - 70, x1 = tg.x, y1 = tg.y - 60;
+          c.globalAlpha = Math.max(0, Math.min(1, (p.life - p.t) / 8)); c.lineCap = 'round';
+          for (const [w, col] of [[22, '#1a1418'], [6, '#e0233c']]) { c.strokeStyle = col; c.lineWidth = w; c.beginPath();
+            for (let i = 0; i <= 24 * k; i++) { const u = i / 24, x = x0 + (x1 - x0) * u, y = y0 + (y1 - y0) * u + Math.sin(u * 9 + T * 0.3) * 50 * (1 - u * 0.6); i ? c.lineTo(x, y) : c.moveTo(x, y); } c.stroke(); }
+          c.lineCap = 'butt'; const hx = x0 + (x1 - x0) * k, hy = y0 + (y1 - y0) * k + Math.sin(k * 9 + T * 0.3) * 50 * (1 - k * 0.6);
+          c.fillStyle = '#1a1418'; c.fillRect(hx - 26, hy - 26, 52, 52); c.fillStyle = '#e0233c'; c.fillRect(hx - 26, hy - 4, 52, 6);
+          break;
+        }
+        case 'constellation': { // las estrellas se unen formando una figura en el cielo
+          const k = Math.min(1, p.t / 60); c.globalAlpha = Math.max(0, Math.min(1, (p.life - p.t) / 16));
+          c.strokeStyle = '#fff1b8'; c.lineWidth = 2; c.beginPath(); const n = p.pts.length, seg = k * (n - 1);
+          for (let i = 0; i <= Math.floor(seg); i++) { const [x, y] = p.pts[i]; i ? c.lineTo(x, y) : c.moveTo(x, y); }
+          if (seg < n - 1) { const i = Math.floor(seg), u = seg - i, a = p.pts[i], b = p.pts[i + 1]; c.lineTo(a[0] + (b[0] - a[0]) * u, a[1] + (b[1] - a[1]) * u); } c.stroke();
+          for (const [x, y] of p.pts) { const r = 4 + Math.sin(T * 0.2 + x) * 2; c.fillStyle = '#ffe08a'; c.beginPath(); c.arc(x, y, r + 4, 0, 6.283); c.fill(); c.fillStyle = '#ffffff'; c.beginPath(); c.arc(x, y, r, 0, 6.283); c.fill(); }
+          break;
+        }
+        case 'comet': { // cometa de viento y estrellas que cae sobre el rival
+          const k = Math.min(1, p.t / (p.life * 0.7)), x = p.x0 + (p.x1 - p.x0) * k, y = p.y0 + (p.y1 - p.y0) * k;
+          c.globalAlpha = Math.max(0, Math.min(1, (p.life - p.t) / 10));
+          for (let i = 14; i >= 0; i--) { const u = i / 14, tx = x - (p.x1 - p.x0) * 0.35 * u, ty = y - (p.y1 - p.y0) * 0.35 * u, r = (60 - i * 3.4); c.fillStyle = i % 2 ? '#5ef0a088' : '#ffe08a99'; c.beginPath(); c.arc(tx, ty, Math.max(4, r), 0, 6.283); c.fill(); }
+          c.fillStyle = '#ffffff'; c.beginPath(); c.arc(x, y, 34, 0, 6.283); c.fill(); c.strokeStyle = '#ffe08a'; c.lineWidth = 4; c.beginPath(); c.arc(x, y, 46 + (T % 6), 0, 6.283); c.stroke();
+          break;
+        }
         case 'airjump': { // onda de aire bajo los pies del doble salto
           const k = p.t / p.life, r = p.r * (0.3 + 0.7 * Math.sqrt(k));
           c.globalAlpha = Math.max(0, 1 - k);
@@ -1837,7 +2030,8 @@ class Proj {
     const d = PROJ[spec.kind];
     this.d = d; this.kind = spec.kind; this.owner = owner; this.ghost = ghost;
     this.dir = spec.absDir ?? owner.face * (spec.dir || 1);
-    this.x = spec.x ?? owner.x + (spec.absDir ?? owner.face) * (spec.dx || 0);
+    const tgo = spec.atOpp && Game.other(owner); // nace sobre el rival (lluvia de estrellas)
+    this.x = tgo ? tgo.x + (spec.dx || 0) : spec.x ?? owner.x + (spec.absDir ?? owner.face) * (spec.dx || 0);
     this.cy = spec.cy ?? (d.ground ? GROUND - d.h / 2 : owner.y + (spec.dy || -50));
     this.t = 0; this.dead = false; this.hitDone = false; this.mul = owner.dmgMul(); this.lastHit = -99; this.vy = spec.vyAim ?? (d.vy || 0); this.vxMul = spec.vxMul || 1;
   }
@@ -1869,6 +2063,7 @@ class Proj {
       if (this.cy >= GROUND - d.h / 2) { this.dead = true; FX.dust(this.x, GROUND, 14); FX.burst(this.x, GROUND - 20, '#ffb35c', 18, 5, 22, 5, 0.12); FX.add({ k: 'gring', x: this.x, r: 60, col: '#ffb35c', life: 18 }); Game.shake = Math.max(Game.shake, 6); SFX.play('heavy'); }
     }
     if (d.burst && this.cy >= GROUND - d.h / 2) { this.kill(); return; }
+    if (this.kind === 'starfall' && this.cy >= GROUND - d.h / 2) { this.dead = true; FX.burst(this.x, GROUND - 10, '#ffe08a', 16, 5, 20, 4, 0.1); FX.ring(this.x, GROUND - 10, '#fff1b8', 50, 14, 4); SFX.play('hit'); return; }
     const fy = d.platHit ? Stage.floorAt(this.x, this.cy) : GROUND; // las balas de cañón también revientan contra plataformas
     if (d.shatter && this.cy + d.h / 2 >= fy) { // el bloque revienta contra el suelo
       this.dead = true; FX.explode(this.x, fy - 20, 70, d.col); FX.dust(this.x, fy, 18); if (fy >= GROUND) FX.crack(this.x, d.col, 100);
@@ -1890,6 +2085,9 @@ class Proj {
     if (T % 2 === 0) {
       if (this.kind === 'megacannon') { FX.add({ k: 'p', x: this.x - this.dir * 30, y: this.cy + rnd(-24, 24), vx: -this.dir * 2, vy: rnd(-1, 1), col: rnd() < 0.5 ? '#ff6a1a' : '#ffd27a', life: 16, size: 6, g: 0 }); if (T % 6 === 0) FX.zap(this.x, this.cy, 1, 50, ['#c4201a', '#ffa040']); }
       else if (this.kind === 'boneshock') { FX.dust(this.x, GROUND, 1); FX.add({ k: 'p', x: this.x + rnd(-30, 30), y: GROUND - rnd(2, 36), vx: rnd(-1, 1), vy: rnd(-3, -1), col: rnd() < 0.5 ? '#1a1420' : '#ff6a1a', life: 16, size: 4, g: 0.05 }); }
+      else if (this.kind === 'hakifist') { FX.cloud(this.x - this.dir * 30, this.cy + rnd(-16, 16), '#c8c0c0', 7, -this.dir, -0.4, 14); if (T % 6 === 0) FX.zap(this.x, this.cy, 1, 40, ['#1a1418', '#e0233c']); }
+      else if (this.kind === 'starfall') FX.add({ k: 'p', x: this.x + rnd(-8, 8), y: this.cy - 20, vx: rnd(-0.5, 0.5), vy: -1, col: rnd() < 0.5 ? '#ffe08a' : '#ffffff', life: 16, size: 4, g: 0 });
+      else if (this.kind === 'feather') FX.add({ k: 'p', x: this.x - this.dir * 16, y: this.cy + rnd(-4, 4), vx: -this.dir * 1.5, vy: 0, col: '#ffffff', life: 10, size: 3, g: 0 });
       else if (this.kind === 'icewave') FX.add({ k: 'p', x: this.x + rnd(-40, 40), y: GROUND - rnd(4, 50), vx: rnd(-1, 1), vy: rnd(-2, -0.5), col: rnd() < 0.5 ? '#e8fbff' : '#9ae8ff', life: 18, size: 4, g: 0.05 });
       else if (this.kind === 'flamewave' || this.kind === 'firearrow') FX.add({ k: 'p', x: this.x - this.dir * rnd(10, 40), y: this.cy + rnd(-d.h / 2, d.h / 2), vx: -this.dir * rnd(0.5, 2), vy: rnd(-2, -0.5), col: ['#ffd27a', '#ff8a3a', '#ff4a1a'][Math.floor(rnd(3))], life: 18, size: 5, g: -0.03 });
       else if (this.kind.startsWith('apshot')) FX.add({ k: 'p', x: this.x - this.dir * 40, y: this.cy + rnd(-3, 3), vx: -this.dir, vy: rnd(-0.5, 0.5), col: rnd() < 0.5 ? '#ffd27a' : '#ff7a1a', life: 10, size: 3, g: 0 });
@@ -1931,7 +2129,7 @@ class Proj {
     const d = this.d, x = Math.round(this.x), y = Math.round(this.cy);
     c.save(); c.translate(x, y); c.scale(this.dir, 1);
     switch (this.kind) {
-      case 'nullwave': case 'nullwave2': case 'nullshard': {
+      case 'nullwave': case 'nullwave2': case 'nullshard': case 'blackdiv': {
         const r = d.h / 2, j = (T >> 1) % 2;
         c.lineWidth = 14; c.strokeStyle = d.col; c.beginPath(); c.arc(-r * 0.55, 0, r, -1.15, 1.15); c.stroke();
         c.lineWidth = 8; c.strokeStyle = '#120c1d'; c.beginPath(); c.arc(-r * 0.62, 0, r - 3, -1.05, 1.05); c.stroke();
@@ -1939,6 +2137,20 @@ class Proj {
         for (let i = 0; i < 5; i++) { c.fillStyle = i % 2 ? '#efe2ff' : d.col; c.fillRect(r * 0.4 + rnd(-6, 6), rnd(-r, r), 4, 4); }
         break;
       }
+      case 'hakifist': { // puño negro endurecido con franjas rojas
+        c.fillStyle = '#e0233c55'; c.beginPath(); c.arc(0, 0, 40, 0, 6.283); c.fill();
+        c.fillStyle = '#1a1418'; c.fillRect(-30, -24, 52, 48); c.fillRect(-70, -12, 44, 24);
+        c.fillStyle = '#e0233c'; for (let i = 0; i < 3; i++) c.fillRect(-64 + i * 14, -12, 4, 24); c.fillRect(10, -20, 4, 40);
+        c.fillStyle = '#3a3036'; for (let i = 1; i < 4; i++) c.fillRect(12, -24 + i * 12, 10, 2);
+        break;
+      }
+      case 'starfall': { // estrella dorada que cae
+        c.fillStyle = '#ffe08a55'; c.beginPath(); c.arc(0, 0, 26, 0, 6.283); c.fill();
+        c.fillStyle = '#ffe08a'; c.beginPath(); for (let i = 0; i < 10; i++) { const an = -Math.PI / 2 + i * Math.PI / 5, rr = i % 2 ? 8 : 20; c.lineTo(Math.cos(an) * rr, Math.sin(an) * rr); } c.closePath(); c.fill();
+        c.fillStyle = '#ffffff'; c.fillRect(-3, -3, 6, 6); c.fillStyle = '#fff1b8'; c.fillRect(-2, -40, 4, 22);
+        break;
+      }
+      case 'feather': c.fillStyle = '#ffffff'; c.fillRect(-18, -2, 36, 4); c.fillStyle = '#c8fff0'; for (let i = 0; i < 6; i++) c.fillRect(-16 + i * 6, -7 + (i % 2) * 2, 4, 5); c.fillStyle = '#5ef0a0'; c.fillRect(14, -3, 6, 6); break;
       case 'windblade':
         c.lineWidth = 6; c.strokeStyle = d.col; c.beginPath(); c.arc(-14, 0, 22, -1.2, 1.2); c.stroke();
         c.lineWidth = 2; c.strokeStyle = '#ffffff'; c.beginPath(); c.arc(-12, 0, 22, -1.0, 1.0); c.stroke();
@@ -2133,7 +2345,8 @@ class Proj {
 /* ---------------- Luchador ---------------- */
 class Fighter {
   constructor(id, side, ctl) {
-    this.def = ROSTER[id]; this.id = id; this.side = side; this.ctl = ctl;
+    const [pid, tt] = String(id).split('#'); // «f3#2» = BRAM con su 3.ª transformación
+    this.def = tierDef(pid, +tt || 0); this.id = pid; this.fullId = String(id); this.side = side; this.ctl = ctl;
     this.x = side === 0 ? 260 : 700; this.y = GROUND; this.vx = 0; this.vy = 0; this.face = side === 0 ? 1 : -1;
     this.hp = this.def.hp; this.hpLag = this.hp; this.energy = 0;
     this.state = 'idle'; this.st = 0; this.move = null; this.moveName = ''; this.moveSeq = 0;
@@ -2164,7 +2377,7 @@ class Fighter {
   startMove(name) {
     const m = this.moveDef(name); if (!m) return;
     this.move = m; this.moveName = name; this.moveSeq++;
-    this.state = name.startsWith('atk') || name === 'low' ? 'attack' : name === 'r' ? 'dash' : name === 'tf' ? 'transform' : 'special';
+    this.state = name.startsWith('atk') || name === 'low' ? 'attack' : name === 'r' || name === 'dash' ? 'dash' : name === 'tf' ? 'transform' : 'special';
     this.st = -1; this.hitSet.clear(); this.holdT = 0; this.buf = 0; this.landed = false; this.diveDone = false; this.ride = m.ride ? 0 : null;
     if (m.endsForm) { this.formT = m.dur + 2; this.pendingExhaust = true; } // la definitiva consume la forma al terminar
     this.recoiled = false; this.sw = null;
@@ -2175,6 +2388,7 @@ class Fighter {
     const d = this.def;
     if (this.flash > 0) this.flash--;
     if (this.cdR > 0) this.cdR--;
+    if (this.dashCd > 0) this.dashCd--;
     if (this.inv > 0) this.inv--;
     if (this.buf > 0) this.buf--;
     if (this.parryT > 0) this.parryT--;
@@ -2196,7 +2410,12 @@ class Fighter {
     if (this.move) { this.runMove(inp, opp); this.physics(); this.st++; return; }
 
     // Acciones
-    if (inp.atk) this.startMove(inp.crouch && this.onGround && !this.big ? 'low' : 'atk1');
+    if (inp.dash && !(this.dashCd > 0) && !this.big && (this.onGround || !this.airDashed)) { // Q: dash corto (uno en el aire por salto)
+      const dd = (inp.right ? 1 : 0) - (inp.left ? 1 : 0) || this.face;
+      this.startMove('dash'); this.dashDir = dd; this.dashCd = 34; if (!this.onGround) this.airDashed = true;
+      FX.dust(this.x, this.y, 6); FX.cloud(this.x - dd * 12, this.y - 30, '#ffffff', 8, -dd * 1.5, 0, 14);
+    }
+    else if (inp.atk) this.startMove(inp.crouch && this.onGround && !this.big ? 'low' : 'atk1');
     else if (inp.r && this.cdR <= 0) { this.cdR = Math.round(d.cdR * (this.relic.cd || 1)); this.startMove('r'); if (this === Game.me) Missions.track('useR'); }
     else if (inp.f && this.energy >= F_COST) {
       this.energy -= F_COST; this.startMove('f'); if (this === Game.me) Missions.track('useF');
@@ -2255,6 +2474,7 @@ class Fighter {
       if (v.vy !== undefined) { this.vy = v.vy; this.onGround = false; }
     }
     if (this.holdT > 0) { this.vx = this.holdVx; this.holdT--; } else if (this.onGround) this.vx *= 0.8;
+    if (m.dashMove && st < 8) { this.vx = this.dashDir * 10.5; if (!this.onGround) this.vy = Math.min(this.vy, 0); } // dash
     if (m.hover && st >= m.hover[0] && st <= m.hover[1]) this.vy = Math.min(this.vy, 0.5); // el gas lo sostiene en el aire
     if (m.dropAt && st === m.dropAt.f) { this.vy = m.dropAt.vy; this.onGround = false; } // vuelve a caer al terreno
     if (m.above && st === m.above.f && opp) this.x = clamp(opp.x - this.face * 6, 40, W - 40); // IMPACTO OBÚS: se coloca encima del rival
@@ -2364,7 +2584,7 @@ class Fighter {
       if (!this.onGround && this.vy > 4) { FX.dust(this.x, floor, this.big ? 16 : 7); this.squashT = Math.max(this.squashT || 0, this.big ? 4 : 7); if (this.vy > 9 && !this.big) FX.add({ k: 'gring', x: this.x, r: 40, col: '#b8a690', life: 14 }); }
       this.y = floor; this.vy = 0; this.plat = plat;
       if (!this.onGround) {
-        this.onGround = true; this.jumpsLeft = this.maxJumps(); this.flipT = 0;
+        this.onGround = true; this.jumpsLeft = this.maxJumps(); this.flipT = 0; this.airDashed = false;
         if (this.state === 'jump') { this.state = 'idle'; this.st = 0; }
       }
     } else { this.onGround = false; this.plat = null; }
@@ -2549,6 +2769,10 @@ class Fighter {
       else if (a === 'asura') { FX.cloud(this.x + rnd(-40, 40), this.y - rnd(0, 40), '#3a2a4a', 12, rnd(-0.5, 0.5), -0.3, 30); }
       else if (a === 'focus') { if (this.state === 'run' || !this.onGround) FX.cloud(this.x - this.face * 10, this.y - 4, '#c8ccd4', 8, -this.face * 0.6, -0.4, 18); FX.add({ k: 'p', x: this.x + this.face * 4, y: this.y - 76, vx: -this.face * 1.2, vy: 0, col: '#ff4d6d', life: 10, size: 3, g: 0 }); }
       else if (a === 'hero') { if (T % 6 === 0) FX.zap(this.x + rnd(-14, 14), this.y - rnd(20, this.box.h), 1, rnd(20, 40), this.def.zapCol); FX.rise(this.x + rnd(-20, 20), this.y - rnd(0, 80), rnd() < 0.5 ? '#ff6a1a' : '#ffd27a', 3); }
+      else if (a === 'gear2') { FX.cloud(this.x + rnd(-14, 14), this.y - rnd(10, 80), '#ffffff', 6, rnd(-0.3, 0.3), -1, 20); }
+      else if (a === 'gear3') { if (T % 9 === 0) FX.cloud(this.x + rnd(-14, 14), this.y - rnd(30, 80), '#f4f0ea', 5, rnd(-0.3, 0.3), -0.8, 18); }
+      else if (a === 'g4') { FX.cloud(this.x + rnd(-20, 20), this.y - rnd(40, 100), '#e8e0e0', 7, rnd(-0.4, 0.4), -1.1, 22); if (T % 9 === 0) FX.zap(this.x + rnd(-14, 14), this.y - rnd(20, 70), 1, 26, ['#1a1418', '#e0233c']); }
+      else if (a === 'stars') { FX.rise(this.x + rnd(-20, 20), this.y - rnd(0, 90), rnd() < 0.5 ? '#ffe08a' : '#5ef0a0', 3); if (T % 9 === 0) FX.add({ k: 'p', x: this.x + rnd(-30, 30), y: this.y - rnd(20, 110), vx: 0, vy: 0, col: '#ffffff', life: 10, size: 4, g: 0 }); }
       else if (a === 'dual') { FX.rise(this.x - this.face * 10 + rnd(-8, 8), this.y - rnd(10, 80), '#bff0ff', 3); FX.rise(this.x + this.face * 10 + rnd(-8, 8), this.y - rnd(10, 80), rnd() < 0.5 ? '#ff8a3a' : '#ffd27a', 4); }
       else if (a === 'blast') { if (T % 9 === 0) { const hx = this.x + this.face * rnd(10, 22), hy = this.y - rnd(40, 70); FX.burst(hx, hy, '#ffb02e', 5, 2, 10, 3, 0); FX.cloud(hx, hy, '#8a8490', 6, rnd(-0.5, 0.5), -0.6, 16); } }
       else if (a === 'curse') { FX.rise(this.x + rnd(-16, 16), this.y - rnd(10, 80), rnd() < 0.5 ? '#e0233c' : '#140a0d', 5); if (T % 9 === 0) FX.zap(this.x + rnd(-12, 12), this.y - rnd(20, this.box.h), 1, rnd(18, 34), this.def.zapCol); }
@@ -2587,7 +2811,7 @@ function doFx(f, e) {
     case 'wire': { const tg = e.toOpp && Game.other(f); if (tg) FX.line(f.x + dir * 10, f.y - 60, tg.x + dir * 30, tg.y - 70, e.col, 16, 2); else FX.line(f.x + dir * 10, f.y - 60, f.x + dir * 190, f.y - 160, e.col, 16, 2); SFX.play('whoosh'); break; }
     case 'flash': Game.flash = Math.max(Game.flash, 8); break;
     case 'sun': FX.add({ k: 'sun', x: ox, y: oy, r: e.r || 90, life: 26 }); FX.burst(ox, oy, '#fff1b8', 30, 7, 28, 6, 0); break;
-    case 'cine': Game.cine = { t: 0, dur: e.dur || 70, name: e.name, sub: e.sub, col: e.col, col2: e.col2, f, dir, mode: e.mode || 'banner', banner: e.banner || e.dur || 70, zoom: e.zoom || (e.mode === 'focus' ? 1.85 : 1.08) }; SFX.play('cine'); break;
+    case 'cine': Game.cine = { t: 0, dur: e.dur || 70, name: e.name === '@form' ? f.def.formName : e.name, sub: e.sub === '@sub' ? (f.def.formSub || '') : e.sub, col: e.col, col2: e.col2, f, dir, mode: e.mode || 'banner', banner: e.banner || e.dur || 70, zoom: e.zoom || (e.mode === 'focus' ? 1.85 : 1.08) }; SFX.play('cine'); break;
     case 'aura': f.auraT = e.t || 40; break;
     case 'zaps': FX.zap(f.x + (e.x || 0) * dir, f.y + (e.y ?? -50), e.n || 4, e.len || 50, f.def.zapCol); SFX.play('zap'); break;
     case 'sigil': FX.add({ k: 'sigil', x: f.x, r: e.r || 500, col: e.col, col2: e.col2, fill: e.fill, life: 100, back: true }); SFX.play('charge'); break;
@@ -2602,6 +2826,14 @@ function doFx(f, e) {
     case 'cosmicfist': FX.add({ k: 'cosmic', f, life: e.life || 60 }); SFX.play('charge'); break;
     case 'spacebeam': { const tg = Game.other(f); FX.add({ k: 'spacebeam', x1: f.x + f.face * 10, y1: f.y - 92, x2: tg ? tg.x : f.x, y2: tg ? tg.y - 30 : GROUND, life: e.life || 40 }); SFX.play('boom'); FX.text(W / 2, 120, 'SPACE IMPACT!!', '#ffd27a', 34); break; }
     case 'boomOpp': { const tg = Game.other(f); if (tg) { FX.explode(tg.x, tg.y - 40, 140, '#ff6a1a'); FX.add({ k: 'dome', x: tg.x, y: GROUND, r: 380, col: '#ff8a3d', col2: '#2a0f3a', life: 30 }); FX.zap(tg.x, tg.y - 40, 16, 180, ['#c4201a', '#ffa040']); } break; }
+    case 'steamS': for (let i = 0; i < 10; i++) FX.cloud(f.x + rnd(-18, 18), f.y - rnd(10, 90), '#ffffff', rnd(6, 11), rnd(-1, 1), rnd(-1.6, -0.6), 26); SFX.play('whoosh'); break;
+    case 'stars': FX.burst(ox, oy, '#ffe08a', 14, 4, 20, 4, 0); FX.burst(ox, oy, '#ffffff', 6, 3, 14, 3, 0); FX.ring(ox, oy, '#ffe08a', 46, 12, 3); FX.ring(ox, oy, '#5ef0a0', 30, 10, 2); break;
+    case 'starsOpp': { const tg = Game.other(f); if (!tg) break; const pts = []; for (let i = 0; i < 6; i++) { const an = i / 6 * 6.283, x = tg.x + Math.cos(an) * 60, y = tg.y - 50 + Math.sin(an) * 50; pts.push([x, y]); FX.burst(x, y, '#ffe08a', 6, 2, 16, 4, 0); }
+      for (let i = 0; i < 6; i++) FX.line(pts[i][0], pts[i][1], pts[(i + 2) % 6][0], pts[(i + 2) % 6][1], '#fff1b8', 20, 2); SFX.play('zap'); break; }
+    case 'bigfist': FX.add({ k: 'bigfist', f, x: e.x || 60, y: e.y ?? -70, from: e.from || 30, to: e.to || 120, col: e.col || '#e2b088', band: e.band || null, life: e.life || 30 }); break;
+    case 'snakepunch': { const tg = Game.other(f); if (tg) FX.add({ k: 'snakepunch', f, tgt: tg, life: e.life || 40 }); SFX.play('whoosh'); break; }
+    case 'constellation': { const pts = []; for (let i = 0; i < 9; i++) pts.push([90 + i * 98 + rnd(-30, 30), 70 + (i % 3) * 70 + rnd(-20, 20)]); FX.add({ k: 'constellation', pts, life: e.life || 120, back: true }); SFX.play('charge'); break; }
+    case 'comet': { const tg = Game.other(f), gd = tg ? (tg.x >= f.x ? 1 : -1) : dir; FX.add({ k: 'comet', x0: gd > 0 ? -60 : W + 60, y0: -60, x1: tg ? tg.x : W / 2, y1: tg ? tg.y - 40 : GROUND, life: e.life || 60 }); SFX.play('boom'); break; }
     case 'sweepfx': FX.add({ k: 'slash', x: f.x + dir * 30, y: f.y - 10, dir, col: '#ffffff', r: 40, flip: true, w: 4, life: 10 }); SFX.play('whoosh'); break;
     case 'frost': FX.burst(ox, oy, '#e8fbff', 10, 3, 18, 4, 0.05); FX.burst(ox, oy, '#9ae8ff', 6, 2, 22, 3, 0.1); break;
     case 'embers': FX.burst(ox, oy, '#ffd27a', 8, 3, 16, 4, -0.05); FX.burst(ox, oy, '#ff4a1a', 8, 2, 20, 4, -0.08); break;
@@ -3009,11 +3241,34 @@ function drawHead(c, f, P, hx, hy) {
   if (key === 'f7') Px(c, hx + 10, hy + 2, 1, 6, '#9a5a4a'); // cicatriz en el ojo
   if (key === 'f11') { Px(c, hx + 3, hy + 10, 11, 4, P.top); Px(c, hx + 3, hy + 10, 11, 1, sh(P.top, 0.3)); } // cuello alto que tapa la boca
   drawHair(c, f, P, hx, hy);
+  if (f.form && f.def.horn === 'small') { Px(c, hx + 2, hy - 7, 3, 6, '#3a3a44'); Px(c, hx + 3, hy - 10, 2, 3, '#4a4a54'); Px(c, hx + 3, hy - 11, 1, 1, '#e0233c'); } // un cuerno pequeño
+  if (f.form && f.def.starMark) { Px(c, hx + 6, hy + 8, 3, 1, '#ffe08a'); Px(c, hx + 7, hy + 7, 1, 3, '#ffe08a'); } // marca de la estrella
 }
 
 /* --- capas traseras: capas, trenza, vaina, anillo rúnico, manto --- */
+function drawWings(c, f, P, lx, b) { // alas: demonio (VAREK), viento y estrellas (LIORA)
+  const w = f.def.wings; if (!w || !f.form) return;
+  const flap = Math.round(Math.sin(T / 10) * 3);
+  const one = (dx, dy, sc, kind, dark) => {
+    const x0 = -6 + lx + dx, y0 = -46 + b + dy;
+    if (kind === 'demon') {
+      const mem = dark ? '#08080c' : '#121218', bone = dark ? '#2a2a32' : '#3a3a44';
+      for (let i = 0; i < 6; i++) { const x = x0 - 4 - i * 4 * sc, top = y0 - (12 + i * 4) * sc - flap, len = (14 + i * 5) * sc; Px(c, x, top, 4 * sc, len, mem); Px(c, x + 1, top + len - 2, 2, 2, '#e0233c'); }
+      for (let i = 0; i < 7; i++) Px(c, x0 - i * 4 * sc, y0 - (10 + i * 4) * sc - flap, 4 * sc, 3, bone);
+      Px(c, x0 - 28 * sc, y0 - 40 * sc - flap, 3, 6, bone); Px(c, x0 - 10 * sc, y0 - 16 * sc - flap, 1, 12 * sc, '#5a1018');
+    } else {
+      const star = kind === 'star', cols = star ? ['#ffe08a', '#fff1b8'] : ['#c8fff0', '#ffffff'], tip = star ? '#ffffff' : '#5ef0a0';
+      for (let i = 0; i < 7; i++) { const x = x0 - 3 - i * 4 * sc, top = y0 - (10 + i * 4) * sc - flap, len = (12 + i * 3) * sc; Px(c, x, top, 4 * sc, len, dark ? sh(cols[i % 2], -0.18) : cols[i % 2]); Px(c, x, top + len - 2, 4 * sc, 2, tip); }
+      if (star) for (let i = 0; i < 3; i++) Px(c, x0 - 8 - i * 9 * sc, y0 - (18 + i * 8) * sc - flap, 2, 2, '#ffffff');
+    }
+  };
+  if (w.n >= 2) one(-4, -6, 1.1, w.kind2 || w.kind, true); // segunda ala, al fondo
+  one(0, 0, 1, w.kind, false);
+}
 function drawBack(c, f, P, lx, b) {
   const key = f.def.key, sway = Math.round(Math.sin(T / 9 + f.side * 2) * 1.5);
+  drawWings(c, f, P, lx, b);
+  if (key === 'f3' && f.form && f.def.snakeCape) { box(c, -16 + lx - sway, -50 + b, 11, 28, '#1a1418'); for (let i = 0; i < 5; i++) Px(c, -16 + lx - sway + i * 2, -23 + b + (i % 2) * 2, 2, 3, '#c42a2a'); } // capa del Snakeman
   if (key === 'f1') {
     if (f.form) for (let i = 0; i < 6; i++) { const h = 12 + (((T >> 2) + i * 7) % 9); Px(c, -15 + lx + i * 5, -46 + b - h + 20, 3, h, i % 2 ? P.belt : '#140a0d'); }
     box(c, -14 + lx - sway, -46 + b, 8, 26, P.cape); Px(c, -14 + lx - sway, -21 + b, 8, 1, sh(P.cape, 0.25)); // capa de los Toros Negros
@@ -3058,7 +3313,7 @@ function drawLeg(c, f, P, x, tk, back) {
   const pants = sh(P.pants, dk), boots = sh(P.boots, dk);
   if (key === 'f3') {
     box(c, x, top, 7, 12 - Math.min(tk, 2), pants); Px(c, x, top + 10, 7, 2, '#f4efe4'); Px(c, x + 2, top + 2, 1, 7, sh(P.pants, -0.12));
-    box(c, x + 1, top + 12, 5, 9 - tk, sh(P.skin, dk));
+    box(c, x + 1, top + 12, 5, 9 - tk, sh(P.legSkin || P.skin, dk));
     Px(c, x + 1, -8 - tk, 5, 1, P.wrap); Px(c, x + 1, -6 - tk, 5, 1, P.wrap);
     box(c, x, -3 - tk, 8, 3, sh(P.skin, dk - 0.06)); Px(c, x, -1 - tk, 9, 1, sh(P.boots, dk)); Px(c, x + 2, -3 - tk, 1, 2, sh(P.boots, dk)); // sandalia
     return;
@@ -3299,7 +3554,8 @@ function drawFighter(c, f, tint) {
   let face = f.face; if (p.spin && Math.floor(f.st / 4) % 2) face = -face;
   if (f.inv > 0 && !tint && f.state !== 'transform' && (T >> 1) % 2) c.globalAlpha *= 0.55;
   if (!tint && drawAtlas(c, f, face)) { c.restore(); return; }
-  const big = f.form && f.def.formBig, s = big ? (f.def.formScale || 2.1) : 1;
+  const big = f.form && f.def.formBig, s = big ? (f.def.formScale || 2.1) : (f.form && f.def.formScaleH) || 1;
+  if (f.form && f.def.bouncy && !f.move && f.onGround !== false) c.translate(0, -Math.round(Math.abs(Math.sin(T * 0.16)) * 12)); // GEAR 4: siempre rebotando
   const P = f.form && f.def.formPal ? f.def.formPal : f.def.pal;
   const paint = () => { c.save(); c.scale(face * s, s); if (big) drawTitan(c, f, p, P); else drawHuman(c, f, p, P); c.restore(); };
   if (!tint && demonAura(f)) { const gr = c.createRadialGradient(0, -45, 6, 0, -45, 78); gr.addColorStop(0, 'rgba(10,10,14,0.55)'); gr.addColorStop(0.6, 'rgba(30,10,16,0.25)'); gr.addColorStop(1, 'rgba(10,10,14,0)'); c.fillStyle = gr; c.fillRect(-80, -125, 160, 160); }
@@ -3848,7 +4104,7 @@ function pickMissions(pool, key, n, reward) {
 function untilText(ms) { const h = Math.floor(ms / 3600000), m = Math.floor(ms / 60000) % 60; return h >= 24 ? Math.floor(h / 24) + ' d ' + (h % 24) + ' h' : h + ' h ' + m + ' min'; }
 const Prof = {
   d: null, recent: [],
-  fresh() { return { unlocked: [], tickets: 0, xp: 0, granted: 1, relics: [], equipped: [], slots: 1, titles: [], title: '', boost: 0, pm: {}, tfDone: {}, paid: {}, daily: null, weekly: null }; },
+  fresh() { return { unlocked: [], tickets: 0, xp: 0, granted: 1, relics: [], equipped: [], slots: 1, titles: [], title: '', boost: 0, pm: {}, tfDone: {}, tierSel: {}, paid: {}, daily: null, weekly: null }; },
   load() {
     let o = {}; try { o = JSON.parse(localStorage.getItem(skey(PROF_KEY)) || '{}') || {}; } catch (e) {}
     this.d = { ...this.fresh(), ...o };
@@ -3860,9 +4116,14 @@ const Prof = {
   save() { try { localStorage.setItem(skey(PROF_KEY), JSON.stringify(this.d)); } catch (e) {} Cloud.dirty(); },
   level(xp = this.d.xp) { return Math.min(PASS_MAX, 1 + Math.floor(xp / LV_XP)); },
   has(id) { return this.d.unlocked.includes(id); },
-  tfOpen(id) { return !!this.d.tfDone[id]; },
-  pmProg(id) { const a = this.d.pm[id] || []; return PERSONAL.map((m, i) => this.tfOpen(id) ? m.goal : Math.min(m.goal, a[i] || 0)); },
-  pmFrac(id) { const p = this.pmProg(id); return PERSONAL.reduce((t, m, i) => t + p[i] / m.goal, 0) / PERSONAL.length; },
+  tfKey(id, t) { return t ? id + ':' + t : id; },
+  tfOpen(id, t = 0) { return !!this.d.tfDone[this.tfKey(id, t)]; },
+  tierMissions(id, t = 0) { const tr = ROSTER[id].tiers; return (tr && tr[t] && tr[t].missions) || PERSONAL; },
+  activeTier(id) { const n = tierCount(id); for (let t = 0; t < n; t++) if (!this.tfOpen(id, t)) return t; return -1; }, // la primera aún bloqueada (van en orden)
+  maxTier(id) { let m = -1; for (let t = 0; t < tierCount(id); t++) if (this.tfOpen(id, t)) m = t; return m; },
+  battleTier(id) { const s = (this.d.tierSel || {})[id]; return s != null && this.tfOpen(id, s) ? s : Math.max(0, this.maxTier(id)); },
+  pmProg(id, t = 0) { const ms = this.tierMissions(id, t), a = this.d.pm[this.tfKey(id, t)] || []; return ms.map((m, i) => this.tfOpen(id, t) ? m.goal : Math.min(m.goal, a[i] || 0)); },
+  pmFrac(id, t = 0) { const ms = this.tierMissions(id, t), p = this.pmProg(id, t); return ms.reduce((s2, m, i) => s2 + p[i] / m.goal, 0) / ms.length; },
   pool() { return ROSTER_IDS.filter(id => !ROSTER[id].passOnly && !this.has(id)); },
   unlock(id) { if (!this.has(id)) this.d.unlocked.push(id); this.save(); },
   addXp(n) { this.d.xp += Math.round(n); this.grant(false); this.save(); },
@@ -3901,16 +4162,19 @@ const Prof = {
       }
     }
     const me = Game.me;
-    if (me && me.def.canTransform && this.has(me.id) && !this.tfOpen(me.id)) {
-      const a = this.d.pm[me.id] = PERSONAL.map((m, i) => (this.d.pm[me.id] || [])[i] || 0);
-      PERSONAL.forEach((m, i) => {
+    const t = me && me.def.canTransform && this.has(me.id) ? this.activeTier(me.id) : -1; // misiones de la siguiente transformación por desbloquear
+    if (t >= 0) {
+      const ms = this.tierMissions(me.id, t), key = this.tfKey(me.id, t), tr = (ROSTER[me.id].tiers || [])[t], secret = tr && tr.secret;
+      const a = this.d.pm[key] = ms.map((m, i) => (this.d.pm[key] || [])[i] || 0);
+      ms.forEach((m, i) => {
         if (m.ev !== ev || a[i] >= m.goal) return;
         a[i] = Math.min(m.goal, a[i] + n);
-        if (a[i] >= m.goal) { const txt = '✓ ' + me.def.name + ': ' + m.desc + ' (+100 XP)'; toast(txt); this.recent.push(txt); this.addXp(100); }
+        if (a[i] >= m.goal && !secret) { const txt = '✓ ' + me.def.name + ': ' + m.desc + ' (+100 XP)'; toast(txt); this.recent.push(txt); this.addXp(100); }
       });
-      if (PERSONAL.every((m, i) => a[i] >= m.goal)) {
-        this.d.tfDone[me.id] = Date.now(); me.tfLocked = false;
-        const txt = '⚡ ¡Transformación de ' + me.def.name + ' desbloqueada: ' + me.def.formName + '!'; toast(txt); this.recent.push(txt); SFX.play('transform');
+      if (ms.every((m, i) => a[i] >= m.goal)) {
+        this.d.tfDone[key] = Date.now(); this.d.tierSel[me.id] = t; if ((me.def.tier || 0) === t) me.tfLocked = false;
+        const txt = secret ? '★ ¡SECRETO DESCUBIERTO! ' + me.def.name + ' despierta ' + tierName(me.id, t) + ' (+1000 XP)' : '⚡ ¡Transformación de ' + me.def.name + ' desbloqueada: ' + tierName(me.id, t) + '!';
+        toast(txt); this.recent.push(txt); SFX.play('transform'); if (secret) this.addXp(1000);
       }
     }
     this.save();
@@ -3955,15 +4219,15 @@ function readLocal() {
   const D = Keys.down, E = Keys.edge;
   const i = {
     left: D.has('KeyA') || D.has('ArrowLeft'), right: D.has('KeyD') || D.has('ArrowRight'),
-    block: D.has('KeyQ') || D.has('ShiftLeft') || D.has('ShiftRight') || D.has('Mouse2'),
+    block: D.has('ShiftLeft') || D.has('ShiftRight') || D.has('Mouse2'),
     crouch: D.has('KeyS') || D.has('ArrowDown') || D.has('ControlLeft') || D.has('ControlRight'),
     jump: E.has('KeyW') || E.has('Space') || E.has('ArrowUp'), atk: E.has('KeyE') || E.has('Mouse0'),
     r: E.has('KeyR'), f: E.has('KeyF'), g: E.has('KeyG'),
-    blockPress: E.has('KeyQ') || E.has('ShiftLeft') || E.has('ShiftRight') || E.has('Mouse2'),
+    blockPress: E.has('ShiftLeft') || E.has('ShiftRight') || E.has('Mouse2'), dash: E.has('KeyQ'),
   };
   E.clear(); return i;
 }
-const NOINPUT = { left: false, right: false, block: false, blockPress: false, crouch: false, jump: false, atk: false, r: false, f: false, g: false };
+const NOINPUT = { left: false, right: false, block: false, blockPress: false, dash: false, crouch: false, jump: false, atk: false, r: false, f: false, g: false };
 
 // táctil
 const touchEl = document.getElementById('touch');
@@ -4117,9 +4381,9 @@ const sameRound = m => m.r === undefined || m.r === Game.round;
 function onMsg(m) {
   if (!m || typeof m !== 'object') return;
   switch (m.t) {
-    case 'pick': Sel.opp = ROSTER[m.id] ? m.id : null; Sel.render(); break;
+    case 'pick': Sel.opp = ROSTER[m.id] ? m.id : null; Sel.oppTier = m.tier | 0; Sel.render(); break;
     case 'ready': Sel.oppReady = !!m.v; Sel.render(); Sel.tryStart(); break;
-    case 'start': if (ROSTER[m.a] && ROSTER[m.b]) startMatch(m.a, m.b, STAGES.some(q => q.id === m.s) ? m.s : null, m.it === undefined ? undefined : !!m.it); break;
+    case 'start': if (ROSTER[String(m.a).split('#')[0]] && ROSTER[String(m.b).split('#')[0]]) startMatch(m.a, m.b, STAGES.some(q => q.id === m.s) ? m.s : null, m.it === undefined ? undefined : !!m.it); break;
     case 'map': if (STAGES.some(q => q.id === m.id)) Sel.setMap(m.id, false); break;
     case 'items': Sel.setItems(!!m.v, false); break;
     case 'item': if (Game.running && ITEMS[m.k]) Items.spawn(m.k, +m.x, m.id); break;
@@ -4203,7 +4467,7 @@ function beginRound() {
   G.fighters = [new Fighter(a, 0, ctl0), new Fighter(b, 1, ctl1)];
   if (prev.length === 2) G.fighters.forEach((f, i) => { f.energy = Math.min(100, Math.round(prev[i].energy)); }); // la energía se conserva entre rondas
   G.me = G.fighters[mySide]; G.opp = G.fighters[1 - mySide];
-  G.me.tfLocked = !!G.me.def.canTransform && !Prof.tfOpen(G.me.id);
+  G.me.tfLocked = !!G.me.def.canTransform && !Prof.tfOpen(G.me.id, G.me.def.tier || 0);
   if (G.mode !== 'online') applyRelics(G.me);
   G.projs = []; FX.l = []; G.timer = ROUND_TIME; G.frameCount = 0; G.introT = 0; G.endT = 0; G.phase = 'intro';
   G.hitstop = 0; G.shake = 0; G.flash = 0; G.cine = null; G.paused = false; G.overlay = false; G.freeze = 0; G.freezeBy = null; G.distort = 0; G.space = null; G.domain = null;
@@ -4522,6 +4786,11 @@ function drawDomain(c, dm) { // expansión de dominio: el escenario se sustituye
   if (dm.k === 'void') {
     c.drawImage(voidBg(), 0, 0);
     for (let i = 0; i < 70; i++) { const an = i * 2.39996, sp = 2 + (i % 5), rr = (i * 37 + dm.t * sp * 3) % 640, x = W / 2 + Math.cos(an) * rr, y = H / 2 - 40 + Math.sin(an) * rr * 0.55; c.strokeStyle = i % 3 ? '#ffffffaa' : '#7fd8ffaa'; c.lineWidth = 1 + (i % 2); c.beginPath(); c.moveTo(x, y); c.lineTo(x + Math.cos(an) * (8 + rr * 0.06), y + Math.sin(an) * (8 + rr * 0.06) * 0.55); c.stroke(); }
+  } else if (dm.k === 'starsky') { // noche estrellada con nebulosas verdes y doradas
+    const g = c.createLinearGradient(0, 0, 0, H); g.addColorStop(0, '#04041a'); g.addColorStop(0.6, '#10104a'); g.addColorStop(1, '#1a2a3a'); c.fillStyle = g; c.fillRect(0, 0, W, H);
+    for (const [x, y, r, col] of [[220, 160, 200, 'rgba(94,240,160,0.10)'], [700, 120, 240, 'rgba(255,224,138,0.10)'], [480, 300, 180, 'rgba(160,120,255,0.08)']]) { c.fillStyle = col; c.beginPath(); c.ellipse(x, y, r, r * 0.5, 0.4, 0, 6.283); c.fill(); }
+    for (let i = 0; i < 140; i++) { const x = (i * 131) % W, y = (i * 67) % (GROUND - 20), tw = (dm.t + i * 5) % 30 < 15; c.fillStyle = i % 7 === 0 ? '#ffe08a' : tw ? '#ffffff' : '#9cc8ec'; c.fillRect(x, y, i % 9 === 0 ? 3 : 2, i % 9 === 0 ? 3 : 2); }
+    c.fillStyle = '#0a0a24'; c.fillRect(0, GROUND, W, H - GROUND); c.fillStyle = '#5ef0a044'; c.fillRect(0, GROUND - 2, W, 2);
   } else if (dm.k === 'rumble') { // cielo de polvo naranja y siluetas de colosales en el horizonte
     const g = c.createLinearGradient(0, 0, 0, H); g.addColorStop(0, '#140806'); g.addColorStop(0.5, '#4a1e0e'); g.addColorStop(0.82, '#c8642a'); g.addColorStop(1, '#2a140a');
     c.fillStyle = g; c.fillRect(0, 0, W, H);
@@ -4947,20 +5216,22 @@ cpuOpp.onchange = () => { Sel.opp = cpuOpp.value || null; Sel.render(); };
 document.querySelectorAll('#cpu-diff button').forEach(b => b.onclick = () => { Settings.diff = b.dataset.d; saveSettings(); SFX.play('ui'); Sel.render(); });
 document.querySelectorAll('#items-seg button').forEach(b => b.onclick = () => Sel.setItems(b.dataset.v === '1', true));
 const Sel = {
-  my: 'f1', view: 'f1', opp: null, myReady: false, oppReady: false, built: false, previews: [], vs: {}, tab: 'moves',
+  my: 'f1', view: 'f1', opp: null, oppTier: 0, myReady: false, oppReady: false, built: false, previews: [], vs: {}, tab: 'moves', viewTier: {},
+  vt(id) { return this.viewTier[id] ?? Prof.battleTier(id); },
+  pick(id) { return id + '#' + Prof.battleTier(id); },
   map: STAGES.some(q => q.id === Settings.map) ? Settings.map : 'ocaso', items: Settings.items !== false,
   isGuest() { return Game.mode === 'online' && Net.role === 'guest'; },
   reset() {
     if (!Prof.has(this.my)) this.my = Prof.d.unlocked[0] || 'f1';
     this.myReady = false; this.oppReady = false; this.opp = Game.mode === 'cpu' ? (cpuOpp.value || null) : null; this.view = this.my;
     this.build(); Stage.set(this.map); this.render();
-    if (Game.mode === 'online') { Net.send({ t: 'pick', id: this.my }); if (Net.role === 'host') { Net.send({ t: 'map', id: this.map }); Net.send({ t: 'items', v: this.items ? 1 : 0 }); } }
+    if (Game.mode === 'online') { Net.send({ t: 'pick', id: this.my, tier: Prof.battleTier(this.my) }); if (Net.role === 'host') { Net.send({ t: 'map', id: this.map }); Net.send({ t: 'items', v: this.items ? 1 : 0 }); } }
   },
   choose(id) {
     if (this.myReady) return;
     if (!Prof.has(id)) { this.view = id; this.render(); SFX.play('ui'); toast(ROSTER[id].passOnly ? ROSTER[id].name + ' se consigue en el nivel ' + ROSTER[id].passLv + ' del pase de batalla' : 'Bloqueado: consíguelo en el Gacha (' + GACHA_COST + ' tickets)'); return; }
     this.my = id; this.view = id; SFX.play('tick');
-    if (Game.mode === 'online') Net.send({ t: 'pick', id });
+    if (Game.mode === 'online') Net.send({ t: 'pick', id, tier: Prof.battleTier(id) });
     this.render();
   },
   setMap(id, send) {
@@ -4999,19 +5270,25 @@ const Sel = {
       maps.appendChild(b);
     });
   },
-  fighterFor(key, id) { const f = this.vs[key]; if (f && f.id === id) return f; const n = new Fighter(id, key === 'me' ? 0 : 1, 'preview'); this.vs[key] = n; return n; },
+  fighterFor(key, id) { const f = this.vs[key]; if (f && f.fullId === String(id)) return f; const n = new Fighter(id, key === 'me' ? 0 : 1, 'preview'); this.vs[key] = n; return n; },
   render() {
     const online = Game.mode === 'online', cpu = Game.mode === 'cpu', guest = this.isGuest();
     document.querySelectorAll('.card').forEach(b => {
       const id = b.dataset.id; b.classList.toggle('me', id === this.my); b.classList.toggle('op', id === this.opp); b.classList.toggle('locked', !Prof.has(id));
-      const tf = b.querySelector('.tf'); if (tf) tf.style.opacity = Prof.tfOpen(id) ? 1 : 0.35;
+      const tf = b.querySelector('.tf'); if (tf) tf.style.opacity = Prof.tfOpen(id, 0) ? 1 : 0.35;
       const who = b.querySelector('.who'), oppTag = online ? 'RIVAL' : Game.training ? 'MUÑECO' : 'CPU';
       who.textContent = id === this.my && id === this.opp ? 'TÚ · ' + oppTag : id === this.my ? 'TÚ' : id === this.opp ? oppTag : '';
       who.style.color = id === this.my ? 'var(--ember)' : 'var(--tide)';
     });
     document.querySelectorAll('.map').forEach(b => { b.classList.toggle('on', b.dataset.id === this.map); b.disabled = guest; });
     document.querySelectorAll('#items-seg button').forEach(b => { b.classList.toggle('on', (b.dataset.v === '1') === this.items); b.disabled = guest; });
-    const d = ROSTER[this.view];
+    const tiers = ROSTER[this.view].tiers, vt = tiers ? clamp(this.vt(this.view), 0, tiers.length - 1) : 0, d = tierDef(this.view, vt);
+    $('det-tier-row').hidden = !tiers;
+    if (tiers) {
+      const sel = $('det-tier'), bt = Prof.battleTier(this.view);
+      sel.innerHTML = tiers.map((tr, i) => { const open = Prof.tfOpen(this.view, i), hid = tr.secret && !open;
+        return `<option value="${i}"${i === vt ? ' selected' : ''}>${i + 1}. ${hid ? '??? (secreta)' : tr.formName}${open ? (i === bt && Prof.has(this.view) ? ' ★ en combate' : ' ✓') : ' · bloqueada'}</option>`; }).join('');
+    }
     $('det-name').textContent = d.name; $('det-title').textContent = d.title + (d.canTransform ? ' · ' + d.formName : '');
     const tags = [d.hp + ' PV', d.parry === 'counter' ? 'Contraataque' : d.parry === 'dominion' ? 'Presión dominante' : 'Parry', d.nativeDouble ? 'Doble salto potente' : 'Doble salto'];
     if (d.ranged) tags.push('A distancia'); if (d.absorb) tags.push('Anula magia'); if (d.canTransform) tags.push('Transformación');
@@ -5019,16 +5296,20 @@ const Sel = {
     $('det-stats').innerHTML = [['Vida', d.stats.vida], ['Velocidad', d.stats.vel], ['Alcance', d.stats.alc]]
       .map(([k, v]) => `<span>${k}</span><span class="bar"><i style="width:${Math.round(v * 100)}%"></i></span><span>${Math.round(v * 10)}</span>`).join('');
     const mv = [['M2', d.desc.m2], ['E', d.desc.e], ['R', d.desc.r], ['F', d.desc.f], ['G', d.desc.g || 'Sin transformación']];
-    const gLock = d.canTransform && !Prof.tfOpen(this.view);
+    const gLock = d.canTransform && !Prof.tfOpen(this.view, vt);
     $('det-moves').innerHTML = mv.map(([k, s2]) => `<li class="${k === 'G' && (!d.desc.g || gLock) ? 'na' : ''}"><span class="kbd">${k}</span><span>${k === 'G' && gLock ? '<i class="lki"></i>' : ''}${s2}</span></li>`).join('');
     // misiones personales: desbloquean la transformación
-    const pr = Prof.pmProg(this.view), open = Prof.tfOpen(this.view), frac = Prof.pmFrac(this.view);
+    const pr = Prof.pmProg(this.view, vt), open = Prof.tfOpen(this.view, vt), frac = Prof.pmFrac(this.view, vt), ms = Prof.tierMissions(this.view, vt);
+    const trv = tiers && tiers[vt], prevOpen = vt === 0 || Prof.tfOpen(this.view, vt - 1), hid = trv && trv.secret && !open;
     $('det-pct').textContent = open ? '✓' : Math.round(frac * 100) + '%';
     document.querySelectorAll('#det-tabs button').forEach(b => b.classList.toggle('on', b.dataset.t === this.tab));
     $('det-a').hidden = this.tab !== 'moves'; $('det-mis').hidden = this.tab !== 'mis';
-    if (this.tab === 'mis') $('det-mis').innerHTML = `<div class="tf-box${open ? ' open' : ''}"><b>${open ? '⚡ Transformación desbloqueada' : '<i class="lki"></i>Transformación bloqueada'}</b><small><span>${d.formName}</span><span>${Math.round(frac * 100)} %</span></small><span class="bar"><i style="width:${Math.round(frac * 100)}%"></i></span></div>`
-      + `<ul class="pm">${PERSONAL.map((m, i) => `<li class="${pr[i] >= m.goal ? 'done' : ''}"><span>${pr[i] >= m.goal ? '✓ ' : ''}${m.desc} con ${d.name}</span><em>${pr[i].toLocaleString('es')} / ${m.goal.toLocaleString('es')} · +100 XP</em><span class="bar"><i style="width:${Math.round(pr[i] / m.goal * 100)}%"></i></span></li>`).join('')}</ul>`
-      + `<p class="note" style="text-align:left;font-size:1cqw">${!Prof.has(this.view) ? (d.passOnly ? 'Primero consíguelo en el nivel ' + d.passLv + ' del pase.' : 'Primero consíguelo en el Gacha.') : open ? 'Pulsa G con la energía llena para transformarte.' : 'Completa las cuatro jugando con este luchador en Versus CPU u Online (no cuenta en Entrenamiento).'}</p>`;
+    if (this.tab === 'mis' && hid) $('det-mis').innerHTML = `<div class="tf-box"><b><i class="lki"></i>??? · Transformación secreta</b><span class="sec">«${trv.hint}»</span></div>`
+      + `<p class="note" style="text-align:left;font-size:1cqw">${prevOpen ? 'No se consigue como las demás: lee bien la pista.' : 'Primero desbloquea «' + tierName(this.view, vt - 1) + '».'}</p>`;
+    else if (this.tab === 'mis') $('det-mis').innerHTML = `<div class="tf-box${open ? ' open' : ''}"><b>${open ? '⚡ Transformación desbloqueada' : '<i class="lki"></i>Transformación bloqueada'}</b><small><span>${d.formName}</span><span>${Math.round(frac * 100)} %</span></small><span class="bar"><i style="width:${Math.round(frac * 100)}%"></i></span></div>`
+      + (!prevOpen ? `<p class="note" style="text-align:left;font-size:1cqw">Sus misiones se activan al desbloquear «${tierName(this.view, vt - 1)}».</p>` : '')
+      + `<ul class="pm" style="${prevOpen ? '' : 'opacity:.45'}">${ms.map((m, i) => `<li class="${pr[i] >= m.goal ? 'done' : ''}"><span>${pr[i] >= m.goal ? '✓ ' : ''}${m.desc} con ${d.name}</span><em>${pr[i].toLocaleString('es')} / ${m.goal.toLocaleString('es')} · +100 XP</em><span class="bar"><i style="width:${Math.round(pr[i] / m.goal * 100)}%"></i></span></li>`).join('')}</ul>`
+      + `<p class="note" style="text-align:left;font-size:1cqw">${!Prof.has(this.view) ? (d.passOnly ? 'Primero consíguelo en el nivel ' + d.passLv + ' del pase.' : 'Primero consíguelo en el Gacha.') : open ? (tiers ? 'Elígela en el desplegable para usarla en combate. Pulsa G con la energía llena.' : 'Pulsa G con la energía llena para transformarte.') : 'Complétalas jugando con este luchador en Versus CPU u Online (no cuenta en Entrenamiento).'}</p>`;
     const me = ROSTER[this.view], op = this.opp ? ROSTER[this.opp] : null;
     $('vs-me-name').textContent = me.name; $('vs-me-title').textContent = me.title;
     $('vs-op-name').textContent = op ? op.name : '?';
@@ -5066,16 +5347,21 @@ const Sel = {
       const c = p.cv.getContext('2d'); c.imageSmoothingEnabled = false; c.clearRect(0, 0, 96, 120);
       p.f.state = 'idle'; drawFighter(c, p.f, Prof.has(p.f.id) ? undefined : '#2a2140');
     }
-    this.drawVs('vs-me', this.fighterFor('me', this.view), false, !Prof.has(this.view));
+    this.drawVs('vs-me', this.fighterFor('me', this.view + '#' + this.vt(this.view)), false, !Prof.has(this.view));
     const opId = this.opp || ROSTER_IDS[Math.floor(T / 40) % ROSTER_IDS.length];
     this.drawVs('vs-op', this.fighterFor('op', opId), true, !this.opp);
   },
   tryStart() {
     if (Game.mode !== 'online' || Net.role !== 'host') return;
-    if (this.myReady && this.oppReady && this.opp) { Net.send({ t: 'start', a: this.my, b: this.opp, s: this.map, it: this.items ? 1 : 0 }); startMatch(this.my, this.opp, this.map, this.items); }
+    if (this.myReady && this.oppReady && this.opp) { const a = this.pick(this.my), b = this.opp + '#' + (this.oppTier | 0); Net.send({ t: 'start', a, b, s: this.map, it: this.items ? 1 : 0 }); startMatch(a, b, this.map, this.items); }
   },
 };
 document.querySelectorAll('#det-tabs button').forEach(b => b.onclick = () => { Sel.tab = b.dataset.t; SFX.play('ui'); Sel.render(); });
+$('det-tier').onchange = e => { // ver otra transformación (y usarla en combate si ya está desbloqueada)
+  const id = Sel.view, t = +e.target.value; Sel.viewTier[id] = t; SFX.play('ui');
+  if (Prof.has(id) && Prof.tfOpen(id, t)) { Prof.d.tierSel[id] = t; Prof.save(); if (Game.mode === 'online' && id === Sel.my) Net.send({ t: 'pick', id, tier: t }); }
+  Sel.render();
+};
 /* Teclado en la selección: flechas/WASD para elegir (salta los bloqueados), Enter para confirmar */
 function selectKey(e) {
   if (!visible('scr-select') || Sel.myReady) return false;
@@ -5095,10 +5381,10 @@ $('b-ready').onclick = () => {
   SFX.init();
   if (Game.mode === 'cpu') {
     const b = cpuOpp.value || ROSTER_IDS[Math.floor(Math.random() * ROSTER_IDS.length)];
-    Game.diff = Settings.diff; startMatch(Sel.my, b, Sel.map, Sel.items); return;
+    Game.diff = Settings.diff; startMatch(Sel.pick(Sel.my), b + '#' + randTier(b), Sel.map, Sel.items); return;
   }
   Sel.myReady = !Sel.myReady; SFX.play('ui');
-  Net.send({ t: 'pick', id: Sel.my }); Net.send({ t: 'ready', v: Sel.myReady }); Sel.render(); Sel.tryStart();
+  Net.send({ t: 'pick', id: Sel.my, tier: Prof.battleTier(Sel.my) }); Net.send({ t: 'ready', v: Sel.myReady }); Sel.render(); Sel.tryStart();
 };
 $('b-sel-back').onclick = () => { Net.close(); Game.mode = null; show('scr-menu'); setMenuMsg(''); };
 
@@ -5144,6 +5430,8 @@ function showResult() {
       Missions.track('win'); Missions.track('winWith', me.id); Missions.track('winOn', G.stage);
       if (G.mode === 'cpu' && G.diff === 'hard') Missions.track('winHard');
       if (G.wins[1 - me.side] === 0) Missions.track('flawless');
+      const rv = G.fighters[1 - me.side];
+      if (me.id === 'f2' && me.def.tier === 1 && rv.id === 'f1' && G.wins[1 - me.side] === 0 && (G.mode === 'online' || G.diff === 'hard')) Missions.track('secretYuno');
     }
   }
   $('res-xp').innerHTML = '';
