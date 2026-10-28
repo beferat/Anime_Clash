@@ -65,6 +65,28 @@ h1,h2,h3{font-family:var(--display);margin:0;letter-spacing:.04em;text-wrap:bala
   background:#0b0916;color:var(--gold);border:.25cqw solid var(--line);padding:1.2cqh 1cqw;-webkit-user-select:text;user-select:text}
 .join input:focus{outline:none;border-color:var(--gold)}
 .join input::placeholder{color:#5d5280}
+.sg-form{display:grid;grid-template-columns:1fr 1fr;gap:1.1cqh 1.4cqw;width:min(72cqw,100%);background:var(--panel);border:.25cqw solid var(--line);padding:1.5cqh 1.6cqw}
+.sg-form[hidden],.sg-list[hidden],.sg-filters[hidden],.sg-form label[hidden]{display:none}
+.sg-form label,.sg-filters label{display:flex;flex-direction:column;gap:.5cqh;font-size:1.05cqw;color:var(--mute)}
+.sg-form .wide{grid-column:1/-1}
+.sg-form select,.sg-form input,.sg-form textarea,.sg-filters select{font-family:var(--ui);font-size:1.25cqw;background:#0b0916;color:var(--bone);border:.2cqw solid var(--line);padding:.7cqh .8cqw;-webkit-user-select:text;user-select:text}
+.sg-form select:focus,.sg-form input:focus,.sg-form textarea:focus{outline:none;border-color:var(--gold)}
+.sg-form textarea{resize:vertical;min-height:11cqh}
+.sg-form small{align-self:flex-end;font-size:.9cqw}
+.sg-filters{display:flex;gap:1.2cqw;align-items:flex-end;width:min(80cqw,100%)}
+.sg-filters label{flex-direction:row;align-items:center;gap:.6cqw}
+.sg-list{display:flex;flex-direction:column;gap:.8cqh;width:min(80cqw,100%);max-height:54cqh;overflow:auto}
+.sg-item{background:var(--panel);border:.2cqw solid var(--line);padding:1cqh 1.2cqw;display:flex;flex-direction:column;gap:.5cqh}
+.sg-item.nueva{border-left:.5cqw solid var(--tide)}
+.sg-item .hd{display:flex;gap:.7cqw;align-items:center;flex-wrap:wrap}
+.sg-item b{font-family:var(--display);font-weight:400;font-size:1.2cqw;color:var(--bone)}
+.sg-item small{font-size:.95cqw;color:var(--mute)}
+.sg-item p{margin:0;font-size:1.1cqw;color:var(--bone);white-space:pre-wrap;word-break:break-word}
+.sg-tag{font-family:var(--display);font-size:.8cqw;padding:0 .4cqw;border:.15cqw solid var(--line);color:var(--gold)}
+.sg-st{font-family:var(--display);font-size:.8cqw;padding:0 .4cqw;color:#0b0916;background:var(--mute)}
+.sg-st.nueva{background:var(--tide)}.sg-st.vista{background:var(--gold)}.sg-st.hecha{background:#9be36b}.sg-st.descartada{background:#6b6290}
+.sg-acts{display:flex;gap:.5cqw;flex-wrap:wrap}
+.sg-acts .btn{font-size:.95cqw;padding:.6cqh .8cqw}
 .acc-box{width:40cqw;background:var(--panel);border:.25cqw solid var(--line);padding:2cqh 2cqw;display:flex;flex-direction:column;gap:1.3cqh}
 .acc-box[hidden]{display:none}
 .acc-box .seg{align-self:center}
@@ -191,7 +213,7 @@ h1,h2,h3{font-family:var(--display);margin:0;letter-spacing:.04em;text-wrap:bala
 .lki{display:inline-block;position:relative;width:.75em;height:.58em;background:currentColor;margin:0 .35em 0 .1em;vertical-align:-.02em}
 .lki::before{content:'';position:absolute;left:.12em;right:.12em;top:-.42em;height:.42em;border:.12em solid currentColor;border-bottom:0;border-radius:.3em .3em 0 0}
 .gem{display:inline-block;width:1.6cqw;height:1.6cqw;background:var(--c);transform:rotate(45deg);box-shadow:inset -.3cqw -.3cqw 0 #00000055,inset .25cqw .25cqw 0 #ffffff66,0 0 0 .15cqw #0b0916}
-.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:.7cqw}
+.tiles{display:grid;grid-template-columns:repeat(5,1fr);gap:.6cqw}
 .tile{position:relative;display:flex;flex-direction:column;align-items:center;gap:.2cqh;padding:1.1cqh .3cqw;font-family:var(--ui);color:var(--bone);
   background:linear-gradient(180deg,#1b1530f0,#1b153099);border:.2cqw solid var(--line);cursor:pointer;transition:transform .12s,border-color .12s}
 .tile:hover,.tile:focus-visible{border-color:var(--ember);transform:translateY(-.4cqh);outline:none}
@@ -425,6 +447,7 @@ h1,h2,h3{font-family:var(--display);margin:0;letter-spacing:.04em;text-wrap:bala
             <button class="tile" id="b-gacha"><span class="mi">✦</span><b>Gacha</b><small id="t-gacha">0</small></button>
             <button class="tile" id="b-missions"><span class="mi">★</span><b>Misiones</b><small id="t-mis"></small><span class="dot" id="t-mis-dot"></span></button>
             <button class="tile" id="b-controls"><span class="mi">⌨</span><b>Controles</b><small>Teclado y táctil</small></button>
+            <button class="tile" id="b-suggest"><span class="mi">✉</span><b>Sugerir</b><small>Ideas y errores</small><span class="dot" id="t-sg-dot"></span></button>
           </div>
         </nav>
         <p class="note" id="menu-msg" style="text-align:left"></p>
@@ -546,6 +569,30 @@ h1,h2,h3{font-family:var(--display);margin:0;letter-spacing:.04em;text-wrap:bala
       </div>
       <p class="note" id="acc-msg"></p>
       <div class="row"><button class="btn ghost" id="acc-guest">Jugar sin cuenta</button><button class="btn" id="acc-back">Volver</button></div>
+    </section>
+
+    <!-- SUGERENCIAS -->
+    <section class="screen" id="scr-suggest" hidden>
+      <div class="sel-head"><h2>Sugerencias</h2><p class="note" id="sg-sum"></p></div>
+      <div class="seg" id="sg-tabs" role="tablist"><button data-t="send">Enviar</button><button data-t="mine">Mis sugerencias</button><button data-t="admin" id="sg-tab-admin" hidden>Panel de administrador</button></div>
+      <div class="sg-form" id="sg-send">
+        <label>Tipo de sugerencia<select id="sg-cat"></select></label>
+        <label id="sg-sub-row"><span id="sg-sub-lbl">Detalle</span><select id="sg-sub"></select></label>
+        <label id="sg-dir-row">¿Cómo lo notas?<select id="sg-dir"><option>Demasiado difícil</option><option>Demasiado fácil</option><option>Demasiado lento</option></select></label>
+        <label id="sg-ch-row">Luchador relacionado<select id="sg-ch"></select></label>
+        <label id="sg-extra-row"><span id="sg-extra-lbl"></span><input id="sg-extra" maxlength="60" autocomplete="off"></label>
+        <label class="wide">Título<input id="sg-title" maxlength="70" autocomplete="off" placeholder="Resúmelo en una frase"></label>
+        <label class="wide">Descripción<textarea id="sg-text" maxlength="1000" rows="5" placeholder="Cuéntalo con detalle: qué pasa, cuándo pasa o cómo te gustaría que fuera"></textarea><small id="sg-count">0 / 1000</small></label>
+        <button class="btn primary wide" id="sg-send-btn">Enviar sugerencia</button>
+      </div>
+      <div class="sg-filters" id="sg-filters" hidden>
+        <label>Tipo <select id="sg-f-cat"></select></label>
+        <label>Estado <select id="sg-f-st"><option value="">Todos</option><option value="nueva">Nuevas</option><option value="vista">Vistas</option><option value="hecha">Hechas</option><option value="descartada">Descartadas</option></select></label>
+        <button class="btn small" id="sg-reload">Actualizar</button>
+      </div>
+      <div class="sg-list" id="sg-list" hidden></div>
+      <p class="note" id="sg-msg"></p>
+      <button class="btn" id="b-sg-back">Volver</button>
     </section>
 
     <!-- PASE DE BATALLA -->
@@ -3979,7 +4026,7 @@ const Cloud = {
     } catch (e) { this.ok = false; this.state = 'nosdk'; return; }
     await new Promise(res => {
       let first = true;
-      this.auth.onAuthStateChanged(async u => { await this.onUser(u); if (first) { first = false; res(); } else Boot.route(); });
+      this.auth.onAuthStateChanged(async u => { await this.onUser(u); if (typeof Sug !== 'undefined' && this.ui) Sug.countNew(); if (first) { first = false; res(); } else Boot.route(); });
     });
   },
   ref() { return this.db.collection('users').doc(this.user.uid); },
@@ -3987,7 +4034,7 @@ const Cloud = {
   // al iniciar sesión: la nube manda. Una cuenta nueva se lleva el progreso de invitado de este navegador.
   async onUser(u) {
     clearTimeout(this.timer); this.pending = false; this.synced = false;
-    if (!u) { this.user = null; this.name = ''; ACC = ''; Missions.load(); Prof.load(); this.setState('off'); return; }
+    if (!u) { this.user = null; this.name = ''; this.isAdmin = false; ACC = ''; Missions.load(); Prof.load(); this.setState('off'); return; }
     this.user = u; ACC = u.uid; this.setState('loading');
     try { localStorage.removeItem(GUEST_KEY); } catch (e) {}
     try {
@@ -4005,6 +4052,7 @@ const Cloud = {
         localStorage.removeItem(PROF_KEY); localStorage.removeItem(MIS_KEY); // el progreso de invitado pasa a la cuenta (una sola vez)
       }
       this.synced = true;
+      try { this.isAdmin = (await this.db.collection('admins').doc(u.uid).get()).exists; } catch (e) { this.isAdmin = false; } // la lista de administradores está en Firestore
     } catch (e) { this.synced = false; } // sin conexión: se usa la copia local de esta cuenta y no se sube nada hasta reintentar
     this.newName = '';
     Missions.load(); Prof.load();
@@ -5010,7 +5058,7 @@ function drawHUD(c) {
 /* ---------------- UI ---------------- */
 const $ = id => document.getElementById(id);
 const stageEl = $('stage');
-const SCREENS = ['scr-menu', 'scr-lobby', 'scr-select', 'scr-result', 'scr-sprites', 'scr-pause', 'scr-controls', 'scr-missions', 'scr-pass', 'scr-gacha', 'scr-account'];
+const SCREENS = ['scr-menu', 'scr-lobby', 'scr-select', 'scr-result', 'scr-sprites', 'scr-pause', 'scr-controls', 'scr-missions', 'scr-pass', 'scr-gacha', 'scr-account', 'scr-suggest'];
 function show(id) {
   const wasMenu = visible('scr-menu');
   SCREENS.forEach(s => $(s).hidden = s !== id); touchEl.style.visibility = 'hidden'; stageEl.classList.remove('ingame');
@@ -5024,6 +5072,7 @@ function updateMenu() {
   const lv = Prof.level(), pend = Prof.pending(), tk = Prof.d.tickets;
   $('t-pass').textContent = 'Nivel ' + lv; $('t-gacha').innerHTML = tk + TK; $('b-gacha').classList.toggle('ready', tk >= GACHA_COST && Prof.pool().length > 0);
   $('t-mis').textContent = pend ? pend + ' activas' : 'Al día'; $('t-mis-dot').textContent = pend || '';
+  $('t-sg-dot').textContent = Cloud.isAdmin && Sug.newCount ? Sug.newCount : ''; // aviso de sugerencias nuevas para el administrador
   $('prof-chip').innerHTML = `<b>NV ${lv}</b>${Prof.d.title || 'Novato'}<span>${tk}${TK}</span>`;
   const ba = $('btn-acc'), st = Cloud.state; ba.hidden = !Cloud.configured();
   ba.innerHTML = `<i class="st ${!Cloud.user ? '' : st === 'saved' ? 'ok' : st === 'saving' || st === 'loading' ? 'busy' : st === 'error' || st === 'offline' ? 'err' : ''}"></i>` + (Cloud.user ? escapeHtml(Cloud.name) : 'Invitado · Entrar');
@@ -5444,6 +5493,7 @@ function onEscape() {
   else if (visible('scr-missions')) $('b-mis-back').click();
   else if (visible('scr-pass')) $('b-pass-back').click();
   else if (visible('scr-account')) { if (!$('acc-back').hidden) $('acc-back').click(); }
+  else if (visible('scr-suggest')) $('b-sg-back').click();
   else if (visible('scr-gacha')) { if (!Gacha.welcome) $('b-gacha-back').click(); }
   else if (visible('scr-pause')) closePause();
   else if (Game.running && !visible('scr-result') && !visible('scr-select')) openPause();
@@ -5619,6 +5669,110 @@ $('acc-retry').onclick = () => Acc.run(() => Cloud.retry());
 $('acc-guest').onclick = () => { try { localStorage.setItem(GUEST_KEY, '1'); } catch (e) {} Boot.route(true); };
 $('acc-back').onclick = () => show('scr-menu');
 $('btn-acc').onclick = () => Acc.open(Cloud.user ? null : 'login');
+
+/* Sugerencias: los jugadores con cuenta las envían a Firestore; el administrador las lee y las gestiona */
+const SUG_CATS = {
+  bug: { name: 'Corregir un error o problema', subLbl: '¿Dónde ocurre?', sub: ['En combate', 'Ataques o habilidades', 'Transformaciones o definitivas', 'Menús e interfaz', 'Online', 'Cuenta o progreso guardado', 'Controles en móvil', 'Otro'], ch: true },
+  char: { name: 'Añadir un personaje nuevo', subLbl: 'Estilo de lucha', sub: ['Cuerpo a cuerpo', 'Con armas', 'A distancia o magia', 'Mixto'], extra: '¿De qué anime o serie es?' },
+  hard: { name: 'Algo es muy difícil (o muy fácil)', subLbl: '¿Qué cosa?', sub: ['Avanzar en el pase de batalla', 'Conseguir tickets', 'Misiones de transformación', 'Misiones diarias o semanales', 'La CPU', 'Un luchador concreto', 'Otro'], ch: true, dir: true },
+  balance: { name: 'Equilibrar un luchador', subLbl: '¿Qué le pasa?', sub: ['Demasiado fuerte', 'Demasiado débil', 'Una habilidad concreta', 'Su definitiva'], ch: true },
+  improve: { name: 'Mejorar un luchador', subLbl: '¿Qué mejorarías?', sub: ['Aspecto o diseño', 'Habilidades', 'Transformaciones', 'Definitiva', 'Animaciones'], ch: true },
+  feature: { name: 'Nueva función o modo de juego', subLbl: '¿De qué tipo?', sub: ['Modo de juego', 'Mapas', 'Objetos', 'Pase y recompensas', 'Gacha', 'Misiones', 'Online', 'Otro'] },
+  ui: { name: 'Interfaz y controles', subLbl: '¿Dónde?', sub: ['Teclado', 'Móvil', 'Menús', 'Sonido', 'Otro'] },
+  other: { name: 'Otra cosa', subLbl: 'Tema', sub: ['General'] },
+};
+const SUG_ST = { nueva: 'NUEVA', vista: 'VISTA', hecha: 'HECHA', descartada: 'DESCARTADA' };
+const Sug = {
+  tab: 'send', items: [], newCount: 0, busy: false,
+  ready() { return Cloud.ok && !!Cloud.user; },
+  open() { this.tab = 'send'; this.msg(''); this.render(); show('scr-suggest'); },
+  msg(t, err) { const m = $('sg-msg'); m.textContent = t; m.classList.toggle('err', !!err); },
+  formUi() {
+    const c = SUG_CATS[$('sg-cat').value] || SUG_CATS.bug;
+    $('sg-sub-lbl').textContent = c.subLbl; $('sg-sub').innerHTML = c.sub.map(x => `<option>${x}</option>`).join('');
+    $('sg-ch-row').hidden = !c.ch; $('sg-dir-row').hidden = !c.dir; $('sg-extra-row').hidden = !c.extra; $('sg-extra-lbl').textContent = c.extra || '';
+  },
+  render() {
+    const admin = Cloud.isAdmin;
+    $('sg-tab-admin').hidden = !admin;
+    document.querySelectorAll('#sg-tabs button').forEach(b => b.classList.toggle('on', b.dataset.t === this.tab));
+    $('sg-send').hidden = this.tab !== 'send'; $('sg-list').hidden = this.tab === 'send'; $('sg-filters').hidden = this.tab !== 'admin';
+    $('sg-sum').textContent = !Cloud.configured() ? 'Las cuentas no están activadas' : !Cloud.user ? 'Necesitas una cuenta para enviar sugerencias' : admin ? 'Sesión de administrador: ' + Cloud.name : 'Enviando como ' + Cloud.name;
+    $('sg-send-btn').disabled = this.busy || !this.ready();
+    if (this.tab === 'send' && !this.ready()) this.msg(Cloud.configured() ? 'Inicia sesión con tu cuenta (botón de arriba a la derecha en el menú) para enviar sugerencias.' : 'Este juego no tiene las cuentas activadas.', true);
+    if (this.tab !== 'send') this.load();
+  },
+  when(x) { const d = x.createdAt && x.createdAt.toDate ? x.createdAt.toDate() : x.clientAt ? new Date(x.clientAt) : null; return d ? d.toLocaleDateString('es') + ' ' + d.toLocaleTimeString('es', { hour: '2-digit', minute: '2-digit' }) : ''; },
+  async send() {
+    if (!this.ready() || this.busy) return;
+    const title = $('sg-title').value.trim(), text = $('sg-text').value.trim(), cat = $('sg-cat').value, c = SUG_CATS[cat];
+    if (title.length < 4) { this.msg('Escribe un título un poco más largo.', true); $('sg-title').focus(); return; }
+    if (text.length < 10) { this.msg('Cuéntalo con algo más de detalle (mínimo 10 caracteres).', true); $('sg-text').focus(); return; }
+    let last = 0; try { last = +localStorage.getItem('arena-umbral-sug-t') || 0; } catch (e) {}
+    if (Date.now() - last < 60000) { this.msg('Espera un minuto antes de enviar otra sugerencia.', true); return; }
+    const doc = { uid: Cloud.user.uid, name: Cloud.name, cat, sub: $('sg-sub').value, title, text, status: 'nueva', clientAt: Date.now(), createdAt: firebase.firestore.FieldValue.serverTimestamp() };
+    if (c.ch) doc.ch = $('sg-ch').value; if (c.dir) doc.dir = $('sg-dir').value; if (c.extra) doc.extra = $('sg-extra').value.trim();
+    this.busy = true; this.msg('Enviando…'); this.render();
+    try {
+      await Cloud.db.collection('suggestions').add(doc);
+      try { localStorage.setItem('arena-umbral-sug-t', String(Date.now())); } catch (e) {}
+      $('sg-title').value = ''; $('sg-text').value = ''; $('sg-extra').value = ''; $('sg-count').textContent = '0 / 1000';
+      this.msg('¡Gracias! Tu sugerencia ha llegado al administrador. Puedes ver su estado en «Mis sugerencias».'); SFX.play('win');
+    } catch (e) { this.msg('No se pudo enviar (' + (e.code || e.message || 'error') + '). Comprueba tu conexión.', true); }
+    this.busy = false; $('sg-send-btn').disabled = !this.ready();
+  },
+  async load() {
+    const list = $('sg-list');
+    if (!this.ready()) { list.innerHTML = '<p class="note">Inicia sesión para ver tus sugerencias.</p>'; return; }
+    list.innerHTML = '<p class="note dots">Cargando</p>';
+    try {
+      const col = Cloud.db.collection('suggestions');
+      const q = this.tab === 'admin' ? await col.orderBy('createdAt', 'desc').limit(300).get() : await col.where('uid', '==', Cloud.user.uid).get();
+      this.items = q.docs.map(d => ({ id: d.id, ...d.data() })).sort((a, b) => (b.clientAt || 0) - (a.clientAt || 0));
+      if (this.tab === 'admin') this.newCount = this.items.filter(x => x.status === 'nueva').length;
+      this.list();
+    } catch (e) { list.innerHTML = `<p class="note err">No se pudieron cargar (${escapeHtml(e.code || e.message || 'error')}).${this.tab === 'admin' ? ' Revisa las reglas de Firestore y la colección «admins».' : ''}</p>`; }
+  },
+  list() {
+    const admin = this.tab === 'admin', fc = admin ? $('sg-f-cat').value : '', fs = admin ? $('sg-f-st').value : '';
+    const its = this.items.filter(x => (!fc || x.cat === fc) && (!fs || (x.status || 'nueva') === fs));
+    if (admin) $('sg-sum').textContent = `${this.items.length} sugerencias · ${this.newCount} nuevas`;
+    $('sg-list').innerHTML = its.length ? its.map(x => {
+      const c = SUG_CATS[x.cat] || SUG_CATS.other, st = x.status || 'nueva', e = escapeHtml;
+      const det = [x.sub, x.dir, x.ch && x.ch !== '-' ? (ROSTER[x.ch] ? ROSTER[x.ch].name : x.ch) : '', x.extra].filter(Boolean).map(t => `<span class="sg-tag">${e(t)}</span>`).join('');
+      return `<div class="sg-item ${st}"><div class="hd"><span class="sg-st ${st}">${SUG_ST[st] || e(st)}</span><b>${e(x.title || '')}</b></div>
+        <div class="hd"><small>${e(c.name)}</small>${det}</div><p>${e(x.text || '')}</p>
+        <small>${admin ? 'De <b style="font-size:inherit">' + e(x.name || '¿?') + '</b> · ' : ''}${this.when(x)}</small>
+        ${admin ? `<div class="sg-acts">${['vista', 'hecha', 'descartada', 'nueva'].filter(k => k !== st).map(k => `<button class="btn small" data-id="${x.id}" data-st="${k}">Marcar ${SUG_ST[k].toLowerCase()}</button>`).join('')}<button class="btn small" data-id="${x.id}" data-del="1">Borrar</button></div>` : ''}</div>`;
+    }).join('') : `<p class="note">${admin ? 'No hay sugerencias con estos filtros.' : 'Aún no has enviado ninguna sugerencia.'}</p>`;
+    $('sg-list').querySelectorAll('button[data-id]').forEach(b => b.onclick = () => b.dataset.del ? this.remove(b.dataset.id) : this.setStatus(b.dataset.id, b.dataset.st));
+  },
+  async setStatus(id, st) {
+    try { await Cloud.db.collection('suggestions').doc(id).update({ status: st }); const it = this.items.find(x => x.id === id); if (it) it.status = st; this.newCount = this.items.filter(x => (x.status || 'nueva') === 'nueva').length; this.list(); updateMenu(); }
+    catch (e) { toast('No se pudo actualizar: ' + (e.code || e.message)); }
+  },
+  async remove(id) {
+    if (!confirm('¿Borrar esta sugerencia para siempre?')) return;
+    try { await Cloud.db.collection('suggestions').doc(id).delete(); this.items = this.items.filter(x => x.id !== id); this.newCount = this.items.filter(x => (x.status || 'nueva') === 'nueva').length; this.list(); updateMenu(); }
+    catch (e) { toast('No se pudo borrar: ' + (e.code || e.message)); }
+  },
+  async countNew() { // aviso en el menú para el administrador
+    if (!Cloud.isAdmin || !Cloud.db) { this.newCount = 0; return; }
+    try { const q = await Cloud.db.collection('suggestions').where('status', '==', 'nueva').get(); this.newCount = q.size ?? q.docs.length; } catch (e) { this.newCount = 0; }
+    updateMenu();
+  },
+};
+$('sg-cat').innerHTML = Object.entries(SUG_CATS).map(([k, c]) => `<option value="${k}">${c.name}</option>`).join('');
+$('sg-ch').innerHTML = '<option value="-">Ninguno en concreto</option>' + ROSTER_IDS.map(id => `<option value="${id}">${ROSTER[id].name}</option>`).join('');
+$('sg-f-cat').innerHTML = '<option value="">Todos</option>' + Object.entries(SUG_CATS).map(([k, c]) => `<option value="${k}">${c.name}</option>`).join('');
+$('sg-cat').onchange = () => Sug.formUi(); Sug.formUi();
+$('sg-text').addEventListener('input', () => $('sg-count').textContent = $('sg-text').value.length + ' / 1000');
+document.querySelectorAll('#sg-tabs button').forEach(b => b.onclick = () => { Sug.tab = b.dataset.t; Sug.msg(''); SFX.play('ui'); Sug.render(); });
+$('sg-send-btn').onclick = () => Sug.send();
+$('sg-f-cat').onchange = $('sg-f-st').onchange = () => Sug.list();
+$('sg-reload').onclick = () => Sug.load();
+$('b-suggest').onclick = () => Sug.open();
+$('b-sg-back').onclick = () => show('scr-menu');
 
 /* Arranque: espera a saber si hay sesión antes de decidir la primera pantalla */
 const Boot = {
