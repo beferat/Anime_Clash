@@ -1415,6 +1415,12 @@ function tierDef(id, t) { // definición del luchador con la transformación ele
 }
 const tierCount = id => (ROSTER[id].tiers || [0]).length;
 const tierName = (id, t) => ROSTER[id].tiers ? ROSTER[id].tiers[t].formName : ROSTER[id].formName;
+function cpuTier(id) { // la CPU no empieza en su forma máxima: sube con la dificultad y con cada ronda
+  const tr = ROSTER[id].tiers; if (!tr) return 0;
+  const n = tr.filter(x => !x.secret).length - 1, di = { easy: 0, normal: 1, hard: 2 }[Game.diff] ?? 1, r = Math.max(0, (Game.round || 1) - 1);
+  const t = [0, 0, 1][di] + [0, 1, 1.5][di] * r;
+  return Math.min(n, [1, 2, n][di], Math.floor(t));
+}
 function randTier(id) { const tr = ROSTER[id].tiers; if (!tr) return 0; const ok = tr.map((x, i) => i).filter(i => !tr[i].secret); return ok[Math.floor(Math.random() * ok.length)]; }
 const ROSTER_IDS = Object.keys(ROSTER);
 const COMBO_NEXT = { atk1: 'atk2', atk2: 'atk3', atk3: 'atk4' }; // la cadena sigue mientras exista el siguiente golpe
@@ -1461,7 +1467,10 @@ const PROJ = {
 };
 
 /* Barrido: agachado + E. Golpe bajo que derriba (contrarresta a quien se queda agachado) */
+const ULT_GAIN = 0.42; // carga de la definitiva por punto de daño hecho en forma (≈240 de daño para llenarla)
 const COMMON_MOVES = {
+  // entrada de la definitiva: brilla, se lanza hacia delante y solo si conecta se desata la definitiva
+  ultGo: { dur: 36, pose: 'lunge', ultGo: true, reach: 30, vel: [{ f: 8, vx: 14, hold: 10 }], fx: [{ f: 0, k: 'ultTell' }] },
   dash: { dur: 15, pose: 'dash', dashMove: true, inv: [0, 5] },
   low: { dur: 26, low: true, pose: 'sweep', hits: [{ f: [7, 11], box: [0, -26, 100, 26], dmg: 30, kb: 4, kby: -5, stun: 30, knock: true }], fx: [{ f: 7, k: 'dust', x: 50 }, { f: 7, k: 'sweepfx' }] },
 };
@@ -2428,7 +2437,10 @@ class Fighter {
       this.energy = 0; this.vx = 0; this.startMove('tf');
       FX.ring(this.x, this.y - 50, this.def.spark, 90, 30, 6);
     }
-    else if (inp.g && this.form && !this.ultUsed && this.def.formMoves.ult) { this.ultUsed = true; this.startMove('ult'); if (this === Game.me) Missions.track('ult'); }
+    else if (inp.g && this.form && !this.ultUsed && this.def.formMoves.ult) {
+      if ((this.ultCharge || 0) >= 100) { this.ultHit = false; this.startMove('ultGo'); } // golpe de entrada: hay que acertarlo
+      else FX.text(this.x, this.y - this.box.h - 24, 'DEFINITIVA ' + Math.floor(this.ultCharge || 0) + '%', '#a99ec4', 12);
+    }
     if (this.move) { this.physics(); this.st++; return; }
 
     // Movimiento (pulsar guardia abre la ventana de parry)
@@ -2474,6 +2486,16 @@ class Fighter {
       if (v.vy !== undefined) { this.vy = v.vy; this.onGround = false; }
     }
     if (this.holdT > 0) { this.vx = this.holdVx; this.holdT--; } else if (this.onGround) this.vx *= 0.8;
+    if (m.ultGo && !this.ultHit && opp && st >= 10 && st <= 22 && opp.state !== 'defeat' && opp.inv <= 0) { // ¿conecta la entrada? (a media altura: se puede saltar)
+      const bx = this.big ? [0, -160, 190, 160] : [0, -72, 100, 72];
+      if (overlap(this.worldBox(bx), opp.hurt())) {
+        this.ultHit = true;
+        if (opp.state === 'block' && opp.face === -this.face) { this.ultMiss('BLOQUEADA'); return; }
+        FX.ring(opp.x, opp.y - 50, '#ffffff', 90, 14, 6); Game.flash = Math.max(Game.flash, 6); Game.hitstop = Math.max(Game.hitstop, 8);
+        this.ultUsed = true; this.vx = 0; this.holdT = 0; this.startMove('ult'); if (this === Game.me) Missions.track('ult'); return;
+      }
+    }
+    if (m.ultGo && st >= m.dur - 1 && !this.ultHit) { this.ultMiss('¡ESQUIVADA!'); return; }
     if (m.dashMove && st < 8) { this.vx = this.dashDir * 10.5; if (!this.onGround) this.vy = Math.min(this.vy, 0); } // dash
     if (m.hover && st >= m.hover[0] && st <= m.hover[1]) this.vy = Math.min(this.vy, 0.5); // el gas lo sostiene en el aire
     if (m.dropAt && st === m.dropAt.f) { this.vy = m.dropAt.vy; this.onGround = false; } // vuelve a caer al terreno
@@ -2592,6 +2614,10 @@ class Fighter {
     this.x = clamp(this.x, 16 + hw, W - 16 - hw);
   }
 
+  ultMiss(txt) { // la entrada no conectó: pierde parte de la carga y queda vendido un instante
+    this.ultCharge = 40; this.move = null; this.moveName = ''; this.state = 'hurt'; this.st = 0; this.stun = 20; this.vx *= 0.3;
+    FX.text(this.x, this.y - this.box.h - 26, txt, '#7ff0ff', 16); SFX.play('block');
+  }
   airJumpFx() { // doble salto: voltereta encogida, onda de aire bajo los pies, estela y líneas de velocidad
     const col = this.def.spark;
     this.flipT = 22; this.ghostT = 10;
@@ -2602,7 +2628,7 @@ class Fighter {
     SFX.play('whoosh');
   }
   becomeForm() {
-    this.form = true; this.formT = Math.round(FORM_TIME * (this.relic.form || 1)); this.ultUsed = false;
+    this.form = true; this.formT = Math.round(FORM_TIME * (this.relic.form || 1)); this.ultUsed = false; this.ultCharge = 0; // la definitiva empieza vacía
     if (this === Game.me && this.ctl !== 'remote') Missions.track('transform');
     Game.flash = Math.max(Game.flash, 8);
     FX.ring(this.x, this.y - 60, this.def.spark, 140, 26, 8);
@@ -2834,6 +2860,8 @@ function doFx(f, e) {
     case 'snakepunch': { const tg = Game.other(f); if (tg) FX.add({ k: 'snakepunch', f, tgt: tg, life: e.life || 40 }); SFX.play('whoosh'); break; }
     case 'constellation': { const pts = []; for (let i = 0; i < 9; i++) pts.push([90 + i * 98 + rnd(-30, 30), 70 + (i % 3) * 70 + rnd(-20, 20)]); FX.add({ k: 'constellation', pts, life: e.life || 120, back: true }); SFX.play('charge'); break; }
     case 'comet': { const tg = Game.other(f), gd = tg ? (tg.x >= f.x ? 1 : -1) : dir; FX.add({ k: 'comet', x0: gd > 0 ? -60 : W + 60, y0: -60, x1: tg ? tg.x : W / 2, y1: tg ? tg.y - 40 : GROUND, life: e.life || 60 }); SFX.play('boom'); break; }
+    case 'ultTell': f.flash = 12; FX.ring(f.x, f.y - 50, f.def.spark, 110, 16, 6); FX.ring(f.x, f.y - 50, '#ffffff', 70, 12, 3); FX.charge(f.x + dir * 16, f.y - 60, f.def.spark);
+      FX.text(f.x, f.y - f.box.h - 40, '¡DEFINITIVA!', '#ffd27a', 18); SFX.play('charge'); break;
     case 'sweepfx': FX.add({ k: 'slash', x: f.x + dir * 30, y: f.y - 10, dir, col: '#ffffff', r: 40, flip: true, w: 4, life: 10 }); SFX.play('whoosh'); break;
     case 'frost': FX.burst(ox, oy, '#e8fbff', 10, 3, 18, 4, 0.05); FX.burst(ox, oy, '#9ae8ff', 6, 2, 22, 3, 0.1); break;
     case 'embers': FX.burst(ox, oy, '#ffd27a', 8, 3, 16, 4, -0.05); FX.burst(ox, oy, '#ff4a1a', 8, 2, 20, 4, -0.08); break;
@@ -2965,6 +2993,10 @@ function applyHit(att, tgt, h, dir, isProj) {
   if (h.zap) { FX.zap(cx, cy, 6, h.heavy ? 90 : 55, att.def.zapCol); SFX.play('zap'); }
   if (h.squish && tgt.ctl === 'remote') tgt.squishT = 14;
   att.energy = Math.min(100, att.energy + dmg * 0.15);
+  if (att.form && !att.ultUsed && att.moveName !== 'ult' && att.ultCharge !== undefined) {
+    const was = att.ultCharge; att.ultCharge = Math.min(100, att.ultCharge + dmg * ULT_GAIN);
+    if (was < 100 && att.ultCharge >= 100 && att.ctl !== 'remote') { FX.text(att.x, att.y - att.box.h - 40, '¡DEFINITIVA LISTA!', '#ffd27a', 16); SFX.play('charge'); }
+  }
   countCombo(att);
   const msg = { dmg, kb: h.kb, kby: h.kby || 0, stun: h.stun, dir, heavy: !!h.heavy, proj: isProj, zap: !!h.zap, gb: !!h.gb, daze: !!h.daze, chip: h.chip || 0,
     slow: h.slow || 0, bleed: h.bleed || 0, knock: !!h.knock, squish: !!h.squish, bounce: h.bounce || 0, bounceDmg: h.bounceDmg || 0, boom: !!h.boom };
@@ -4276,7 +4308,7 @@ function touchHud() {
   set(TB.f, me.energy / F_COST, me.energy >= F_COST);
   if (!me.def.canTransform) set(TB.g, 0, false, true, 'FORMA');
   else if (me.tfLocked) set(TB.g, 0, false, true, 'BLOQ.');
-  else if (me.form) set(TB.g, me.ultUsed ? 0 : 1, !me.ultUsed, me.ultUsed, 'DEFIN.');
+  else if (me.form) set(TB.g, me.ultUsed ? 0 : (me.ultCharge || 0) / 100, !me.ultUsed && (me.ultCharge || 0) >= 100, me.ultUsed, 'DEFIN.');
   else set(TB.g, me.energy / 100, me.energy >= 100, false, 'FORMA');
 }
 
@@ -4301,7 +4333,8 @@ function cpuInput(me, opp) {
     AI.plan = d > 260 ? (ranged && r < 0.5 ? 'zone' : 'approach') : (r < 0.55 ? 'press' : r < 0.72 ? 'guard' : r < 0.86 ? 'retreat' : 'approach');
   }
   if (me.def.canTransform && !me.form && me.energy >= 100) i.g = true;
-  if (me.form && !me.ultUsed && d < 300 && rnd() < L.ult) i.g = true;
+  if (me.form && !me.ultUsed && (me.ultCharge || 0) >= 100 && d < 200 && rnd() < L.ult) i.g = true;
+  if (opp.moveName === 'ultGo' && d < 320 && me.onGround && !me.move && rnd() < L.react) { if (rnd() < 0.5) i.jump = true; else { i.dash = true; i[away] = true; } } // esquiva la definitiva
   const threat = (opp.move && d < 170) || Game.projs.some(p => p.owner === opp && Math.abs(p.x - me.x) < 200 && Math.sign(me.x - p.x) === p.dir);
   switch (AI.plan) {
     case 'approach': i[toward] = true; if (d < 220 && rnd() < 0.04) i.r = true; break;
@@ -4464,7 +4497,8 @@ function beginRound() {
   const mySide = G.mode === 'online' && Net.role === 'guest' ? 1 : 0;
   const ctl0 = mySide === 0 ? 'local' : 'remote';
   const ctl1 = G.mode === 'cpu' ? 'cpu' : (mySide === 1 ? 'local' : 'remote');
-  G.fighters = [new Fighter(a, 0, ctl0), new Fighter(b, 1, ctl1)];
+  const res = id => String(id).endsWith('#auto') ? id.replace('#auto', '#' + cpuTier(id.split('#')[0])) : id; // rival CPU: transformación según ronda y dificultad
+  G.fighters = [new Fighter(res(a), 0, ctl0), new Fighter(res(b), 1, ctl1)];
   if (prev.length === 2) G.fighters.forEach((f, i) => { f.energy = Math.min(100, Math.round(prev[i].energy)); }); // la energía se conserva entre rondas
   G.me = G.fighters[mySide]; G.opp = G.fighters[1 - mySide];
   G.me.tfLocked = !!G.me.def.canTransform && !Prof.tfOpen(G.me.id, G.me.def.tier || 0);
@@ -4897,7 +4931,9 @@ function drawHUD(c) {
     if (f.form) {
       const fw = EW * Math.min(1, f.formT / FORM_TIME);
       c.fillStyle = '#1e1832'; c.fillRect(ex, ey + 12, EW, 4); c.fillStyle = f.def.spark; c.fillRect(left ? ex : ex + EW - fw, ey + 12, fw, 4);
-      txt(c, f.def.formName + (f.ultUsed ? '' : ' · G: DEFINITIVA'), left ? ex : ex + EW, ey + 28, 10, f.ultUsed ? f.def.spark : ((T >> 3) % 2 ? '#ffd27a' : f.def.spark), al);
+      const uc = Math.floor(f.ultCharge || 0), ready = !f.ultUsed && uc >= 100;
+      c.fillStyle = '#1e1832'; c.fillRect(ex, ey + 18, EW, 3); c.fillStyle = ready ? ((T >> 2) % 2 ? '#ffd27a' : '#fff1b8') : '#a99ec4'; const uw = EW * (f.ultUsed ? 0 : uc / 100); c.fillRect(left ? ex : ex + EW - uw, ey + 18, uw, 3);
+      txt(c, f.def.formName + (f.ultUsed ? '' : ready ? ' · G: DEFINITIVA' : ' · DEFINITIVA ' + uc + '%'), left ? ex : ex + EW, ey + 32, 10, f.ultUsed || !ready ? f.def.spark : ((T >> 3) % 2 ? '#ffd27a' : f.def.spark), al);
     } else if (f.exhaustT > 0) txt(c, 'AGOTADO', left ? ex : ex + EW, ey + 24, 10, '#a99ec4', al);
     else if (full && f.def.canTransform) txt(c, 'G · TRANSFORMACIÓN LISTA', left ? ex : ex + EW, ey + 24, 10, '#ffd27a', al);
     // objetos activos
@@ -4931,7 +4967,7 @@ function drawHUD(c) {
       ['E', 'ATQ', 1, true],
       ['R', 'MOV', 1 - me.cdR / me.def.cdR, me.cdR <= 0],
       ['F', 'ESP', Math.min(1, me.energy / F_COST), me.energy >= F_COST],
-      ...(me.def.canTransform ? [me.tfLocked ? ['G', 'BLOQ', 0, false] : ['G', me.form ? 'DEF' : 'FORMA', me.form ? (me.ultUsed ? 0 : 1) : me.energy / 100, me.form ? !me.ultUsed : me.energy >= 100]] : []),
+      ...(me.def.canTransform ? [me.tfLocked ? ['G', 'BLOQ', 0, false] : ['G', me.form ? 'DEF' : 'FORMA', me.form ? (me.ultUsed ? 0 : (me.ultCharge || 0) / 100) : me.energy / 100, me.form ? !me.ultUsed && (me.ultCharge || 0) >= 100 : me.energy >= 100]] : []),
     ];
     const bx0 = W / 2 - keys.length * 24;
     keys.forEach(([k, cap, prog, ready], i) => {
@@ -5381,7 +5417,7 @@ $('b-ready').onclick = () => {
   SFX.init();
   if (Game.mode === 'cpu') {
     const b = cpuOpp.value || ROSTER_IDS[Math.floor(Math.random() * ROSTER_IDS.length)];
-    Game.diff = Settings.diff; startMatch(Sel.pick(Sel.my), b + '#' + randTier(b), Sel.map, Sel.items); return;
+    Game.diff = Settings.diff; startMatch(Sel.pick(Sel.my), b + '#auto', Sel.map, Sel.items); return;
   }
   Sel.myReady = !Sel.myReady; SFX.play('ui');
   Net.send({ t: 'pick', id: Sel.my, tier: Prof.battleTier(Sel.my) }); Net.send({ t: 'ready', v: Sel.myReady }); Sel.render(); Sel.tryStart();
