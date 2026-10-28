@@ -65,6 +65,29 @@ h1,h2,h3{font-family:var(--display);margin:0;letter-spacing:.04em;text-wrap:bala
   background:#0b0916;color:var(--gold);border:.25cqw solid var(--line);padding:1.2cqh 1cqw;-webkit-user-select:text;user-select:text}
 .join input:focus{outline:none;border-color:var(--gold)}
 .join input::placeholder{color:#5d5280}
+.acc-box{width:40cqw;background:var(--panel);border:.25cqw solid var(--line);padding:2cqh 2cqw;display:flex;flex-direction:column;gap:1.3cqh}
+.acc-box[hidden]{display:none}
+.acc-box .seg{align-self:center}
+.acc-box label{display:flex;flex-direction:column;gap:.5cqh;font-size:1.1cqw;color:var(--mute)}
+.acc-box label[hidden]{display:none}
+.acc-box input{font-family:var(--ui);font-size:1.5cqw;background:#0b0916;color:var(--bone);border:.25cqw solid var(--line);padding:1cqh 1cqw;-webkit-user-select:text;user-select:text}
+.acc-box input:focus{outline:none;border-color:var(--gold)}
+.acc-box .btn{width:100%}
+.linkbtn{background:none;border:0;color:var(--mute);font-family:var(--ui);font-size:1.05cqw;text-decoration:underline;cursor:pointer;align-self:center}
+.linkbtn:hover,.linkbtn:focus-visible{color:var(--bone);outline:none}
+.linkbtn[hidden]{display:none}
+.acc-or{display:flex;align-items:center;gap:1cqw;font-size:1cqw;color:var(--mute)}
+.acc-or::before,.acc-or::after{content:'';flex:1;height:.15cqw;background:var(--line)}
+.acc-user{display:flex;flex-direction:column;align-items:center;gap:.4cqh;text-align:center}
+.acc-user b{font-family:var(--display);font-weight:400;font-size:2.4cqw;color:var(--gold)}
+.acc-user small{font-size:1.1cqw;color:var(--mute)}
+.acc-sync{font-size:1.15cqw;text-align:center;margin:0;color:var(--mute)}
+.acc-sync.ok{color:var(--tide)}
+.acc-sync.err{color:var(--danger)}
+#btn-acc .st{display:inline-block;width:.7cqw;height:.7cqw;margin-right:.6cqw;background:var(--mute);vertical-align:middle}
+#btn-acc .st.ok{background:var(--tide)}
+#btn-acc .st.busy{background:var(--gold)}
+#btn-acc .st.err{background:var(--danger)}
 .legend{display:flex;flex-wrap:wrap;gap:.8cqh 1.6cqw;justify-content:center;font-size:1.25cqw;color:var(--mute);max-width:80cqw}
 .legend b,.kbd{font-family:var(--display);font-weight:400;color:var(--bone);background:var(--panel2);border:.15cqw solid var(--line);
   padding:.1cqh .6cqw;margin-right:.3cqw}
@@ -352,6 +375,7 @@ h1,h2,h3{font-family:var(--display);margin:0;letter-spacing:.04em;text-wrap:bala
     <!-- MENÚ -->
     <section class="screen" id="scr-menu">
       <div class="corner">
+        <button class="btn small" id="btn-acc" aria-label="Cuenta" hidden>Cuenta</button>
         <button class="prof-chip" id="prof-chip" aria-label="Perfil y pase de batalla"></button>
         <button class="btn small" id="btn-full" aria-label="Pantalla completa">⛶</button>
         <button class="btn small" id="btn-mute" aria-label="Sonido">♪ ON</button>
@@ -467,6 +491,29 @@ h1,h2,h3{font-family:var(--display);margin:0;letter-spacing:.04em;text-wrap:bala
       <div class="mis-grid" id="mis-grid"></div>
       <p class="note" id="mis-note"></p>
       <button class="btn" id="b-mis-back">Volver</button>
+    </section>
+
+    <!-- CUENTA -->
+    <section class="screen" id="scr-account" hidden>
+      <h2 class="scr-title" id="acc-h">Cuenta</h2>
+      <div class="acc-box" id="acc-form">
+        <div class="seg" id="acc-tabs" role="tablist"><button data-t="login">Entrar</button><button data-t="register">Crear cuenta</button></div>
+        <label id="acc-name-row">Nombre de luchador<input id="acc-name" maxlength="16" autocomplete="nickname" spellcheck="false"></label>
+        <label>Correo electrónico<input id="acc-email" type="email" autocomplete="email" spellcheck="false"></label>
+        <label>Contraseña<input id="acc-pass" type="password" autocomplete="current-password"></label>
+        <button class="btn primary" id="acc-go">Entrar</button>
+        <span class="acc-or">o</span>
+        <button class="btn" id="acc-google">Entrar con Google</button>
+        <button class="linkbtn" id="acc-forgot">¿Has olvidado la contraseña?</button>
+      </div>
+      <div class="acc-box" id="acc-info" hidden>
+        <div class="acc-user"><b id="acc-uname"></b><small id="acc-mail"></small><small id="acc-lv"></small></div>
+        <p class="acc-sync" id="acc-sync"></p>
+        <button class="btn" id="acc-retry">Reintentar sincronización</button>
+        <button class="btn" id="acc-logout">Cerrar sesión</button>
+      </div>
+      <p class="note" id="acc-msg"></p>
+      <div class="row"><button class="btn ghost" id="acc-guest">Jugar sin cuenta</button><button class="btn" id="acc-back">Volver</button></div>
     </section>
 
     <!-- PASE DE BATALLA -->
@@ -3068,6 +3115,78 @@ const Items = {
 };
 
 /* ---------------- Logros (el progreso se guarda en este navegador): cada uno da 10 tickets y 200 XP ---------------- */
+/* ---------------- Cuentas en la nube (Firebase Authentication + Cloud Firestore) ----------------
+   Pega aquí la configuración de tu proyecto (Consola de Firebase → Configuración del proyecto → Tus apps → Web).
+   Si se deja vacía, el juego funciona igual que antes: progreso solo en este navegador, sin cuentas. */
+const FIREBASE_CONFIG = {
+  apiKey: '',
+  authDomain: '',
+  projectId: '',
+  storageBucket: '',
+  messagingSenderId: '',
+  appId: '',
+};
+const FB_VER = '10.12.2';
+const GUEST_KEY = 'arena-umbral-guest';
+let ACC = ''; // uid de la cuenta con sesión iniciada ('' = invitado)
+const skey = k => ACC ? k + ':' + ACC : k; // cada cuenta tiene su propia copia local (caché) del progreso
+function loadScript(src) { return new Promise((ok, ko) => { const el = document.createElement('script'); el.src = src; el.onload = ok; el.onerror = () => ko(new Error('No se pudo cargar ' + src)); document.head.appendChild(el); }); }
+const Cloud = {
+  ok: false, user: null, name: '', state: 'off', timer: 0, pending: false, synced: false, auth: null, db: null,
+  configured() { return !!(FIREBASE_CONFIG.apiKey && FIREBASE_CONFIG.projectId); },
+  async init() {
+    if (!this.configured()) return;
+    try {
+      for (const m of ['app', 'auth', 'firestore']) if (!(window.firebase && (m === 'app' || firebase[m]))) await loadScript(`https://www.gstatic.com/firebasejs/${FB_VER}/firebase-${m}-compat.js`);
+      if (!firebase.apps.length) firebase.initializeApp(FIREBASE_CONFIG);
+      this.auth = firebase.auth(); this.db = firebase.firestore(); this.ok = true;
+    } catch (e) { this.ok = false; this.state = 'nosdk'; return; }
+    await new Promise(res => {
+      let first = true;
+      this.auth.onAuthStateChanged(async u => { await this.onUser(u); if (first) { first = false; res(); } else Boot.route(); });
+    });
+  },
+  ref() { return this.db.collection('users').doc(this.user.uid); },
+  setState(st) { this.state = st; if (this.ui) { Acc.syncUi(); updateMenu(); } },
+  // al iniciar sesión: la nube manda. Una cuenta nueva se lleva el progreso de invitado de este navegador.
+  async onUser(u) {
+    clearTimeout(this.timer); this.pending = false; this.synced = false;
+    if (!u) { this.user = null; this.name = ''; ACC = ''; Missions.load(); Prof.load(); this.setState('off'); return; }
+    this.user = u; ACC = u.uid; this.setState('loading');
+    try { localStorage.removeItem(GUEST_KEY); } catch (e) {}
+    try {
+      const snap = await this.ref().get();
+      if (snap.exists) {
+        const d = snap.data() || {};
+        this.name = d.name || u.displayName || (u.email || '').split('@')[0];
+        localStorage.setItem(skey(PROF_KEY), JSON.stringify(d.profile || {}));
+        localStorage.setItem(skey(MIS_KEY), JSON.stringify(d.missions || {}));
+      } else {
+        this.name = this.newName || u.displayName || (u.email || '').split('@')[0] || 'Luchador';
+        const gp = localStorage.getItem(PROF_KEY), gm = localStorage.getItem(MIS_KEY);
+        if (gp) localStorage.setItem(skey(PROF_KEY), gp); else localStorage.removeItem(skey(PROF_KEY));
+        if (gm) localStorage.setItem(skey(MIS_KEY), gm); else localStorage.removeItem(skey(MIS_KEY));
+        localStorage.removeItem(PROF_KEY); localStorage.removeItem(MIS_KEY); // el progreso de invitado pasa a la cuenta (una sola vez)
+      }
+      this.synced = true;
+    } catch (e) { this.synced = false; } // sin conexión: se usa la copia local de esta cuenta y no se sube nada hasta reintentar
+    this.newName = '';
+    Missions.load(); Prof.load();
+    if (this.synced) { this.pending = true; await this.push(); } else this.setState('offline');
+  },
+  dirty() { if (!this.user || !this.synced) return; this.pending = true; clearTimeout(this.timer); this.timer = setTimeout(() => this.push(), 1500); },
+  async push() {
+    if (!this.user || !this.synced || !this.pending) return;
+    this.pending = false; clearTimeout(this.timer); this.setState('saving');
+    const data = JSON.parse(JSON.stringify({ name: this.name, profile: Prof.d, missions: Missions.data })); // sin «undefined» para Firestore
+    data.level = Prof.level(); data.updatedAt = firebase.firestore.FieldValue.serverTimestamp();
+    try { await this.ref().set(data); this.setState('saved'); }
+    catch (e) { this.pending = true; this.setState('error'); clearTimeout(this.timer); this.timer = setTimeout(() => this.push(), 15000); }
+  },
+  async retry() { if (!this.user) return; if (this.synced) { this.pending = true; return this.push(); } await this.onUser(this.user); Boot.route(); },
+};
+document.addEventListener('visibilitychange', () => { if (document.hidden && Cloud.pending) Cloud.push(); });
+
 const MIS_KEY = 'arena-umbral-missions';
 const MISSIONS = [
   { id: 'win1', name: 'Primera sangre', desc: 'Gana un combate', goal: 1, ev: 'win' },
@@ -3086,8 +3205,8 @@ const MISSIONS = [
 ];
 const Missions = {
   data: { p: {}, done: {} }, recent: [],
-  load() { try { const d = JSON.parse(localStorage.getItem(MIS_KEY) || '{}'); this.data = { p: d.p || {}, done: d.done || {} }; } catch (e) {} },
-  save() { try { localStorage.setItem(MIS_KEY, JSON.stringify(this.data)); } catch (e) {} },
+  load() { this.data = { p: {}, done: {} }; try { const d = JSON.parse(localStorage.getItem(skey(MIS_KEY)) || '{}') || {}; this.data = { p: d.p || {}, done: d.done || {} }; } catch (e) {} },
+  save() { try { localStorage.setItem(skey(MIS_KEY), JSON.stringify(this.data)); } catch (e) {} Cloud.dirty(); },
   progress(m) { const v = this.data.p[m.id]; return m.set ? (Array.isArray(v) ? v.length : 0) : (v || 0); },
   count() { return MISSIONS.filter(m => this.data.done[m.id]).length; },
   track(ev, n = 1) {
@@ -3183,14 +3302,14 @@ const Prof = {
   d: null, recent: [],
   fresh() { return { unlocked: [], tickets: 0, xp: 0, granted: 1, relics: [], equipped: [], slots: 1, titles: [], title: '', boost: 0, pm: {}, tfDone: {}, paid: {}, daily: null, weekly: null }; },
   load() {
-    let o = {}; try { o = JSON.parse(localStorage.getItem(PROF_KEY) || '{}') || {}; } catch (e) {}
+    let o = {}; try { o = JSON.parse(localStorage.getItem(skey(PROF_KEY)) || '{}') || {}; } catch (e) {}
     this.d = { ...this.fresh(), ...o };
     this.d.unlocked = (Array.isArray(this.d.unlocked) ? this.d.unlocked : []).filter(id => ROSTER[id]);
     this.d.equipped = (this.d.equipped || []).filter(k => RELICS[k] && this.d.relics.includes(k)).slice(0, this.d.slots);
     for (const m of MISSIONS) if (Missions.data.done[m.id] && !this.d.paid[m.id]) { this.d.paid[m.id] = 1; this.d.tickets += 10; this.d.xp += 200; } // logros de antes
     this.grant(true); this.roll(); this.save();
   },
-  save() { try { localStorage.setItem(PROF_KEY, JSON.stringify(this.d)); } catch (e) {} },
+  save() { try { localStorage.setItem(skey(PROF_KEY), JSON.stringify(this.d)); } catch (e) {} Cloud.dirty(); },
   level(xp = this.d.xp) { return Math.min(PASS_MAX, 1 + Math.floor(xp / LV_XP)); },
   has(id) { return this.d.unlocked.includes(id); },
   tfOpen(id) { return !!this.d.tfDone[id]; },
@@ -3884,7 +4003,7 @@ function drawHUD(c) {
 /* ---------------- UI ---------------- */
 const $ = id => document.getElementById(id);
 const stageEl = $('stage');
-const SCREENS = ['scr-menu', 'scr-lobby', 'scr-select', 'scr-result', 'scr-sprites', 'scr-pause', 'scr-controls', 'scr-missions', 'scr-pass', 'scr-gacha'];
+const SCREENS = ['scr-menu', 'scr-lobby', 'scr-select', 'scr-result', 'scr-sprites', 'scr-pause', 'scr-controls', 'scr-missions', 'scr-pass', 'scr-gacha', 'scr-account'];
 function show(id) {
   const wasMenu = visible('scr-menu');
   SCREENS.forEach(s => $(s).hidden = s !== id); touchEl.style.visibility = 'hidden'; stageEl.classList.remove('ingame');
@@ -3899,7 +4018,10 @@ function updateMenu() {
   $('t-pass').textContent = 'Nivel ' + lv; $('t-gacha').innerHTML = tk + TK; $('b-gacha').classList.toggle('ready', tk >= GACHA_COST && Prof.pool().length > 0);
   $('t-mis').textContent = pend ? pend + ' activas' : 'Al día'; $('t-mis-dot').textContent = pend || '';
   $('prof-chip').innerHTML = `<b>NV ${lv}</b>${Prof.d.title || 'Novato'}<span>${tk}${TK}</span>`;
+  const ba = $('btn-acc'), st = Cloud.state; ba.hidden = !Cloud.configured();
+  ba.innerHTML = `<i class="st ${!Cloud.user ? '' : st === 'saved' ? 'ok' : st === 'saving' || st === 'loading' ? 'busy' : st === 'error' || st === 'offline' ? 'err' : ''}"></i>` + (Cloud.user ? escapeHtml(Cloud.name) : 'Invitado · Entrar');
 }
+function escapeHtml(t) { return String(t).replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch])); }
 function setMenuMsg(s, err) { const m = $('menu-msg'); m.textContent = s; m.classList.toggle('err', !!err); }
 function lobbyMsg(s, busy, err) { const m = $('lobby-msg'); m.textContent = s; m.classList.toggle('dots', !!busy); m.classList.toggle('err', !!err); }
 let toastT = 0; const toastQ = []; // cola: varios avisos seguidos (misiones, niveles) se muestran uno tras otro
@@ -4296,6 +4418,7 @@ function onEscape() {
   if (visible('scr-controls')) $('b-ctl-back').click();
   else if (visible('scr-missions')) $('b-mis-back').click();
   else if (visible('scr-pass')) $('b-pass-back').click();
+  else if (visible('scr-account')) { if (!$('acc-back').hidden) $('acc-back').click(); }
   else if (visible('scr-gacha')) { if (!Gacha.welcome) $('b-gacha-back').click(); }
   else if (visible('scr-pause')) closePause();
   else if (Game.running && !visible('scr-result') && !visible('scr-select')) openPause();
@@ -4402,8 +4525,90 @@ $('b-sp-clear').onclick = () => {
   spLoad(); $('sp-msg').textContent = 'Sprites quitados: vuelve el sprite procedural.';
 };
 
-updateMenu();
-if (!Prof.d.unlocked.length) Gacha.open(true); // primera vez: invocación de bienvenida
+/* Cuenta: entrar, crear cuenta, Google, recuperar contraseña y cerrar sesión */
+const AUTH_ERR = {
+  'auth/invalid-email': 'El correo no es válido.', 'auth/missing-password': 'Escribe la contraseña.', 'auth/missing-email': 'Escribe tu correo.',
+  'auth/weak-password': 'La contraseña debe tener al menos 6 caracteres.', 'auth/email-already-in-use': 'Ya existe una cuenta con ese correo: usa «Entrar».',
+  'auth/invalid-credential': 'Correo o contraseña incorrectos.', 'auth/invalid-login-credentials': 'Correo o contraseña incorrectos.',
+  'auth/wrong-password': 'Correo o contraseña incorrectos.', 'auth/user-not-found': 'No hay ninguna cuenta con ese correo.',
+  'auth/too-many-requests': 'Demasiados intentos. Espera un poco y vuelve a probar.', 'auth/network-request-failed': 'Sin conexión con el servidor.',
+  'auth/popup-closed-by-user': 'Has cerrado la ventana de Google.', 'auth/popup-blocked': 'El navegador ha bloqueado la ventana de Google.',
+  'auth/operation-not-allowed': 'Este método de acceso no está activado en Firebase (Authentication → Sign-in method).',
+  'auth/unauthorized-domain': 'Este dominio no está autorizado en Firebase (Authentication → Settings → Authorized domains).',
+  'auth/operation-not-supported-in-this-environment': 'Abre el juego desde una web (http/https), no como archivo local.',
+};
+const Acc = {
+  mode: 'login', busy: false,
+  open(mode) { if (mode) this.mode = mode; $('acc-msg').textContent = ''; $('acc-msg').classList.remove('err'); this.render(); show('scr-account'); },
+  msg(t, err) { const m = $('acc-msg'); m.textContent = t; m.classList.toggle('err', !!err); },
+  render() {
+    const u = Cloud.user, wait = this.mode === 'wait', reg = this.mode === 'register';
+    $('acc-h').textContent = u ? 'Tu cuenta' : wait ? 'Conectando…' : reg ? 'Crear cuenta' : 'Entrar';
+    $('acc-form').hidden = !!u || wait || !Cloud.ok; $('acc-info').hidden = !u;
+    document.querySelectorAll('#acc-tabs button').forEach(b => b.classList.toggle('on', b.dataset.t === this.mode));
+    $('acc-name-row').hidden = !reg; $('acc-forgot').hidden = reg;
+    $('acc-go').textContent = reg ? 'Crear cuenta' : 'Entrar';
+    $('acc-pass').autocomplete = reg ? 'new-password' : 'current-password';
+    ['acc-go', 'acc-google', 'acc-forgot', 'acc-logout', 'acc-retry'].forEach(id => $(id).disabled = this.busy);
+    $('acc-guest').hidden = !!u || wait; $('acc-back').hidden = !u && !Boot.done;
+    $('acc-guest').textContent = Boot.done ? 'Seguir como invitado' : 'Jugar sin cuenta';
+    if (u) { $('acc-uname').textContent = Cloud.name; $('acc-mail').textContent = u.email || ''; $('acc-lv').textContent = 'Nivel ' + Prof.level() + ' del pase · ' + Prof.d.unlocked.length + ' luchadores'; }
+    if (!Cloud.configured()) this.msg('Las cuentas no están activadas: falta la configuración de Firebase (FIREBASE_CONFIG en el código).', true);
+    else if (!Cloud.ok && !wait) this.msg('No se pudo conectar con Firebase. Puedes jugar sin cuenta (el progreso se guarda en este navegador).', true);
+    else if (wait) this.msg('');
+    this.syncUi();
+  },
+  syncUi() {
+    const el = $('acc-sync'); if (!el) return;
+    const st = Cloud.state, T2 = { loading: 'Descargando tu progreso…', saving: 'Guardando en la nube…', saved: '✓ Progreso guardado en la nube', error: 'No se pudo guardar (¿sin conexión?). Se reintentará solo.', offline: 'No se pudo descargar tu progreso: estás jugando con la copia de este dispositivo y no se subirá nada hasta que reintentes.' };
+    el.textContent = T2[st] || ''; el.className = 'acc-sync' + (st === 'saved' ? ' ok' : st === 'error' || st === 'offline' ? ' err' : '');
+    $('acc-retry').hidden = !(st === 'error' || st === 'offline');
+  },
+  async run(fn) {
+    if (this.busy) return; this.busy = true; this.msg('Un momento…'); this.render();
+    try { await fn(); this.msg(''); }
+    catch (e) { this.msg(AUTH_ERR[e && e.code] || (e && e.message) || 'Algo ha fallado.', true); }
+    this.busy = false; this.render();
+  },
+  submit() {
+    const email = $('acc-email').value.trim(), pass = $('acc-pass').value, name = $('acc-name').value.trim();
+    if (this.mode === 'register') {
+      if (name.length < 3) { this.msg('El nombre debe tener entre 3 y 16 caracteres.', true); $('acc-name').focus(); return; }
+      return this.run(async () => { Cloud.newName = name; const cr = await Cloud.auth.createUserWithEmailAndPassword(email, pass); try { await cr.user.updateProfile({ displayName: name }); } catch (e) {} });
+    }
+    return this.run(() => Cloud.auth.signInWithEmailAndPassword(email, pass));
+  },
+};
+document.querySelectorAll('#acc-tabs button').forEach(b => b.onclick = () => { Acc.mode = b.dataset.t; Acc.msg(''); SFX.play('ui'); Acc.render(); });
+$('acc-go').onclick = () => Acc.submit();
+['acc-name', 'acc-email', 'acc-pass'].forEach(id => $(id).addEventListener('keydown', e => { if (e.key === 'Enter') Acc.submit(); }));
+$('acc-google').onclick = () => Acc.run(() => Cloud.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()));
+$('acc-forgot').onclick = () => {
+  const email = $('acc-email').value.trim(); if (!email) { Acc.msg('Escribe tu correo arriba y vuelve a pulsar.', true); return; }
+  Acc.run(async () => { await Cloud.auth.sendPasswordResetEmail(email); }).then(() => { if (!$('acc-msg').classList.contains('err')) Acc.msg('Te hemos enviado un correo para cambiar la contraseña.'); });
+};
+$('acc-logout').onclick = () => Acc.run(async () => { await Cloud.push(); await Cloud.auth.signOut(); });
+$('acc-retry').onclick = () => Acc.run(() => Cloud.retry());
+$('acc-guest').onclick = () => { try { localStorage.setItem(GUEST_KEY, '1'); } catch (e) {} Boot.route(true); };
+$('acc-back').onclick = () => show('scr-menu');
+$('btn-acc').onclick = () => Acc.open(Cloud.user ? null : 'login');
+
+/* Arranque: espera a saber si hay sesión antes de decidir la primera pantalla */
+const Boot = {
+  done: false,
+  route(force) {
+    updateMenu();
+    if (Game.running) return;
+    const guest = (() => { try { return localStorage.getItem(GUEST_KEY) === '1'; } catch (e) { return false; } })();
+    if (Cloud.ok && !Cloud.user && !guest && !force) { Acc.open(Acc.mode === 'wait' ? 'login' : null); return; }
+    if (!Prof.d.unlocked.length) { this.done = true; Gacha.open(true); return; } // primera vez: invocación de bienvenida
+    if (!this.done || visible('scr-account') || (visible('scr-gacha') && Gacha.welcome)) show('scr-menu');
+    this.done = true;
+  },
+};
+Cloud.ui = true; updateMenu();
+if (Cloud.configured()) { Acc.open('wait'); Cloud.init().then(() => Boot.route()); }
+else Boot.route();
 
 /* ---------------- Bucle principal ---------------- */
 let acc = 0, last = performance.now();
@@ -4422,9 +4627,9 @@ function frame(now) {
 addEventListener('load', () => {
   const sala = (new URLSearchParams(location.search).get('sala') || '').toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 5);
   if (!Net.available()) { setMenuMsg('Modo online no disponible: PeerJS no ha cargado. Versus CPU y Entrenamiento funcionan.', true); return; }
-  if (sala.length === 5) { $('in-code').value = sala; if (Prof.d.unlocked.length) Net.join(sala); }
+  if (sala.length === 5) { $('in-code').value = sala; if (Prof.d.unlocked.length && !Cloud.configured()) Net.join(sala); }
 });
-window.addEventListener('beforeunload', () => Net.close());
+window.addEventListener('beforeunload', () => { Net.close(); if (Cloud.pending) Cloud.push(); });
 </script>
 </body>
 </html>
