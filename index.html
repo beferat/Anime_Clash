@@ -687,6 +687,7 @@ const SPRITES = {
                  vel:[{f, vx, vy, hold}], proj:[{f, kind, dx, dy, dir}], fx:[{f, k, ...}], inv:[a,b], tp:{f} }
    box: x hacia delante desde el centro, y negativa hacia arriba desde los pies. */
 const sl = (f, col, r, y, extra) => Object.assign({ f, k: 'slash', col, r, y }, extra || {});
+function rumbleShakes(a, b) { const o = []; for (let f = a; f <= b; f += 6) o.push({ f, k: 'shake', a: 30 }); return o; } // temblor continuo del Retumbar
 const FULLBOX = [-600, -560, 1200, 900]; // golpes de pantalla completa (definitivas), válidos aunque el atacante esté en el aire
 const DOM_COLS = ['#0b0612', '#e0233c']; // rayos negros de la Presión Dominante
 
@@ -931,7 +932,7 @@ const ROSTER = {
     pal: { skin: '#e9c09a', hair: '#3a2a1e', top: '#a87c4c', arm: '#a87c4c', belt: '#3a2618', pants: '#e8e2d6', boots: '#4a3020', eye: '#2fa070', blade: '#c9d2dc', edge: '#ffffff', guard: '#4a4f5a', metal: '#8e98a6', cape: '#3a6a3a' },
     formPal: { skin: '#c47a5e', muscle: '#9c4f3f', sinew: '#e8a58a', hair: '#2a1d18', eye: '#7ad8a0', teeth: '#f4ead8', dark: '#5a2a22' },
     stats: { vida: 0.8, vel: 0.85, alc: 0.6 },
-    desc: { m2: 'Parry: anula el golpe y aturde al rival (también como Titán)', e: 'Tajos dobles a quemarropa con cuchillas desechables', r: 'Arpón: se ancla junto al rival, tira del cable con gas y remata con una patada giratoria', f: 'Giro con gas: se mantiene en el aire cortando en círculo', g: 'Titán Colosal: lento, súper armadura en sus golpes. R: embestida que arrolla hasta la esquina · F: arranca y lanza un bloque del suelo · G otra vez: Rugido y Aplastamiento' },
+    desc: { m2: 'Parry: anula el golpe y aturde al rival (también como Titán)', e: 'Tajos dobles a quemarropa con cuchillas desechables', r: 'Arpón: se ancla junto al rival, tira del cable con gas y remata con una patada giratoria', f: 'Giro con gas: se mantiene en el aire cortando en círculo', g: 'Titán Colosal: lento, súper armadura en sus golpes. R: embestida que arrolla hasta la esquina · F: arranca y lanza un bloque del suelo · G otra vez: EL RETUMBAR' },
     moves: {
       atk1: { dur: 14, cancel: 7, hits: [{ f: [4, 6], box: [0, -84, 68, 60], dmg: 22, kb: 0.8, kby: -1, stun: 11 }], fx: [sl(4, '#d9e2ea', 44, -48), sl(5, '#ffffff', 40, -56, { flip: true, w: 4 })] },
       atk2: { alt: true, dur: 14, cancel: 7, hits: [{ f: [4, 6], box: [0, -84, 72, 62], dmg: 24, kb: 0.8, kby: -1, stun: 11 }], fx: [sl(4, '#d9e2ea', 46, -50, { flip: true }), sl(5, '#ffffff', 42, -44, { w: 4 })] },
@@ -961,18 +962,19 @@ const ROSTER = {
            fx: [{ f: 0, k: 'steam', n: 10 }, { f: 8, k: 'dust', x: 0 }, { f: 20, k: 'dust', x: 0 }, { f: 32, k: 'dust', x: 0 }, { f: 45, k: 'shake', a: 12 }, { f: 45, k: 'impact', x: 120, y: -100, col: '#ffe08a' }, { f: 45, k: 'rocks', x: 120, y: -40 }] },
       f: { dur: 58, armor: true, proj: [{ f: 30, kind: 'rockblock', dx: 40, dy: -210 }],
            fx: [{ f: 4, k: 'crack', x: 60, col: '#ffe08a', len: 80 }, { f: 6, k: 'rocks', x: 60, y: -10 }, { f: 8, k: 'shake', a: 6 }, { f: 10, k: 'heldrock', life: 20 }] },
-      ult: { dur: 150, armor: true, inv: [0, 40], endsForm: true,
-             hits: [{ f: [12, 15], box: FULLBOX, dmg: 20, kb: 0, kby: 0, stun: 110, aoe: true, gb: true },
-                    { f: [40, 43], box: FULLBOX, dmg: 35, kb: 0, kby: -10, stun: 60, aoe: true, gb: true },
-                    { f: [56, 59], box: FULLBOX, dmg: 35, kb: 0, kby: 16, stun: 60, aoe: true, gb: true, heavy: true },
-                    { f: [72, 75], box: FULLBOX, dmg: 35, kb: 0, kby: -10, stun: 60, aoe: true, gb: true },
-                    { f: [88, 91], box: FULLBOX, dmg: 35, kb: 0, kby: 16, stun: 60, aoe: true, gb: true, heavy: true },
-                    { f: [112, 116], box: FULLBOX, dmg: 150, kb: 14, kby: -9, stun: 46, heavy: true, aoe: true, gb: true }],
-             fx: [{ f: 0, k: 'cine', name: 'RUGIDO Y APLASTAMIENTO', sub: 'DEFINITIVA', col: '#ffe08a', col2: '#3a1d14', dur: 120, banner: 54 },
-                  { f: 10, k: 'roar' }, { f: 10, k: 'shake', a: 14 }, { f: 30, k: 'gianthand', life: 76 },
-                  { f: 56, k: 'shake', a: 14 }, { f: 56, k: 'crackOpp' }, { f: 88, k: 'shake', a: 16 }, { f: 88, k: 'crackOpp' },
-                  { f: 112, k: 'flash' }, { f: 112, k: 'shake', a: 26 }, { f: 112, k: 'crack', col: '#ffe08a', len: 480 }, { f: 112, k: 'dome', col: '#ffe08a', col2: '#5a2a22', r: 480 },
-                  { f: 112, k: 'rocks', x: 120, y: -20 }, { f: 112, k: 'dust', x: 120 }, { f: 114, k: 'gring', col: '#ffe08a', r: 520 }, { f: 128, k: 'steam', n: 40 }, { f: 140, k: 'steam', n: 40 }] },
+      // EL RETUMBAR: salto gigante, Titán Fundador (solo caben sus costillas y la calavera que baja a mirar) y un ejército de colosales que arrasa el mapa
+      ult: { dur: 262, inv: [0, 262], endsForm: true, hide: [30, 236],
+             phases: [{ to: 18, arm: 'raise', crouch: 6 }, { to: 40, arm: 'up', lf: 3, lb: -4 }, { to: 999, arm: 'down' }],
+             vel: [{ f: 18, vy: -30 }], skyHold: [34, 235, 150], dropAt: { f: 236, vy: 16 },
+             hits: [{ f: [2, 5], box: FULLBOX, dmg: 10, kb: 0, kby: 0, stun: 260, aoe: true, gb: true },
+                    { f: [146, 226], every: 8, box: FULLBOX, dmg: 8, kb: 0, kby: 0, stun: 70, aoe: true, gb: true },
+                    { f: [228, 232], box: FULLBOX, dmg: 218, kb: 16, kby: -12, stun: 60, heavy: true, aoe: true, gb: true }],
+             fx: [{ f: 0, k: 'cine', name: 'EL RETUMBAR', sub: 'DEFINITIVA', col: '#ffe08a', col2: '#3a1d14', dur: 70, banner: 60 },
+                  { f: 6, k: 'steam', n: 24 }, { f: 18, k: 'dust' }, { f: 18, k: 'rocks', x: 0, y: -10 }, { f: 18, k: 'shake', a: 14 }, { f: 18, k: 'gring', col: '#ffe08a', r: 160 },
+                  { f: 30, k: 'domain', d: 'rumble', dur: 232 }, { f: 30, k: 'flash' }, { f: 34, k: 'founder', life: 226 }, { f: 34, k: 'shake', a: 10 }, { f: 60, k: 'shake', a: 6 },
+                  { f: 140, k: 'rumblers', life: 98 }, { f: 140, k: 'flash' }, ...rumbleShakes(140, 228),
+                  { f: 228, k: 'flash' }, { f: 228, k: 'crack', col: '#ffe08a', len: 480 }, { f: 228, k: 'crackOpp' }, { f: 230, k: 'shatter' },
+                  { f: 236, k: 'steam', n: 30 }, { f: 250, k: 'dust' }, { f: 250, k: 'shake', a: 14 }, { f: 252, k: 'steam', n: 30 }] },
     },
   },
 
@@ -1590,6 +1592,8 @@ const FX = {
           for (let i = 0; i < 8; i++) { const an = i / 8 * 6.283 + 0.2, x = p.x + Math.cos(an) * r, y = p.y + Math.sin(an) * r * 0.3 + k * 8; c.fillStyle = i % 2 ? '#ffffff' : p.col; c.fillRect(x - 2, y - 2, 4, 4); }
           break;
         }
+        case 'founder': drawFounder(c, p); break;
+        case 'rumblers': drawRumblers(c, p); break;
         case 'icespikes': { // cristales de hielo que brotan del suelo
           c.globalAlpha = Math.max(0, Math.min(1, (p.life - p.t) / 10)); const g = Math.min(1, p.t / 5);
           for (let i = 0; i < p.n; i++) {
@@ -2252,6 +2256,7 @@ class Fighter {
     }
     if (this.holdT > 0) { this.vx = this.holdVx; this.holdT--; } else if (this.onGround) this.vx *= 0.8;
     if (m.hover && st >= m.hover[0] && st <= m.hover[1]) this.vy = Math.min(this.vy, 0.5); // el gas lo sostiene en el aire
+    if (m.dropAt && st === m.dropAt.f) { this.vy = m.dropAt.vy; this.onGround = false; } // vuelve a caer al terreno
     if (m.above && st === m.above.f && opp) this.x = clamp(opp.x - this.face * 6, 40, W - 40); // IMPACTO OBÚS: se coloca encima del rival
     if (m.skyHold && st >= m.skyHold[0] && st <= m.skyHold[1]) { this.y += (m.skyHold[2] - this.y) * 0.25; this.vy = -GRAV; this.vx = 0; } // SPACE IMPACT: suspendido en el cielo
     if (m.swing) { // péndulo con gancho: arco por encima del rival hasta caer a su espalda
@@ -2627,7 +2632,9 @@ function doFx(f, e) {
       FX.zap(ox, oy, 14, 130, ['#0b0508', '#e0233c']); FX.zap(ox, oy, 6, 80, ['#0b0508', '#ff6a7a']); FX.ring(ox, oy, '#0b0508', 110, 18, 10); FX.ring(ox, oy, '#e0233c', 80, 14, 4);
       Game.distort = Math.max(Game.distort || 0, 20); Game.flash = Math.max(Game.flash, 5); FX.text(f.x, f.y - f.box.h - 44, '¡DESTELLO NEGRO!', '#e0233c', 22); SFX.play('boom'); break;
     case 'cutsOpp': { const tg = Game.other(f); if (!tg) break; for (let i = 0; i < (e.n || 3); i++) FX.slash(tg.x + rnd(-20, 20), tg.y - rnd(30, 80), rnd() < 0.5 ? 1 : -1, '#ffffff', rnd(30, 60), rnd() < 0.5, 4, '#e0233c'); SFX.play('slash'); break; }
-    case 'domain': Game.domain = { k: e.d, t: 0, dur: e.dur || 180, x: clamp(f.x - dir * 140, 160, W - 160) }; SFX.play('cine'); break;
+    case 'domain': { const tg = Game.other(f); Game.domain = { k: e.d, t: 0, dur: e.dur || 180, x: clamp(f.x - dir * 140, 160, W - 160), dir: tg ? (tg.x >= f.x ? 1 : -1) : dir }; SFX.play('cine'); break; }
+    case 'founder': { const tg = Game.other(f), gd = tg ? (tg.x >= f.x ? 1 : -1) : dir; FX.add({ k: 'founder', side: -gd, life: e.life || 200, back: true }); SFX.play('roar'); break; }
+    case 'rumblers': { const tg = Game.other(f), gd = tg ? (tg.x >= f.x ? 1 : -1) : dir; FX.add({ k: 'rumblers', dir: gd, row: 0, life: e.life || 96, back: true }); FX.add({ k: 'rumblers', dir: gd, row: 1, life: e.life || 96 }); SFX.play('boom'); break; }
     case 'shrinecuts': FX.add({ k: 'shrinecuts', life: e.life || 100 }); break;
     case 'orb': FX.add({ k: 'orb1', f, col: e.col, x: e.x || 40, y: e.y ?? -70, life: e.life || 20 }); SFX.play('charge'); break;
     case 'implode': FX.charge(ox, oy, '#3a7bff'); FX.ring(ox, oy, '#9ae8ff', 70, 14, 4); break;
@@ -3273,7 +3280,9 @@ function drawAtlas(c, f, face) {
   return true;
 }
 
+const hiddenNow = f => !!(f.move && f.move.hide && f.st >= f.move.hide[0] && f.st < f.move.hide[1]); // fuera de escena (p. ej. convertido en el Fundador)
 function drawFighter(c, f, tint) {
+  if (hiddenNow(f)) return;
   c.save();
   c.translate(Math.round(f.x), Math.round(f.y));
   if (f.state === 'defeat') { c.translate(0, -4); c.rotate(-f.face * Math.PI / 2 * Math.min(1, f.st / 12)); }
@@ -4376,6 +4385,7 @@ function render() {
   FX.draw(c, true);
   if (G.running) {
     for (const f of G.fighters) { // sombras sobre el suelo o la plataforma que haya debajo
+      if (hiddenNow(f)) continue;
       const fy = Stage.floorAt(f.x, f.y - 1), hgt = Math.max(0, fy - f.y), w = (f.big ? 70 : 26) * Math.max(0.4, 1 - hgt / 220);
       c.fillStyle = '#00000066'; c.fillRect(Math.round(f.x - w), Math.round(fy) + 1, Math.round(w * 2), 4);
     }
@@ -4449,11 +4459,76 @@ function drawShrine(c, x) { // santuario con tejados, cuernos, columnas y una bo
   for (const ox of [-130, -96, 96, 130]) c.fillRect(x + ox - 6, y - 220, 12, 220);
   for (let i = 0; i < 14; i++) { const sx = x - 150 + i * 22, sy = y - 10 - (i % 3) * 8; c.fillStyle = '#d8ccc0'; c.fillRect(sx, sy - 10, 14, 11); c.fillStyle = D; c.fillRect(sx + 2, sy - 7, 3, 3); c.fillRect(sx + 8, sy - 7, 3, 3); }
 }
+/* EL RETUMBAR */
+function drawColossal(c, x, y, k, dir, ph, dark) { // titán colosal sin piel, de unos 100 unidades de alto (k = píxeles por unidad)
+  const M = dark ? '#5a1e1a' : '#b8423a', D = dark ? '#3a1210' : '#7a221e', L = dark ? '#7a2e26' : '#d86a5a', B = dark ? '#a89a8a' : '#efe2d0', E = dark ? '#ffb35c' : '#ffe08a';
+  const r = (x0, y0, w, h, col) => { c.fillStyle = col; c.fillRect(x0, y0, w, h); };
+  const s1 = Math.sin(ph) * 9, l1 = Math.max(0, Math.cos(ph)) * 5, l2 = Math.max(0, -Math.cos(ph)) * 5;
+  c.save(); c.translate(x, y); c.scale(dir * k, k);
+  r(-9 - s1, -46, 8, 24 - l2, D); r(-8 - s1, -22 - l2, 7, 20, D); r(-10 - s1, -3 - l2, 11, 3, D); // pierna de atrás
+  r(-12, -86, 6, 40, D); // brazo de atrás
+  r(-11, -52, 22, 8, M); // cadera
+  r(-14, -84, 28, 34, M); for (let i = -12; i < 14; i += 3) r(i, -82, 1, 30, D); r(-12, -82, 11, 9, L); r(1, -82, 11, 9, L); // torso con fibras
+  for (let i = 0; i < 3; i++) { r(-6, -70 + i * 6, 5, 4, L); r(1, -70 + i * 6, 5, 4, L); } // abdominales
+  r(1 + s1, -46, 8, 24 - l1, M); r(2 + s1, -22 - l1, 7, 20, M); r(1 + s1, -3 - l1, 12, 3, D); for (let i = 0; i < 3; i++) r(2 + s1, -44 + i * 7, 7, 1, D); // pierna delantera
+  r(9, -84, 7, 42, M); r(9, -84, 2, 42, L); r(8, -44, 9, 6, D); // brazo delantero
+  r(-5, -91, 10, 8, M); r(-8, -104, 17, 15, M); r(-8, -104, 17, 3, L); // cuello y cabeza
+  r(-7, -93, 16, 4, B); for (let i = -6; i < 9; i += 2) r(i, -93, 1, 4, D); // dientes sin labios
+  r(2, -100, 5, 3, '#1a0a08'); r(4, -99, 2, 1, E); r(-6, -100, 4, 3, '#1a0a08'); r(-5, -99, 2, 1, E); r(0, -97, 2, 2, D); // ojos y nariz
+  r(-14, -86, 6, 4, B); r(8, -86, 6, 4, B); // hombros óseos
+  c.restore();
+}
+function drawRumblers(c, p) { // filas de titanes colosales que marchan y arrasan el mapa
+  const front = p.row === 1, n = front ? 5 : 7, sp = front ? 270 : 190, speed = front ? 11 : 8.5, k = front ? 4.6 : 3.6, gy = front ? GROUND + 34 : GROUND - 16;
+  const x0 = p.dir > 0 ? -260 : W + 260, a = Math.min(1, (p.life - p.t) / 12);
+  for (let i = 0; i < n; i++) {
+    const x = x0 + p.dir * (speed * p.t - i * sp) + (front ? 0 : p.dir * 120); if (x < -500 || x > W + 500) continue;
+    const ph = p.t * 0.16 + i * 1.7;
+    c.globalAlpha = a * 0.5; c.fillStyle = front ? '#8a6a4a' : '#5a4030';
+    for (let j = 0; j < 3; j++) { c.beginPath(); c.arc(x + rnd(-60, 60), gy - rnd(0, 30), rnd(30, 60) * (front ? 1 : 0.7), 0, 6.283); c.fill(); } // polvo de las pisadas
+    c.globalAlpha = a; drawColossal(c, x, gy, k, p.dir, ph, !front);
+    c.globalAlpha = a * 0.35; c.fillStyle = '#f4f0ea'; for (let j = 0; j < 3; j++) { c.beginPath(); c.arc(x + rnd(-40, 40), gy - k * (90 + j * 10) - rnd(0, 30), k * rnd(5, 10), 0, 6.283); c.fill(); } // vapor
+  }
+  c.globalAlpha = 1;
+}
+function drawFounder(c, p) { // el Fundador no cabe: costillas colosales desde el lateral y una calavera que baja a mirar
+  const side = p.side, edge = side < 0 ? -30 : W + 30, rise = Math.min(1, p.t / 40), a = Math.max(0, Math.min(1, (p.life - p.t) / 20));
+  c.globalAlpha = a * 0.35; c.fillStyle = '#ffe08a'; c.fillRect(side < 0 ? 0 : W - 120, 0, 120, H); // resplandor
+  c.globalAlpha = a; c.lineCap = 'round';
+  c.fillStyle = '#2a1a14'; c.fillRect(edge - 46, -20, 92, H + 40); c.fillStyle = '#d8c8b0'; for (let y = -10; y < H; y += 34) c.fillRect(edge - 36, y, 72, 26); // columna vertebral
+  for (let i = 0; i < 9; i++) {
+    const y = 10 + i * 56, reach = (220 + (i % 3) * 30) * rise, dip = 60 + i * 4;
+    for (const [w, col] of [[26, '#2a1a14'], [18, '#e8dccc'], [6, '#fff8ea']]) {
+      c.strokeStyle = col; c.lineWidth = w; c.beginPath(); c.moveTo(edge, y); c.quadraticCurveTo(edge - side * reach * 1.1, y - 30, edge - side * reach, y + dip); c.stroke();
+    }
+    c.strokeStyle = '#8a2a24'; c.lineWidth = 3; c.beginPath(); c.moveTo(edge - side * reach * 0.4, y + 8); c.lineTo(edge - side * reach * 0.55, y + 66); c.stroke(); // fibras entre costillas
+  }
+  // calavera colosal que baja desde arriba a mirar
+  const hp = Math.max(0, Math.min(1, (p.t - 70) / 30)), ease = hp * hp * (3 - 2 * hp), hx = edge - side * 300, hy = -330 + ease * 380;
+  if (hp > 0) {
+    c.fillStyle = '#2a1d18'; for (let i = 0; i < 14; i++) c.fillRect(hx - 190 + i * 28, hy - 200, 16, 300 + (i % 4) * 40); // pelo largo
+    c.fillStyle = '#2a1a14'; c.beginPath(); c.ellipse(hx, hy, 176, 186, 0, 0, 6.283); c.fill();
+    c.fillStyle = '#e8dccc'; c.beginPath(); c.ellipse(hx, hy, 166, 176, 0, 0, 6.283); c.fill();
+    c.fillStyle = '#b8a894'; c.beginPath(); c.ellipse(hx + side * 30, hy + 30, 150, 140, 0, 0, 6.283); c.fill();
+    c.fillStyle = '#1a0a08'; for (const ox of [-62, 62]) { c.beginPath(); c.ellipse(hx + ox, hy + 60, 42, 34, 0, 0, 6.283); c.fill(); }
+    const gl = 0.6 + 0.4 * Math.sin(T * 0.3); c.fillStyle = `rgba(255,224,138,${gl})`; for (const ox of [-62, 62]) { c.beginPath(); c.arc(hx + ox, hy + 64, 12, 0, 6.283); c.fill(); }
+    c.fillStyle = '#1a0a08'; c.beginPath(); c.moveTo(hx - 14, hy + 100); c.lineTo(hx + 14, hy + 100); c.lineTo(hx, hy + 128); c.fill(); // nariz
+    c.fillStyle = '#fff8ea'; for (let i = -5; i <= 5; i++) c.fillRect(hx + i * 22 - 9, hy + 140, 18, 40); c.fillStyle = '#2a1a14'; c.fillRect(hx - 120, hy + 138, 240, 4); // dientes
+  }
+  c.lineCap = 'butt'; c.globalAlpha = 1;
+}
 function drawDomain(c, dm) { // expansión de dominio: el escenario se sustituye
   c.globalAlpha = Math.max(0, Math.min(1, dm.t / 16, (dm.dur - dm.t) / 20));
   if (dm.k === 'void') {
     c.drawImage(voidBg(), 0, 0);
     for (let i = 0; i < 70; i++) { const an = i * 2.39996, sp = 2 + (i % 5), rr = (i * 37 + dm.t * sp * 3) % 640, x = W / 2 + Math.cos(an) * rr, y = H / 2 - 40 + Math.sin(an) * rr * 0.55; c.strokeStyle = i % 3 ? '#ffffffaa' : '#7fd8ffaa'; c.lineWidth = 1 + (i % 2); c.beginPath(); c.moveTo(x, y); c.lineTo(x + Math.cos(an) * (8 + rr * 0.06), y + Math.sin(an) * (8 + rr * 0.06) * 0.55); c.stroke(); }
+  } else if (dm.k === 'rumble') { // cielo de polvo naranja y siluetas de colosales en el horizonte
+    const g = c.createLinearGradient(0, 0, 0, H); g.addColorStop(0, '#140806'); g.addColorStop(0.5, '#4a1e0e'); g.addColorStop(0.82, '#c8642a'); g.addColorStop(1, '#2a140a');
+    c.fillStyle = g; c.fillRect(0, 0, W, H);
+    const dir = dm.dir || 1;
+    for (let i = 0; i < 16; i++) { const x = ((i * 97 + dm.t * 2.2) % (W + 200)) - 100, xx = dir > 0 ? x : W - x; c.fillStyle = '#2a120a'; c.fillRect(xx - 10, GROUND - 120 - (i % 3) * 14, 20, 80 + (i % 3) * 14); c.fillRect(xx - 6, GROUND - 136 - (i % 3) * 14, 12, 14); }
+    c.fillStyle = 'rgba(200,120,60,0.35)'; c.fillRect(0, GROUND - 90, W, 90);
+    c.fillStyle = '#2a1a12'; c.fillRect(0, GROUND, W, H - GROUND);
   } else if (dm.k === 'shrine') {
     c.drawImage(shrineBg(), 0, 0); drawShrine(c, dm.x);
     for (let i = 0; i < 30; i++) { const x = (i * 131 + dm.t * (1 + i % 3)) % W, y = (i * 71 + dm.t * 0.6 * (1 + i % 2)) % GROUND; c.fillStyle = i % 2 ? '#ff2a3a' : '#2a0006'; c.fillRect(x, y, 3, 3); }
